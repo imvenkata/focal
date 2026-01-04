@@ -156,18 +156,11 @@ struct LiquidGlassCapsuleView: View {
                 size: iconSize,
                 iconSize: iconFontSize
             )
-            
-            VStack(spacing: DS.Spacing.xs) {
-                Text(time)
-                    .scaledFont(size: timeFontSize, weight: .semibold, relativeTo: .caption2)
-                    .foregroundStyle(DS.Colors.glassTextSecondary)
-                    .tracking(0.3 * sizeScale)
 
-                Text(title)
-                    .scaledFont(size: titleFontSize, weight: .bold, relativeTo: .caption)
-                    .foregroundStyle(DS.Colors.glassTextPrimary)
-                    .lineLimit(1)
-            }
+            Text(time)
+                .scaledFont(size: timeFontSize, weight: .semibold, relativeTo: .caption2)
+                .foregroundStyle(DS.Colors.glassTextSecondary)
+                .tracking(0.3 * sizeScale)
         }
         .padding(.vertical, contentVerticalPadding)
         .padding(.horizontal, contentHorizontalPadding)
@@ -187,10 +180,6 @@ struct LiquidGlassCapsuleView: View {
     
     private var timeFontSize: CGFloat {
         10 * sizeScale
-    }
-
-    private var titleFontSize: CGFloat {
-        11 * sizeScale
     }
 
     private var iconFontSize: CGFloat {
