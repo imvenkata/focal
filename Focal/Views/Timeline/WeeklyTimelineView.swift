@@ -90,7 +90,7 @@ struct WeeklyTimelineView: View {
                 }
                 .padding(.vertical, DS.Spacing.md)
 
-                Text(dragState.isDragging ? "Release to move task" : "Hold a task to drag")
+                Text(dragState.isDragging ? "Drag to change day/time • Release to schedule" : "Hold & drag to reschedule")
                     .scaledFont(size: 12, weight: .medium, relativeTo: .caption)
                     .foregroundStyle(dragState.isDragging ? DS.Colors.sage : DS.Colors.stone400)
                     .padding(.top, DS.Spacing.md)
@@ -211,18 +211,6 @@ struct DayColumn: View {
                 .opacity(dragState.isDraggedTask(task) ? 0.3 : 1)
             }
 
-            // Drop target badge
-            if isDropTarget {
-                VStack {
-                    Spacer()
-                    DropTargetBadge(
-                        dayName: date.shortWeekdayName,
-                        time: dragState.formattedTargetTime
-                    )
-                    .transition(.scale.combined(with: .opacity))
-                }
-                .padding(.bottom, DS.Spacing.lg)
-            }
         }
         .frame(maxWidth: .infinity)
         .frame(height: totalTimelineHeight, alignment: .top)
@@ -241,34 +229,6 @@ struct DayColumn: View {
 
     private var totalTimelineHeight: CGFloat {
         CGFloat(endHour - startHour) * hourHeight
-    }
-}
-
-// MARK: - Drop Target Badge
-private struct DropTargetBadge: View {
-    let dayName: String
-    let time: String
-
-    var body: some View {
-        VStack(spacing: DS.Spacing.xs) {
-            HStack(spacing: DS.Spacing.xs) {
-                Image(systemName: "arrow.down.circle.fill")
-                    .font(.system(size: 12, weight: .semibold))
-                Text(dayName)
-                    .scaledFont(size: 11, weight: .semibold, relativeTo: .caption2)
-            }
-
-            Text(time)
-                .scaledFont(size: 13, weight: .bold, design: .monospaced, relativeTo: .caption)
-        }
-        .foregroundStyle(.white)
-        .padding(.horizontal, DS.Spacing.md)
-        .padding(.vertical, DS.Spacing.sm)
-        .background(
-            RoundedRectangle(cornerRadius: DS.Radius.md)
-                .fill(DS.Colors.sage)
-                .shadow(color: DS.Colors.sage.opacity(0.4), radius: 8, y: 4)
-        )
     }
 }
 
@@ -390,16 +350,34 @@ struct DraggedCapsuleOverlay: View {
 
     var body: some View {
         GeometryReader { geo in
-            MiniTaskPin(task: task, hourHeight: hourHeight)
-                .scaleEffect(1.2)
-                .rotationEffect(.degrees(sin(Date().timeIntervalSinceReferenceDate * 25) * 2.5))
-                .shadow(color: task.color.color.opacity(0.6), radius: 24, y: 12)
-                .shadow(color: Color.black.opacity(0.2), radius: 16, y: 8)
-                .position(
-                    x: dragState.dragLocation.x - geo.frame(in: .global).minX,
-                    y: dragState.dragLocation.y - geo.frame(in: .global).minY
-                )
-                .animation(.interactiveSpring(response: 0.15, dampingFraction: 0.8), value: dragState.dragLocation)
+            ZStack {
+                MiniTaskPin(task: task, hourHeight: hourHeight)
+                    .scaleEffect(1.2)
+                    .rotationEffect(.degrees(sin(Date().timeIntervalSinceReferenceDate * 25) * 2.5))
+                    .shadow(color: task.color.color.opacity(0.6), radius: 24, y: 12)
+                    .shadow(color: Color.black.opacity(0.2), radius: 16, y: 8)
+
+                // Time badge overlay
+                VStack {
+                    Spacer()
+                    Text(dragState.formattedTargetTime)
+                        .scaledFont(size: 12, weight: .bold, design: .monospaced, relativeTo: .caption)
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, DS.Spacing.sm)
+                        .padding(.vertical, 4)
+                        .background(
+                            Capsule()
+                                .fill(DS.Colors.sage)
+                                .shadow(color: DS.Colors.sage.opacity(0.4), radius: 6, y: 3)
+                        )
+                        .offset(y: 45)
+                }
+            }
+            .position(
+                x: dragState.dragLocation.x - geo.frame(in: .global).minX,
+                y: dragState.dragLocation.y - geo.frame(in: .global).minY
+            )
+            .animation(.interactiveSpring(response: 0.15, dampingFraction: 0.8), value: dragState.dragLocation)
         }
         .allowsHitTesting(false)
     }

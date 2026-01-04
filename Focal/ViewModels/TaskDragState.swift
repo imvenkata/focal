@@ -51,10 +51,10 @@ final class TaskDragState {
                 // Clamp to valid range
                 newHour = max(timelineStartHour, min(timelineEndHour - 1, calculatedHour))
 
-                // Calculate minutes (snap to 15-minute intervals)
+                // Calculate minutes (snap to 1-minute intervals)
                 let fractionalHour = hoursFromTop - floor(hoursFromTop)
                 let rawMinutes = Int(fractionalHour * 60)
-                newMinute = (rawMinutes / 15) * 15 // Snap to 0, 15, 30, 45
+                newMinute = min(rawMinutes, 59) // Snap to every minute: 0-59
 
                 break
             }
