@@ -1,0 +1,84 @@
+import SwiftUI
+
+struct ContentView: View {
+    @State private var taskStore = TaskStore()
+    @State private var selectedTab: Tab = .planner
+    @State private var showAddTask = false
+
+    var body: some View {
+        ZStack(alignment: .bottom) {
+            // Main content
+            Group {
+                switch selectedTab {
+                case .inbox:
+                    InboxView()
+                case .planner:
+                    PlannerView()
+                        .environment(taskStore)
+                case .insights:
+                    InsightsView()
+                case .settings:
+                    SettingsView()
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+            // Bottom navigation
+            BottomTabBar(selectedTab: $selectedTab, onAddTapped: {
+                showAddTask = true
+            })
+        }
+        .ignoresSafeArea(.keyboard)
+        .sheet(isPresented: $showAddTask) {
+            AddTaskSheet()
+                .environment(taskStore)
+        }
+    }
+}
+
+// MARK: - Placeholder Views
+struct InboxView: View {
+    var body: some View {
+        VStack {
+            Text("Inbox")
+                .font(.largeTitle)
+                .fontWeight(.semibold)
+            Text("Coming soon")
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(DS.Colors.background)
+    }
+}
+
+struct InsightsView: View {
+    var body: some View {
+        VStack {
+            Text("Insights")
+                .font(.largeTitle)
+                .fontWeight(.semibold)
+            Text("Coming soon")
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(DS.Colors.background)
+    }
+}
+
+struct SettingsView: View {
+    var body: some View {
+        VStack {
+            Text("Settings")
+                .font(.largeTitle)
+                .fontWeight(.semibold)
+            Text("Coming soon")
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(DS.Colors.background)
+    }
+}
+
+#Preview {
+    ContentView()
+}
