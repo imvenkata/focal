@@ -33,6 +33,8 @@ enum DS {
         static let amber600 = Color(hex: "#D97706")
         static let emerald500 = Color(hex: "#10B981")
         static let teal500 = Color(hex: "#14B8A6")
+        static let danger = Color(hex: "#EF4444")
+        static let dangerLight = Color(hex: "#FEF2F2")
 
         static let background = Color("Background")
         static let cardBackground = Color("CardBackground")
@@ -60,6 +62,7 @@ enum DS {
         static let lg: CGFloat = 16
         static let xl: CGFloat = 20
         static let xxl: CGFloat = 24
+        static let xxxl: CGFloat = 32
         static let pill: CGFloat = 100
     }
 
