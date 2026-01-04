@@ -43,9 +43,41 @@ final class TaskStore {
 
         return (0..<7).map { dayOffset in
             let date = calendar.date(byAdding: .day, value: dayOffset, to: weekStart)!
-            return tasks.filter { $0.startTime.isSameDay(as: date) }
-                .sorted { $0.startTime < $1.startTime }
+            var dayTasks = tasks.filter { $0.startTime.isSameDay(as: date) }
+
+            // Add day markers (Rise & Shine at 6 AM, Wind Down at 10 PM)
+            dayTasks.append(contentsOf: dayMarkers(for: date))
+
+            return dayTasks.sorted { $0.startTime < $1.startTime }
         }
+    }
+
+    // MARK: - Day Markers
+
+    private func dayMarkers(for date: Date) -> [TaskItem] {
+        let calendar = Calendar.current
+
+        let riseAndShine = TaskItem(
+            title: "Rise & Shine",
+            icon: "☀️",
+            colorName: "amber",
+            startTime: calendar.date(bySettingHour: 6, minute: 0, second: 0, of: date)!,
+            duration: 15 * 60,
+            isRoutine: true,
+            energyLevel: 1
+        )
+
+        let windDown = TaskItem(
+            title: "Wind Down",
+            icon: "🌙",
+            colorName: "lavender",
+            startTime: calendar.date(bySettingHour: 22, minute: 0, second: 0, of: date)!,
+            duration: 15 * 60,
+            isRoutine: true,
+            energyLevel: 0
+        )
+
+        return [riseAndShine, windDown]
     }
 
     var weekDates: [Date] {
@@ -138,17 +170,6 @@ final class TaskStore {
         let today = Date()
         let calendar = Calendar.current
 
-        // Morning routine
-        let wakeUp = TaskItem(
-            title: "Rise and Shine",
-            icon: "☀️",
-            colorName: "coral",
-            startTime: calendar.date(bySettingHour: 6, minute: 0, second: 0, of: today)!,
-            duration: 30 * 60,
-            isRoutine: true,
-            energyLevel: 1
-        )
-
         // Gym
         let gym = TaskItem(
             title: "Gym",
@@ -172,17 +193,6 @@ final class TaskStore {
             energyLevel: 2
         )
 
-        // Evening
-        let windDown = TaskItem(
-            title: "Wind Down",
-            icon: "🌙",
-            colorName: "lavender",
-            startTime: calendar.date(bySettingHour: 22, minute: 0, second: 0, of: today)!,
-            duration: 30 * 60,
-            isRoutine: true,
-            energyLevel: 0
-        )
-
         // Tomorrow's tasks
         let tomorrow = today.adding(days: 1)
 
@@ -204,6 +214,6 @@ final class TaskStore {
             energyLevel: 3
         )
 
-        tasks = [wakeUp, gym, meeting, windDown, breakfast, coding]
+        tasks = [gym, meeting, breakfast, coding]
     }
 }

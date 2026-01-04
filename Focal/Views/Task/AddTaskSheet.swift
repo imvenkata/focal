@@ -316,11 +316,29 @@ struct TaskPreviewCard: View {
             ZStack {
                 RoundedRectangle(cornerRadius: DS.Radius.md)
                     .fill(color.color)
-                    .frame(width: 48, height: 48)
+
+                RoundedRectangle(cornerRadius: DS.Radius.md)
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color.white.opacity(0.25),
+                                Color.clear,
+                                Color.black.opacity(0.15)
+                            ],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+
+                RoundedRectangle(cornerRadius: DS.Radius.md)
+                    .stroke(color.color.saturated(by: 1.2), lineWidth: 1.5)
 
                 Text(icon)
-                    .scaledFont(size: 24, relativeTo: .title2)
+                    .scaledFont(size: 20, relativeTo: .title3)
             }
+            .frame(width: 40, height: 40)
+            .shadow(color: color.color.opacity(0.4), radius: 6, y: 3)
+            .shadow(color: Color.black.opacity(0.1), radius: 3, y: 2)
 
             VStack(alignment: .leading, spacing: DS.Spacing.xs) {
                 Text(title)

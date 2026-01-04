@@ -35,17 +35,17 @@ enum DS {
         static let teal500 = Color(hex: "#14B8A6")
         static let danger = Color(hex: "#EF4444")
         static let dangerLight = Color(hex: "#FEF2F2")
-        static let glassFillStrong = DS.Colors.stone900.opacity(0.32)
-        static let glassFill = DS.Colors.stone900.opacity(0.24)
-        static let glassFillLight = DS.Colors.stone900.opacity(0.18)
-        static let glassStroke = DS.Colors.stone700.opacity(0.55)
-        static let glassHighlight = Color.white.opacity(0.16)
-        static let glassCurveHighlight = Color.white.opacity(0.08)
-        static let glassLineStart = DS.Colors.stone400.opacity(0.85)
-        static let glassLineEnd = DS.Colors.stone300.opacity(0.6)
-        static let glassShadow = Color.black.opacity(0.2)
-        static let glassTextPrimary = Color.white.opacity(0.92)
-        static let glassTextSecondary = Color.white.opacity(0.6)
+        static let glassFillStrong = DS.Colors.stone900.opacity(0.48)
+        static let glassFill = DS.Colors.stone900.opacity(0.36)
+        static let glassFillLight = DS.Colors.stone900.opacity(0.28)
+        static let glassStroke = DS.Colors.stone700.opacity(0.7)
+        static let glassHighlight = Color.white.opacity(0.24)
+        static let glassCurveHighlight = Color.white.opacity(0.12)
+        static let glassLineStart = DS.Colors.stone400.opacity(0.9)
+        static let glassLineEnd = DS.Colors.stone300.opacity(0.7)
+        static let glassShadow = Color.black.opacity(0.28)
+        static let glassTextPrimary = Color.white
+        static let glassTextSecondary = Color.white.opacity(0.78)
 
         static let background = Color("Background")
         static let cardBackground = Color("CardBackground")
@@ -90,10 +90,10 @@ enum DS {
         static let timeLabelWidth: CGFloat = 40
         static let weekTimelineHeight: CGFloat = 420
         static let hairline: CGFloat = 1
-        static let glassCapsuleWidth: CGFloat = 46
-        static let glassCapsuleHeight: CGFloat = 88
-        static let glassIconSize: CGFloat = 24
-        static let glassStemWidth: CGFloat = 2
+        static let glassCapsuleWidth: CGFloat = 42
+        static let glassCapsuleHeight: CGFloat = 76
+        static let glassIconSize: CGFloat = 22
+        static let glassStemWidth: CGFloat = 1.5
     }
 
     // MARK: - Animation
@@ -161,6 +161,24 @@ extension Color {
             blue: Double(b) / 255,
             opacity: Double(a) / 255
         )
+    }
+
+    func saturated(by factor: CGFloat) -> Color {
+        guard let components = UIColor(self).cgColor.components, components.count >= 3 else {
+            return self
+        }
+        let r = components[0]
+        let g = components[1]
+        let b = components[2]
+        let a = components.count >= 4 ? components[3] : 1.0
+
+        // Convert to HSB
+        var h: CGFloat = 0, s: CGFloat = 0, br: CGFloat = 0
+        UIColor(red: r, green: g, blue: b, alpha: a).getHue(&h, saturation: &s, brightness: &br, alpha: nil)
+
+        // Increase saturation
+        let newS = min(s * factor, 1.0)
+        return Color(hue: h, saturation: newS, brightness: br, opacity: a)
     }
 }
 

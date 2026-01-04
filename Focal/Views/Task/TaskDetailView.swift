@@ -606,15 +606,35 @@ private struct TaskDetailPill: View {
     let height: CGFloat
 
     var body: some View {
-        RoundedRectangle(cornerRadius: DS.Radius.xxl, style: .continuous)
-            .fill(task.color.color)
-            .frame(width: DS.Sizes.taskPillLarge, height: height)
-            .shadow(color: task.color.color.opacity(0.35), radius: 12, x: 0, y: 6)
-            .overlay {
-                Text(task.icon)
-                    .scaledFont(size: DS.Sizes.taskPillLarge * 0.5, relativeTo: .title2)
-            }
-            .opacity(task.isCompleted ? 0.65 : 1)
+        ZStack {
+            RoundedRectangle(cornerRadius: DS.Radius.xxl, style: .continuous)
+                .fill(task.color.color)
+                .frame(width: DS.Sizes.taskPillLarge, height: height)
+
+            RoundedRectangle(cornerRadius: DS.Radius.xxl, style: .continuous)
+                .fill(
+                    LinearGradient(
+                        colors: [
+                            Color.white.opacity(0.25),
+                            Color.clear,
+                            Color.black.opacity(0.15)
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
+                .frame(width: DS.Sizes.taskPillLarge, height: height)
+
+            RoundedRectangle(cornerRadius: DS.Radius.xxl, style: .continuous)
+                .stroke(task.color.color.saturated(by: 1.2), lineWidth: 1.5)
+                .frame(width: DS.Sizes.taskPillLarge, height: height)
+
+            Text(task.icon)
+                .scaledFont(size: DS.Sizes.taskPillLarge * 0.5, relativeTo: .title2)
+        }
+        .shadow(color: task.color.color.opacity(0.45), radius: 12, y: 6)
+        .shadow(color: Color.black.opacity(0.15), radius: 8, y: 4)
+        .opacity(task.isCompleted ? 0.65 : 1)
     }
 }
 

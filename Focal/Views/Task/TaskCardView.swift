@@ -136,27 +136,42 @@ struct TaskCardView: View {
 // MARK: - Day View Task Pill
 struct DayViewTaskPill: View {
     let task: TaskItem
-    
+    private let pillWidth: CGFloat = 44
+
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 16)
+            RoundedRectangle(cornerRadius: 12)
                 .fill(task.color.color)
-                .frame(width: 56)
-                .frame(height: pillHeight)
-                .shadow(color: task.color.color.opacity(0.15), radius: 4, y: 2)
-            
+
+            RoundedRectangle(cornerRadius: 12)
+                .fill(
+                    LinearGradient(
+                        colors: [
+                            Color.white.opacity(0.25),
+                            Color.clear,
+                            Color.black.opacity(0.15)
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
+
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(task.color.color.saturated(by: 1.2), lineWidth: 1.5)
+
             Text(task.icon)
-                .scaledFont(size: 24, relativeTo: .title2)
+                .scaledFont(size: 20, relativeTo: .title3)
         }
+        .frame(width: pillWidth, height: pillHeight)
+        .shadow(color: task.color.color.opacity(0.45), radius: 8, y: 4)
+        .shadow(color: Color.black.opacity(0.12), radius: 4, y: 2)
     }
-    
+
     private var pillHeight: CGFloat {
-        // 56px default, scales with duration
-        // React: Math.max(56, task.duration * 60)
-        if task.duration > 1800 { // > 0.5 hours
-            return max(56, CGFloat(task.duration) / 3600.0 * 60)
+        if task.duration > 1800 {
+            return max(44, CGFloat(task.duration) / 3600.0 * 50)
         } else {
-            return 56
+            return 44
         }
     }
 }
@@ -172,12 +187,31 @@ struct CompactTaskCard: View {
                 // Icon
                 ZStack {
                     RoundedRectangle(cornerRadius: DS.Radius.sm)
-                        .fill(task.color.lightColor)
-                        .frame(width: 36, height: 36)
+                        .fill(task.color.color)
+                        .frame(width: 32, height: 32)
+
+                    RoundedRectangle(cornerRadius: DS.Radius.sm)
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    Color.white.opacity(0.25),
+                                    Color.clear,
+                                    Color.black.opacity(0.15)
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        )
+                        .frame(width: 32, height: 32)
+
+                    RoundedRectangle(cornerRadius: DS.Radius.sm)
+                        .stroke(task.color.color.saturated(by: 1.2), lineWidth: 1)
+                        .frame(width: 32, height: 32)
 
                     Text(task.icon)
-                        .scaledFont(size: 18, relativeTo: .headline)
+                        .scaledFont(size: 16, relativeTo: .headline)
                 }
+                .shadow(color: task.color.color.opacity(0.35), radius: 4, y: 2)
 
                 // Title
                 Text(task.title)
