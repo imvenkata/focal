@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var taskStore = TaskStore()
+    @State private var dragState = TaskDragState()
     @State private var selectedTab: Tab = .planner
     @State private var showAddTask = false
 
@@ -15,6 +16,7 @@ struct ContentView: View {
                 case .planner:
                     PlannerView()
                         .environment(taskStore)
+                        .environment(dragState)
                 case .insights:
                     InsightsView()
                 case .settings:

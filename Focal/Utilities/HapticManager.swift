@@ -56,4 +56,22 @@ final class HapticManager {
     func buttonTapped() {
         impact(.light)
     }
+
+    // MARK: - Drag & Drop
+
+    func dragActivated() {
+        impact(.heavy)
+    }
+
+    func dragMoved() {
+        impact(.soft)
+    }
+
+    func dragDropped() {
+        notification(.success)
+    }
+
+    func dragCancelled() {
+        impact(.light)
+    }
 }

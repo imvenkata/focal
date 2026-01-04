@@ -289,4 +289,5 @@ private struct TaskPreviewIcon: View {
 #Preview {
     PlannerView()
         .environment(TaskStore())
+        .environment(TaskDragState())
 }

@@ -19,6 +19,7 @@
 		A10000001000000000000010 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000010 /* DateExtensions.swift */; };
 		A10BB315BB394583A9F66BC45 /* ScaledFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B5219DBAD054D1545A12A03 /* ScaledFont.swift */; };
 		A10000001000000000000011 /* TaskStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000011 /* TaskStore.swift */; };
+		A10000001000000000000031 /* TaskDragState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000031 /* TaskDragState.swift */; };
 		A10000001000000000000012 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000012 /* Tab.swift */; };
 		A10000001000000000000013 /* BottomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000013 /* BottomTabBar.swift */; };
 		A18439BC0ACADDAA14905961A /* FABButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26DBE8B1DE2506AE8AD00664 /* FABButton.swift */; };
@@ -56,6 +57,7 @@
 		A20000001000000000000010 /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		A2B5219DBAD054D1545A12A03 /* ScaledFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaledFont.swift; sourceTree = "<group>"; };
 		A20000001000000000000011 /* TaskStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStore.swift; sourceTree = "<group>"; };
+		A20000001000000000000031 /* TaskDragState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDragState.swift; sourceTree = "<group>"; };
 		A20000001000000000000012 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		A20000001000000000000013 /* BottomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomTabBar.swift; sourceTree = "<group>"; };
 		A26DBE8B1DE2506AE8AD00664 /* FABButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FABButton.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				A20000001000000000000011 /* TaskStore.swift */,
+				A20000001000000000000031 /* TaskDragState.swift */,
 				A20000001000000000000012 /* Tab.swift */,
 			);
 			path = ViewModels;
@@ -315,6 +318,7 @@
 				A10000001000000000000010 /* DateExtensions.swift in Sources */,
 				A10BB315BB394583A9F66BC45 /* ScaledFont.swift in Sources */,
 				A10000001000000000000011 /* TaskStore.swift in Sources */,
+				A10000001000000000000031 /* TaskDragState.swift in Sources */,
 				A10000001000000000000012 /* Tab.swift in Sources */,
 				A10000001000000000000013 /* BottomTabBar.swift in Sources */,
 				A18439BC0ACADDAA14905961A /* FABButton.swift in Sources */,

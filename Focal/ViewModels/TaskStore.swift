@@ -109,6 +109,48 @@ final class TaskStore {
         tasks.append(task)
     }
 
+    func moveTask(_ task: TaskItem, toDate newDate: Date) {
+        guard let index = tasks.firstIndex(where: { $0.id == task.id }) else { return }
+
+        let calendar = Calendar.current
+        let originalTime = calendar.dateComponents([.hour, .minute, .second], from: task.startTime)
+
+        var newComponents = calendar.dateComponents([.year, .month, .day], from: newDate)
+        newComponents.hour = originalTime.hour
+        newComponents.minute = originalTime.minute
+        newComponents.second = originalTime.second
+
+        if let newStartTime = calendar.date(from: newComponents) {
+            tasks[index].startTime = newStartTime
+        }
+    }
+
+    func moveTask(_ task: TaskItem, toDate newDate: Date, hour: Int, minute: Int) {
+        guard let index = tasks.firstIndex(where: { $0.id == task.id }) else { return }
+
+        let calendar = Calendar.current
+        var newComponents = calendar.dateComponents([.year, .month, .day], from: newDate)
+        newComponents.hour = hour
+        newComponents.minute = minute
+        newComponents.second = 0
+
+        if let newStartTime = calendar.date(from: newComponents) {
+            tasks[index].startTime = newStartTime
+        }
+    }
+
+    func moveTaskToWeekDay(_ task: TaskItem, dayIndex: Int) {
+        guard dayIndex >= 0 && dayIndex < 7 else { return }
+        let targetDate = weekDates[dayIndex]
+        moveTask(task, toDate: targetDate)
+    }
+
+    func moveTaskToWeekDay(_ task: TaskItem, dayIndex: Int, hour: Int, minute: Int) {
+        guard dayIndex >= 0 && dayIndex < 7 else { return }
+        let targetDate = weekDates[dayIndex]
+        moveTask(task, toDate: targetDate, hour: hour, minute: minute)
+    }
+
     func selectDate(_ date: Date) {
         selectedDate = date
         HapticManager.shared.selection()
