@@ -2,6 +2,7 @@ import SwiftUI
 
 struct WeekSelector: View {
     @Binding var selectedDate: Date
+    let viewMode: TaskStore.ViewMode
     let weekDates: [Date]
     let tasksForWeek: [[TaskItem]]
     let onDateSelected: (Date) -> Void
@@ -13,6 +14,7 @@ struct WeekSelector: View {
                     DayCircle(
                         date: date,
                         isSelected: date.isSameDay(as: selectedDate),
+                        viewMode: viewMode,
                         taskCount: tasksForWeek[index].count,
                         hasCompletedTasks: tasksForWeek[index].contains { $0.isCompleted }
                     ) {
@@ -29,12 +31,12 @@ struct WeekSelector: View {
 struct DayCircle: View {
     let date: Date
     let isSelected: Bool
+    let viewMode: TaskStore.ViewMode
     let taskCount: Int
     let hasCompletedTasks: Bool
     let action: () -> Void
     
     @Environment(TaskStore.self) private var taskStore
-    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         Button(action: action) {
@@ -42,7 +44,7 @@ struct DayCircle: View {
                 // Weekday label
                 Text(date.shortWeekdayName.uppercased())
                     .scaledFont(size: 10, weight: .medium, relativeTo: .caption2)
-                    .foregroundStyle(DS.Colors.textSecondary)
+                    .foregroundStyle(DS.Colors.stone400)
                     .tracking(1)
 
                 // Day number with circle
@@ -50,7 +52,7 @@ struct DayCircle: View {
                     Circle()
                         .fill(circleColor)
                         .frame(width: 36, height: 36)
-                        .shadow(color: isSelected ? Color.black.opacity(0.25) : Color.clear, radius: 8, y: 2)
+                        .shadow(color: isSelected ? DS.Colors.stone800.opacity(0.25) : Color.clear, radius: 8, y: 2)
 
                     Text("\(date.dayNumber)")
                         .scaledFont(size: 14, weight: .semibold, relativeTo: .callout)
@@ -70,15 +72,18 @@ struct DayCircle: View {
             .frame(width: DS.Sizes.minTouchTarget)
         }
         .buttonStyle(.plain)
+        .opacity(isDimmed ? 0.4 : 1)
+        .scaleEffect(isDimmed ? 0.9 : 1)
+        .animation(DS.Animation.gentle, value: isDimmed)
         .accessibilityLabel("\(date.formattedDate), \(taskCount) tasks")
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
     
     private var circleColor: Color {
         if isSelected {
-            return colorScheme == .dark ? DS.Colors.cardBackground : Color(hex: "#292524") // stone-800
+            return DS.Colors.stone800
         } else if date.isToday {
-            return colorScheme == .dark ? DS.Colors.amber.opacity(0.2) : Color(hex: "#FEF3C7") // amber-100
+            return DS.Colors.amber100
         } else {
             return Color.clear
         }
@@ -86,12 +91,16 @@ struct DayCircle: View {
     
     private var textColor: Color {
         if isSelected {
-            return colorScheme == .dark ? DS.Colors.textPrimary : .white
+            return .white
         } else if date.isToday {
-            return colorScheme == .dark ? DS.Colors.amber : Color(hex: "#B45309") // amber-700
+            return DS.Colors.amber600
         } else {
-            return DS.Colors.textPrimary
+            return DS.Colors.stone700
         }
+    }
+
+    private var isDimmed: Bool {
+        viewMode == .day && !isSelected
     }
     
     private var tasksForDay: [TaskItem] {
@@ -106,6 +115,7 @@ struct DayCircle: View {
 #Preview {
     WeekSelector(
         selectedDate: .constant(Date()),
+        viewMode: .week,
         weekDates: Date.weekDates,
         tasksForWeek: [[],[],[],[],[],[],[]],
         onDateSelected: { _ in }

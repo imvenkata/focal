@@ -40,8 +40,8 @@ struct TimeLabel: View {
     var body: some View {
         Text(String(format: "%02d:00", hour))
             .scaledFont(size: 10, weight: .medium, design: .monospaced, relativeTo: .caption2)
-            .foregroundStyle(DS.Colors.textSecondary)
-            .frame(width: 40, alignment: .trailing)
+            .foregroundStyle(DS.Colors.stone400)
+            .frame(width: DS.Sizes.timeLabelWidth, alignment: .trailing)
     }
 }
 

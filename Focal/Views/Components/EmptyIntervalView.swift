@@ -10,7 +10,7 @@ struct EmptyIntervalView: View {
             
             Text(gapMessage)
                 .scaledFont(size: 14, relativeTo: .callout)
-                .foregroundStyle(DS.Colors.textSecondary)
+                .foregroundStyle(DS.Colors.stone400)
                 .italic()
         }
         .padding(.vertical, DS.Spacing.md)

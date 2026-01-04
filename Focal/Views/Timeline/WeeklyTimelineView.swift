@@ -6,15 +6,18 @@ struct WeeklyTimelineView: View {
 
     private let timelineStartHour = 6
     private let timelineEndHour = 23
-    private let hourHeight: CGFloat = 60
+    private var hourHeight: CGFloat {
+        DS.Sizes.weekTimelineHeight / CGFloat(timelineEndHour - timelineStartHour)
+    }
+    private let gridStride = 3
 
     var body: some View {
         VStack(spacing: 0) {
-            // Progress bar
-            ProgressBar(
-                progress: taskStore.currentWeekProgress,
+            WeeklyMiniStatsBar(
+                energy: taskStore.totalEnergyForSelectedDate,
                 completed: taskStore.tasksForWeek.flatMap { $0 }.filter { $0.isCompleted }.count,
-                total: taskStore.tasksForWeek.flatMap { $0 }.count
+                total: taskStore.tasksForWeek.flatMap { $0 }.count,
+                progress: taskStore.currentWeekProgress
             )
             .padding(.horizontal, DS.Spacing.md)
             .padding(.bottom, DS.Spacing.md)
@@ -24,16 +27,17 @@ struct WeeklyTimelineView: View {
                     // Time grid with tasks
                     HStack(alignment: .top, spacing: 0) {
                         // Time labels
-                        VStack(spacing: 0) {
-                            ForEach(timelineStartHour..<timelineEndHour, id: \.self) { hour in
-                                TimeLabel(hour: hour)
-                                    .frame(height: hourHeight, alignment: .top)
+                        ZStack(alignment: .topTrailing) {
+                            ForEach(majorHours, id: \.self) { hour in
+                                WeekTimeLabel(hour: hour)
+                                    .offset(y: CGFloat(hour - timelineStartHour) * hourHeight)
                             }
                         }
+                        .frame(width: DS.Sizes.timeLabelWidth, height: totalTimelineHeight, alignment: .topTrailing)
                         .padding(.trailing, DS.Spacing.sm)
 
                         // Day columns
-                        HStack(spacing: 2) {
+                        HStack(spacing: DS.Spacing.xs) {
                             ForEach(Array(taskStore.weekDates.enumerated()), id: \.offset) { index, date in
                                 DayColumn(
                                     date: date,
@@ -42,6 +46,7 @@ struct WeeklyTimelineView: View {
                                     hourHeight: hourHeight,
                                     startHour: timelineStartHour,
                                     endHour: timelineEndHour,
+                                    gridStride: gridStride,
                                     onTaskTap: { task in
                                         selectedTask = task
                                     }
@@ -55,18 +60,34 @@ struct WeeklyTimelineView: View {
                     .overlay(alignment: .topLeading) {
                         if shouldShowCurrentTimeIndicator {
                             CurrentTimeIndicator()
-                                .padding(.leading, 48)
+                                .padding(.leading, DS.Sizes.timeLabelWidth + DS.Spacing.sm)
                                 .offset(y: currentTimeOffset)
+                                .allowsHitTesting(false)
                         }
                     }
                 }
                 .padding(.vertical, DS.Spacing.md)
+
+                Text("Tap a day to see details")
+                    .scaledFont(size: 12, weight: .medium, relativeTo: .caption)
+                    .foregroundStyle(DS.Colors.stone400)
+                    .padding(.top, DS.Spacing.md)
+                    .padding(.bottom, DS.Spacing.lg)
             }
         }
+        .transition(.opacity)
         .sheet(item: $selectedTask) { task in
             TaskDetailView(task: task)
                 .environment(taskStore)
         }
+    }
+
+    private var majorHours: [Int] {
+        Array(stride(from: timelineStartHour, to: timelineEndHour, by: gridStride))
+    }
+
+    private var totalTimelineHeight: CGFloat {
+        CGFloat(timelineEndHour - timelineStartHour) * hourHeight
     }
 
     private var shouldShowCurrentTimeIndicator: Bool {
@@ -92,24 +113,23 @@ struct DayColumn: View {
     let hourHeight: CGFloat
     let startHour: Int
     let endHour: Int
+    let gridStride: Int
     let onTaskTap: (TaskItem) -> Void
 
     var body: some View {
         ZStack(alignment: .top) {
             // Grid lines
-            VStack(spacing: 0) {
-                ForEach(startHour..<endHour, id: \.self) { _ in
-                    Rectangle()
-                        .fill(DS.Colors.divider.opacity(0.5))
-                        .frame(height: 1)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: hourHeight, alignment: .top)
-                }
+            ForEach(gridHours, id: \.self) { hour in
+                Rectangle()
+                    .fill(DS.Colors.stone200)
+                    .frame(height: 1)
+                    .frame(maxWidth: .infinity)
+                    .offset(y: CGFloat(hour - startHour) * hourHeight)
             }
             
             // Vertical solid line connecting tasks
             if tasks.count > 1 {
-                let trackColor = date.isToday ? DS.Colors.divider : DS.Colors.divider.opacity(0.6)
+                let trackColor = date.isToday ? DS.Colors.stone300 : DS.Colors.stone200
                 
                 // Sort tasks by time to ensure correct line positioning
                 let sortedTasks = tasks.sorted { $0.startTime < $1.startTime }
@@ -144,7 +164,16 @@ struct DayColumn: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .background(isSelected ? DS.Colors.sky.opacity(0.05) : Color.clear)
+        .frame(height: totalTimelineHeight, alignment: .top)
+        .background(Color.clear)
+    }
+
+    private var gridHours: [Int] {
+        Array(stride(from: startHour, to: endHour, by: gridStride))
+    }
+
+    private var totalTimelineHeight: CGFloat {
+        CGFloat(endHour - startHour) * hourHeight
     }
 }
 
@@ -168,6 +197,72 @@ struct TaskPinPosition: View {
         let taskMinute = task.startTime.minute
         let hoursSinceStart = CGFloat(taskHour - startHour) + CGFloat(taskMinute) / 60.0
         return hoursSinceStart * hourHeight
+    }
+}
+
+// MARK: - Week Time Label
+private struct WeekTimeLabel: View {
+    let hour: Int
+
+    var body: some View {
+        Text(String(format: "%02d", hour))
+            .scaledFont(size: 9, weight: .medium, design: .monospaced, relativeTo: .caption2)
+            .foregroundStyle(DS.Colors.stone400)
+            .frame(width: DS.Sizes.timeLabelWidth, alignment: .trailing)
+    }
+}
+
+// MARK: - Weekly Mini Stats
+private struct WeeklyMiniStatsBar: View {
+    let energy: Int
+    let completed: Int
+    let total: Int
+    let progress: Double
+
+    var body: some View {
+        HStack(spacing: DS.Spacing.sm) {
+            HStack(spacing: DS.Spacing.xs) {
+                Text("🔥")
+                    .scaledFont(size: 12, relativeTo: .caption)
+                Text("\(energy)")
+                    .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
+                    .foregroundStyle(DS.Colors.stone700)
+            }
+            .padding(.horizontal, DS.Spacing.md)
+            .padding(.vertical, DS.Spacing.xs)
+            .background(DS.Colors.cardBackground.opacity(0.6))
+            .overlay(
+                RoundedRectangle(cornerRadius: DS.Radius.pill)
+                    .stroke(DS.Colors.stone200.opacity(0.6), lineWidth: 1)
+            )
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.pill))
+
+            GeometryReader { proxy in
+                ZStack(alignment: .leading) {
+                    Capsule()
+                        .fill(DS.Colors.stone200)
+                        .frame(height: 6)
+
+                    Capsule()
+                        .fill(
+                            LinearGradient(
+                                colors: [DS.Colors.emerald500, DS.Colors.teal500],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .frame(width: proxy.size.width * progress, height: 6)
+                }
+            }
+            .frame(height: 6)
+
+            Text("\(completed)/\(total)")
+                .scaledFont(size: 10, weight: .medium, design: .monospaced, relativeTo: .caption2)
+                .foregroundStyle(DS.Colors.stone500)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(completed) of \(total) tasks completed this week")
+        .accessibilityValue("\(Int(progress * 100)) percent")
     }
 }
 

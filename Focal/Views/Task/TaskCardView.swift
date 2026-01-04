@@ -4,6 +4,19 @@ struct TaskCardView: View {
     let task: TaskItem
     let onToggleComplete: () -> Void
     let onTap: () -> Void
+    let onDelete: (() -> Void)?
+
+    init(
+        task: TaskItem,
+        onToggleComplete: @escaping () -> Void,
+        onTap: @escaping () -> Void,
+        onDelete: (() -> Void)? = nil
+    ) {
+        self.task = task
+        self.onToggleComplete = onToggleComplete
+        self.onTap = onTap
+        self.onDelete = onDelete
+    }
 
     var body: some View {
         HStack(alignment: .top, spacing: DS.Spacing.lg) {
@@ -18,25 +31,26 @@ struct TaskCardView: View {
                     VStack(alignment: .leading, spacing: DS.Spacing.xs) {
                         // Time and duration
                         HStack(spacing: DS.Spacing.sm) {
-                        Text(task.timeRangeFormatted)
-                            .scaledFont(size: 12, weight: .medium, relativeTo: .caption)
-                            .foregroundStyle(DS.Colors.textSecondary)
+                            Text(task.timeRangeFormatted)
+                                .scaledFont(size: 12, weight: .medium, relativeTo: .caption)
+                                .foregroundStyle(secondaryTextColor)
 
                             if task.duration > 1800 {
-                            Text("(\(task.durationFormatted))")
-                                .scaledFont(size: 10, weight: .medium, relativeTo: .caption2)
-                                .foregroundStyle(DS.Colors.textSecondary)
-                                .padding(.horizontal, 6)
-                                .padding(.vertical, 2)
-                                .background(DS.Colors.divider.opacity(0.4))
-                                .clipShape(RoundedRectangle(cornerRadius: 4))
+                                Text("(\(task.durationFormatted))")
+                                    .scaledFont(size: 10, weight: .medium, relativeTo: .caption2)
+                                    .foregroundStyle(secondaryTextColor)
+                                    .padding(.horizontal, 6)
+                                    .padding(.vertical, 2)
+                                    .background(DS.Colors.divider.opacity(0.4))
+                                    .clipShape(RoundedRectangle(cornerRadius: 4))
+                            }
                         }
-                    }
 
                         // Title
-                    Text(task.title)
-                        .scaledFont(size: 16, weight: .semibold, relativeTo: .body)
-                        .foregroundStyle(DS.Colors.textPrimary)
+                        Text(task.title)
+                            .scaledFont(size: 16, weight: .semibold, relativeTo: .body)
+                            .foregroundStyle(titleColor)
+                            .strikethrough(task.isCompleted, color: secondaryTextColor)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -57,7 +71,7 @@ struct TaskCardView: View {
 
                     if task.isCompleted {
                         Circle()
-                            .fill(Color(hex: "#10B981")) // emerald-500
+                            .fill(DS.Colors.emerald500)
                             .frame(width: 28, height: 28)
 
                         Image(systemName: "checkmark")
@@ -70,7 +84,52 @@ struct TaskCardView: View {
             .buttonStyle(.plain)
             .accessibilityLabel(task.isCompleted ? "Mark incomplete" : "Mark complete")
         }
-        .padding(.vertical, DS.Spacing.md)
+        .padding(.vertical, DS.Spacing.sm)
+        .padding(.horizontal, DS.Spacing.sm)
+        .background(task.isActive ? task.color.lightColor.opacity(0.5) : Color.clear)
+        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+        .overlay {
+            if task.isActive {
+                RoundedRectangle(cornerRadius: DS.Radius.lg)
+                    .stroke(task.color.color, lineWidth: 1.5)
+            }
+        }
+        .opacity(rowOpacity)
+        .swipeActions(edge: .leading, allowsFullSwipe: false) {
+            Button {
+                onToggleComplete()
+            } label: {
+                Label(task.isCompleted ? "Undo" : "Done", systemImage: task.isCompleted ? "arrow.uturn.backward" : "checkmark")
+            }
+            .tint(task.isCompleted ? DS.Colors.slate : DS.Colors.sage)
+        }
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+            if let onDelete {
+                Button(role: .destructive) {
+                    onDelete()
+                } label: {
+                    Label("Delete", systemImage: "trash")
+                }
+            }
+        }
+    }
+
+    private var titleColor: Color {
+        task.isCompleted || task.isPast ? DS.Colors.stone500 : DS.Colors.stone800
+    }
+
+    private var secondaryTextColor: Color {
+        DS.Colors.stone400
+    }
+
+    private var rowOpacity: Double {
+        if task.isCompleted {
+            return 0.55
+        }
+        if task.isPast {
+            return 0.75
+        }
+        return 1
     }
 }
 

@@ -21,7 +21,7 @@ struct StatsBar: View {
                 StatCard(
                     value: "\(completedCount)",
                     label: "Done",
-                    color: Color(hex: "#10B981") // emerald-600
+                    color: DS.Colors.emerald500
                 )
             }
         }
@@ -71,7 +71,7 @@ struct EnergyCircularProgress: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 10)
-        .background(DS.Colors.background)
+        .background(DS.Colors.stone50)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
@@ -94,7 +94,7 @@ struct StatCard: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 10)
-        .background(DS.Colors.background)
+        .background(DS.Colors.stone50)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }

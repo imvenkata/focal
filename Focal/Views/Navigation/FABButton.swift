@@ -13,15 +13,15 @@ struct FABButton: View {
                     .fill(
                         LinearGradient(
                             gradient: Gradient(colors: [
-                                Color(hex: "#57534E"), // stone-700
-                                Color(hex: "#292524")  // stone-900
+                                DS.Colors.stone700,
+                                DS.Colors.stone900
                             ]),
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
                     )
                     .frame(width: DS.Sizes.fabSize, height: DS.Sizes.fabSize)
-                    .shadow(color: Color(hex: "#292524").opacity(0.3), radius: 16, x: 0, y: 8)
+                    .shadow(color: DS.Colors.stone900.opacity(0.3), radius: 16, x: 0, y: 8)
                 
                 Image(systemName: "plus")
                     .scaledFont(size: 28, weight: .semibold, relativeTo: .title)

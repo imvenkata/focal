@@ -113,6 +113,14 @@ final class TaskStore {
         HapticManager.shared.selection()
     }
 
+    func setViewMode(_ mode: ViewMode) {
+        guard viewMode != mode else { return }
+        withAnimation(DS.Animation.spring) {
+            viewMode = mode
+        }
+        HapticManager.shared.selection()
+    }
+
     func tasksAt(hour: Int, for date: Date) -> [TaskItem] {
         tasks.filter { task in
             task.startTime.isSameDay(as: date) &&

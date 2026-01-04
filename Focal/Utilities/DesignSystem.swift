@@ -20,6 +20,19 @@ enum DS {
         static let slateLight = Color(hex: "#F4F5F7")
         static let night = Color(hex: "#5C6B7A")
         static let nightLight = Color(hex: "#F3F4F5")
+        static let stone900 = Color(hex: "#1C1917")
+        static let stone800 = Color(hex: "#292524")
+        static let stone700 = Color(hex: "#44403C")
+        static let stone500 = Color(hex: "#78716C")
+        static let stone400 = Color(hex: "#A8A29E")
+        static let stone300 = Color(hex: "#D6D3D1")
+        static let stone200 = Color(hex: "#E7E5E4")
+        static let stone100 = Color(hex: "#F5F5F4")
+        static let stone50 = Color(hex: "#FAFAF9")
+        static let amber100 = Color(hex: "#FEF3C7")
+        static let amber600 = Color(hex: "#D97706")
+        static let emerald500 = Color(hex: "#10B981")
+        static let teal500 = Color(hex: "#14B8A6")
 
         static let background = Color("Background")
         static let cardBackground = Color("CardBackground")
@@ -60,6 +73,8 @@ enum DS {
         static let bottomNavHeight: CGFloat = 83
         static let sheetHandle: CGFloat = 36
         static let minTouchTarget: CGFloat = 44
+        static let timeLabelWidth: CGFloat = 40
+        static let weekTimelineHeight: CGFloat = 420
     }
 
     // MARK: - Animation

@@ -19,6 +19,7 @@ struct PlannerView: View {
             // Week selector
             WeekSelector(
                 selectedDate: $store.selectedDate,
+                viewMode: store.viewMode,
                 weekDates: store.weekDates,
                 tasksForWeek: store.tasksForWeek,
                 onDateSelected: { date in
@@ -67,24 +68,24 @@ struct PlannerHeader: View {
                 Button(action: onPreviousWeek) {
                     Image(systemName: "chevron.left")
                         .scaledFont(size: 14, weight: .semibold, relativeTo: .callout)
-                        .foregroundStyle(DS.Colors.textSecondary)
+                        .foregroundStyle(DS.Colors.stone400)
                 }
                 .frame(width: DS.Sizes.minTouchTarget, height: DS.Sizes.minTouchTarget)
 
                 HStack(spacing: 4) {
                     Text(headerTitle)
-                        .font(DS.Typography.title2())
-                        .foregroundStyle(DS.Colors.textPrimary)
+                        .scaledFont(size: 16, weight: .semibold, relativeTo: .title3)
+                        .foregroundStyle(DS.Colors.stone800)
                     
                     Text(String(selectedDate.yearNumber))
-                        .font(DS.Typography.title2(weight: .light))
+                        .scaledFont(size: 16, weight: .light, relativeTo: .title3)
                         .foregroundStyle(DS.Colors.amber.opacity(0.8))
                 }
 
                 Button(action: onNextWeek) {
                     Image(systemName: "chevron.right")
                         .scaledFont(size: 14, weight: .semibold, relativeTo: .callout)
-                        .foregroundStyle(DS.Colors.textSecondary)
+                        .foregroundStyle(DS.Colors.stone400)
                 }
                 .frame(width: DS.Sizes.minTouchTarget, height: DS.Sizes.minTouchTarget)
             }
@@ -114,43 +115,24 @@ struct ViewModeToggle: View {
     
     var body: some View {
         Button(action: onToggle) {
-            HStack(spacing: DS.Spacing.sm) {
-                Image(systemName: iconName)
+            HStack(spacing: DS.Spacing.xs) {
+                Text(viewMode == .week ? "Week" : "Day")
                     .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-
-                Text(currentLabel)
-                    .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
+                    .foregroundStyle(DS.Colors.textPrimary)
 
                 Image(systemName: "arrow.left.arrow.right")
                     .scaledFont(size: 10, weight: .semibold, relativeTo: .caption2)
-                    .foregroundStyle(DS.Colors.textSecondary)
+                    .foregroundStyle(DS.Colors.stone400)
             }
-            .foregroundStyle(DS.Colors.textPrimary)
             .padding(.horizontal, DS.Spacing.md)
-            .frame(height: DS.Sizes.minTouchTarget)
-            .background(DS.Colors.cardBackground)
+            .padding(.vertical, DS.Spacing.sm)
+            .background(DS.Colors.stone100)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
-            .overlay(
-                RoundedRectangle(cornerRadius: DS.Radius.md)
-                    .stroke(DS.Colors.divider, lineWidth: 1)
-            )
-            .shadow(color: .black.opacity(0.06), radius: 6, y: 2)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("\(currentLabel) view")
-        .accessibilityHint("Double tap to switch to \(nextLabel) view")
-    }
-
-    private var currentLabel: String {
-        viewMode == .week ? "Week" : "Day"
-    }
-
-    private var nextLabel: String {
-        viewMode == .week ? "Day" : "Week"
-    }
-
-    private var iconName: String {
-        viewMode == .week ? "rectangle.grid.2x2" : "list.bullet.rectangle"
+        .accessibilityLabel("View mode")
+        .accessibilityValue(viewMode == .week ? "Week" : "Day")
+        .accessibilityHint("Double tap to switch view")
     }
 }
 

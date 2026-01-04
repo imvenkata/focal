@@ -20,6 +20,8 @@ struct AddTaskSheet: View {
 
     @State private var showDatePicker = false
     @State private var showTimePicker = false
+    @State private var showIconPicker = false
+    @State private var showEnergyPicker = false
 
     @FocusState private var isTitleFocused: Bool
 
@@ -46,7 +48,7 @@ struct AddTaskSheet: View {
                         HStack(spacing: DS.Spacing.md) {
                             // Icon picker button
                             Button {
-                                // Show icon picker
+                                showIconPicker = true
                             } label: {
                                 Text(selectedIcon)
                                     .scaledFont(size: 24, relativeTo: .title2)
@@ -54,6 +56,9 @@ struct AddTaskSheet: View {
                                     .background(selectedColor.lightColor)
                                     .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
                             }
+                            .accessibilityLabel("Choose icon")
+                            .accessibilityValue(selectedIcon)
+                            .accessibilityHint("Opens icon picker")
 
                             TextField("What do you need to do?", text: $title)
                                 .scaledFont(size: 16, relativeTo: .body)
@@ -151,6 +156,25 @@ struct AddTaskSheet: View {
                     }
                     .padding(.horizontal, DS.Spacing.xl)
 
+                    // Energy
+                    VStack(alignment: .leading, spacing: DS.Spacing.sm) {
+                        Text("ENERGY")
+                            .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
+                            .foregroundStyle(DS.Colors.textSecondary)
+
+                        SettingRow(
+                            icon: selectedEnergyIcon,
+                            title: "Energy",
+                            value: selectedEnergyLabel
+                        ) {
+                            showEnergyPicker = true
+                        }
+                        .accessibilityLabel("Energy level")
+                        .accessibilityValue(selectedEnergyLabel)
+                        .accessibilityHint("Opens energy picker")
+                    }
+                    .padding(.horizontal, DS.Spacing.xl)
+
                     // Notes
                     VStack(alignment: .leading, spacing: DS.Spacing.sm) {
                         Text("NOTES")
@@ -205,11 +229,19 @@ struct AddTaskSheet: View {
         }
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
+        .sheet(isPresented: $showIconPicker) {
+            IconPickerView(selectedIcon: $selectedIcon) {
+                showIconPicker = false
+            }
+        }
         .sheet(isPresented: $showDatePicker) {
             DatePickerSheet(selectedDate: $selectedDate)
         }
         .sheet(isPresented: $showTimePicker) {
             TimePickerSheet(selectedTime: $selectedTime, duration: $selectedDuration)
+        }
+        .sheet(isPresented: $showEnergyPicker) {
+            EnergyPickerSheet(selectedLevel: $energyLevel)
         }
         .onAppear {
             if let hour = presetHour {
@@ -217,6 +249,18 @@ struct AddTaskSheet: View {
             }
             isTitleFocused = true
         }
+    }
+
+    private var selectedEnergy: EnergyLevel {
+        EnergyLevel(rawValue: energyLevel) ?? .moderate
+    }
+
+    private var selectedEnergyLabel: String {
+        selectedEnergy.label
+    }
+
+    private var selectedEnergyIcon: String {
+        selectedEnergy.icon
     }
 
     private func updateIconAndColor(for title: String) {

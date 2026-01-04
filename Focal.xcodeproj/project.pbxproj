@@ -37,6 +37,8 @@
 		A10000001000000000000025 /* DatePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000025 /* DatePickerSheet.swift */; };
 		A10000001000000000000026 /* TimePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000026 /* TimePickerSheet.swift */; };
 		A10000001000000000000027 /* EnergyPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000027 /* EnergyPickerSheet.swift */; };
+		A10000001000000000000029 /* EmptyIntervalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000029 /* EmptyIntervalView.swift */; };
+		A10000001000000000000030 /* IconPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000030 /* IconPickerView.swift */; };
 		A10000001000000000000028 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000028 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +74,8 @@
 		A20000001000000000000025 /* DatePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerSheet.swift; sourceTree = "<group>"; };
 		A20000001000000000000026 /* TimePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerSheet.swift; sourceTree = "<group>"; };
 		A20000001000000000000027 /* EnergyPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyPickerSheet.swift; sourceTree = "<group>"; };
+		A20000001000000000000029 /* EmptyIntervalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyIntervalView.swift; sourceTree = "<group>"; };
+		A20000001000000000000030 /* IconPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconPickerView.swift; sourceTree = "<group>"; };
 		A20000001000000000000028 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -204,6 +208,7 @@
 				A20000001000000000000025 /* DatePickerSheet.swift */,
 				A20000001000000000000026 /* TimePickerSheet.swift */,
 				A20000001000000000000027 /* EnergyPickerSheet.swift */,
+				A20000001000000000000030 /* IconPickerView.swift */,
 			);
 			path = Pickers;
 			sourceTree = "<group>";
@@ -215,6 +220,7 @@
 				A282333FC8F8804A9C1BB400A /* SubtaskRow.swift */,
 				A20000001000000000000015 /* StatsBar.swift */,
 				A20000001000000000000016 /* ProgressBar.swift */,
+				A20000001000000000000029 /* EmptyIntervalView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -316,6 +322,7 @@
 				A10B813E21666375B367175F3 /* SubtaskRow.swift in Sources */,
 				A10000001000000000000015 /* StatsBar.swift in Sources */,
 				A10000001000000000000016 /* ProgressBar.swift in Sources */,
+				A10000001000000000000029 /* EmptyIntervalView.swift in Sources */,
 				A10000001000000000000017 /* TaskPinView.swift in Sources */,
 				A10000001000000000000018 /* TaskCardView.swift in Sources */,
 				A10000001000000000000019 /* CurrentTimeIndicator.swift in Sources */,
@@ -327,6 +334,7 @@
 				A10000001000000000000025 /* DatePickerSheet.swift in Sources */,
 				A10000001000000000000026 /* TimePickerSheet.swift in Sources */,
 				A10000001000000000000027 /* EnergyPickerSheet.swift in Sources */,
+				A10000001000000000000030 /* IconPickerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

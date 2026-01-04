@@ -31,6 +31,11 @@ struct BottomTabBar: View {
         .padding(.bottom, 34)
         .background(.ultraThinMaterial)
         .overlay(alignment: .top) {
+            Rectangle()
+                .fill(DS.Colors.stone100)
+                .frame(height: 1)
+        }
+        .overlay(alignment: .top) {
             // FAB
             FABButton(action: onAddTapped)
                 .offset(y: -DS.Sizes.fabSize / 2)
@@ -49,11 +54,11 @@ struct TabButton: View {
             VStack(spacing: DS.Spacing.xs) {
                 Image(systemName: tab.icon)
                     .scaledFont(size: 20, weight: isSelected ? .semibold : .regular, relativeTo: .body)
-                    .foregroundStyle(isSelected ? DS.Colors.sky : DS.Colors.textSecondary)
+                    .foregroundStyle(isSelected ? DS.Colors.stone800 : DS.Colors.stone400)
 
                 Text(tab.label)
                     .scaledFont(size: 10, weight: .medium, relativeTo: .caption2)
-                    .foregroundStyle(isSelected ? DS.Colors.sky : DS.Colors.textSecondary)
+                    .foregroundStyle(isSelected ? DS.Colors.stone800 : DS.Colors.stone400)
             }
             .frame(maxWidth: .infinity)
             .frame(height: DS.Sizes.minTouchTarget)
