@@ -129,28 +129,28 @@ struct DayColumn: View {
             
             // Vertical solid line connecting tasks
             if tasks.count > 1 {
-                let trackColor = date.isToday ? DS.Colors.stone300 : DS.Colors.stone200
-                
                 // Sort tasks by time to ensure correct line positioning
                 let sortedTasks = tasks.sorted { $0.startTime < $1.startTime }
                 let firstTask = sortedTasks.first!
                 let lastTask = sortedTasks.last!
                 
-                // First task center position (pill center = top + half pill height)
+                // First task position (line starts at the top of the capsule)
                 let firstTaskTime = Double(firstTask.startTime.hour) + Double(firstTask.startTime.minute) / 60.0
-                let firstTaskOffset = CGFloat(firstTaskTime - Double(startHour)) * hourHeight + 18 // +18 for pill center (36/2)
+                let firstTaskOffset = CGFloat(firstTaskTime - Double(startHour)) * hourHeight
                 
-                // Last task end position (includes task duration + pill + duration bar)
-                let lastTaskEndTime = Double(lastTask.startTime.hour) + Double(lastTask.startTime.minute) / 60.0 + Double(lastTask.duration) / 3600.0
+                // Last task end position (ensures the capsule is covered even for short durations)
+                let lastTaskStartTime = Double(lastTask.startTime.hour) + Double(lastTask.startTime.minute) / 60.0
+                let lastTaskStartOffset = CGFloat(lastTaskStartTime - Double(startHour)) * hourHeight
+                let lastTaskEndTime = Double(lastTask.endTime.hour) + Double(lastTask.endTime.minute) / 60.0
                 let lastTaskEndOffset = CGFloat(lastTaskEndTime - Double(startHour)) * hourHeight
+                let lastTaskBottomOffset = max(lastTaskEndOffset, lastTaskStartOffset + DS.Sizes.glassCapsuleHeight)
                 
-                // Track height spans from first task center to last task end
-                let trackHeight = max(lastTaskEndOffset - firstTaskOffset, 36) // Minimum height of one pill
+                // Track height spans from first task to last task bottom
+                let trackHeight = max(lastTaskBottomOffset - firstTaskOffset, DS.Sizes.glassCapsuleHeight)
                 
-                Rectangle()
-                    .fill(trackColor)
-                    .frame(width: 1, height: trackHeight)
+                GlassStemView(height: trackHeight)
                     .offset(y: firstTaskOffset)
+                    .opacity(date.isToday ? 0.9 : 0.7)
             }
 
             // Task pins
@@ -189,6 +189,7 @@ struct TaskPinPosition: View {
             MiniTaskPin(task: task, hourHeight: hourHeight)
         }
         .buttonStyle(.plain)
+        .accessibilityHint("Double tap to view task details")
         .offset(y: yOffset)
     }
 

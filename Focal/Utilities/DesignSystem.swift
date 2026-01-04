@@ -35,6 +35,15 @@ enum DS {
         static let teal500 = Color(hex: "#14B8A6")
         static let danger = Color(hex: "#EF4444")
         static let dangerLight = Color(hex: "#FEF2F2")
+        static let glassFillStrong = Color.white.opacity(0.1)
+        static let glassFill = Color.white.opacity(0.06)
+        static let glassFillLight = Color.white.opacity(0.02)
+        static let glassStroke = Color.white.opacity(0.12)
+        static let glassHighlight = Color.white.opacity(0.25)
+        static let glassCurveHighlight = Color.white.opacity(0.08)
+        static let glassLineStart = Color.white.opacity(0.08)
+        static let glassLineEnd = Color.white.opacity(0.03)
+        static let glassShadow = Color.black.opacity(0.2)
 
         static let background = Color("Background")
         static let cardBackground = Color("CardBackground")
@@ -78,6 +87,11 @@ enum DS {
         static let minTouchTarget: CGFloat = 44
         static let timeLabelWidth: CGFloat = 40
         static let weekTimelineHeight: CGFloat = 420
+        static let hairline: CGFloat = 1
+        static let glassCapsuleWidth: CGFloat = 52
+        static let glassCapsuleHeight: CGFloat = 100
+        static let glassIconSize: CGFloat = 28
+        static let glassStemWidth: CGFloat = 2
     }
 
     // MARK: - Animation

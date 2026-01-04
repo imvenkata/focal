@@ -44,72 +44,205 @@ struct TaskPinView: View {
 // MARK: - Mini Task Pin (for week view)
 struct MiniTaskPin: View {
     let task: TaskItem
-    let size: CGFloat = 36
     var hourHeight: CGFloat = 60
-    @State private var isPressed = false
     
     var body: some View {
-        VStack(spacing: 3) {
-            // Task pill with Apple design principles
-            ZStack {
-                // Background with elevation
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(task.color.color)
-                    .frame(width: size, height: size)
-                    .shadow(color: .black.opacity(0.08), radius: 2, y: 1)
-                    .shadow(color: task.color.color.opacity(0.25), radius: 6, y: 3)
-                
-                // Icon with proper contrast
-                Text(task.icon)
-                    .scaledFont(size: 16, relativeTo: .headline)
-                    .foregroundStyle(.white)
-                    .shadow(color: .black.opacity(0.15), radius: 1, y: 0.5)
-            }
+        VStack(spacing: DS.Spacing.xs) {
+            LiquidGlassCapsuleView(
+                title: task.title,
+                time: task.startTimeFormatted,
+                icon: task.icon,
+                accentColor: task.color.color
+            )
             .opacity(task.isCompleted ? 0.6 : 1)
-            .scaleEffect(isPressed ? 0.96 : 1)
-            .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isPressed)
-            .overlay {
-                if task.isCompleted {
-                    ZStack {
-                        Circle()
-                            .fill(.ultraThinMaterial)
-                            .frame(width: 20, height: 20)
-                        
-                        Image(systemName: "checkmark")
-                            .scaledFont(size: 10, weight: .bold, relativeTo: .caption2)
-                            .foregroundStyle(.white)
-                    }
-                }
-            }
             
-            // Duration bar with refined styling
             if task.duration > 1800 { // > 0.5 hours
-                let barHeight = durationBarHeight
+                GlassStemView(height: durationStemHeight, accentColor: task.color.color)
+                    .opacity(task.isPast ? 0.35 : 0.7)
+            }
+        }
+        .accessibilityLabel("\(task.title), \(task.startTimeFormatted)")
+    }
+    
+    private var durationStemHeight: CGFloat {
+        let durationInHours = task.duration / 3600.0
+        let totalHeight = CGFloat(durationInHours) * hourHeight
+        let reservedHeight = DS.Sizes.glassCapsuleHeight + DS.Spacing.xs
+        return max(totalHeight - reservedHeight, DS.Spacing.sm)
+    }
+}
+
+// MARK: - Liquid Glass Capsule
+struct LiquidGlassCapsuleView: View {
+    let title: String
+    let time: String
+    let icon: String
+    let accentColor: Color
+    
+    var body: some View {
+        ZStack {
+            Capsule()
+                .fill(
+                    RadialGradient(
+                        gradient: Gradient(colors: [
+                            accentColor.opacity(0.2),
+                            Color.clear
+                        ]),
+                        center: .bottom,
+                        startRadius: 0,
+                        endRadius: DS.Sizes.glassCapsuleHeight
+                    )
+                )
+            
+            ZStack {
+                Capsule()
+                    .fill(.ultraThinMaterial)
+                
                 Capsule()
                     .fill(
                         LinearGradient(
-                            gradient: Gradient(colors: [
-                                task.color.color.opacity(0.7),
-                                task.color.color.opacity(0.5)
-                            ]),
-                            startPoint: .top,
-                            endPoint: .bottom
+                            colors: [
+                                DS.Colors.glassFillStrong,
+                                DS.Colors.glassFill,
+                                DS.Colors.glassFillLight
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
                         )
                     )
-                    .frame(width: 4)
-                    .frame(height: max(barHeight, 6))
-                    .shadow(color: task.color.color.opacity(0.2), radius: 1, y: 1)
+                
+                Capsule()
+                    .stroke(DS.Colors.glassStroke, lineWidth: DS.Sizes.hairline)
             }
+            .overlay(alignment: .top) {
+                topEdgeHighlight
+            }
+            .overlay(alignment: .top) {
+                innerCurveHighlight
+            }
+            .clipShape(Capsule())
+            .shadow(color: DS.Colors.glassShadow, radius: 12, y: 4)
         }
-        .accessibilityLabel("\(task.title), \(task.durationFormatted)")
+        .frame(width: DS.Sizes.glassCapsuleWidth, height: DS.Sizes.glassCapsuleHeight)
+        .overlay(content)
     }
     
-    private var durationBarHeight: CGFloat {
-        // Calculate bar height based on duration
-        // Subtract pill height + spacing to avoid overlap
-        let durationInHours = task.duration / 3600.0
-        let totalHeight = CGFloat(durationInHours) * hourHeight
-        return max(totalHeight - 42, 6) // 42 = pill + spacing
+    private var content: some View {
+        VStack(spacing: DS.Spacing.xs) {
+            GlassIconPip(icon: icon, accentColor: accentColor)
+            
+            VStack(spacing: DS.Spacing.xs) {
+                Text(time)
+                    .scaledFont(size: 9, weight: .medium, relativeTo: .caption2)
+                    .foregroundStyle(DS.Colors.textSecondary)
+                    .tracking(0.3)
+                
+                Text(title)
+                    .scaledFont(size: 10, weight: .semibold, relativeTo: .caption)
+                    .foregroundStyle(DS.Colors.textPrimary)
+                    .lineLimit(1)
+            }
+        }
+        .padding(.vertical, DS.Spacing.sm)
+        .padding(.horizontal, DS.Spacing.xs)
+    }
+    
+    private var topEdgeHighlight: some View {
+        LinearGradient(
+            colors: [
+                Color.clear,
+                DS.Colors.glassHighlight,
+                Color.clear
+            ],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+        .frame(height: DS.Sizes.hairline)
+        .padding(.horizontal, DS.Spacing.lg)
+        .padding(.top, DS.Spacing.xs)
+    }
+    
+    private var innerCurveHighlight: some View {
+        RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous)
+            .fill(
+                LinearGradient(
+                    colors: [
+                        DS.Colors.glassCurveHighlight,
+                        Color.clear
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
+            .frame(height: DS.Sizes.glassIconSize)
+            .padding(.horizontal, DS.Spacing.sm)
+            .padding(.top, DS.Spacing.xs)
+    }
+}
+
+struct GlassIconPip: View {
+    let icon: String
+    let accentColor: Color
+    
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(DS.Colors.glassFill)
+            
+            Circle()
+                .fill(
+                    RadialGradient(
+                        gradient: Gradient(colors: [
+                            accentColor.opacity(0.16),
+                            Color.clear
+                        ]),
+                        center: .bottom,
+                        startRadius: 0,
+                        endRadius: DS.Sizes.glassIconSize
+                    )
+                )
+            
+            Circle()
+                .stroke(DS.Colors.glassStroke, lineWidth: DS.Sizes.hairline)
+            
+            Text(icon)
+                .scaledFont(size: 12, weight: .medium, relativeTo: .caption)
+                .foregroundStyle(DS.Colors.textPrimary)
+        }
+        .frame(width: DS.Sizes.glassIconSize, height: DS.Sizes.glassIconSize)
+    }
+}
+
+struct GlassStemView: View {
+    let height: CGFloat
+    var accentColor: Color? = nil
+    
+    var body: some View {
+        RoundedRectangle(cornerRadius: DS.Radius.pill, style: .continuous)
+            .fill(stemGradient)
+            .frame(width: DS.Sizes.glassStemWidth, height: height)
+    }
+    
+    private var stemGradient: LinearGradient {
+        if let accentColor {
+            return LinearGradient(
+                colors: [
+                    accentColor.opacity(0.6),
+                    accentColor.opacity(0.25)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        }
+        
+        return LinearGradient(
+            colors: [
+                DS.Colors.glassLineStart,
+                DS.Colors.glassLineEnd
+            ],
+            startPoint: .top,
+            endPoint: .bottom
+        )
     }
 }
 
