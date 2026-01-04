@@ -148,9 +148,12 @@ struct DayColumn: View {
                 // Track height spans from first task to last task bottom
                 let trackHeight = max(lastTaskBottomOffset - firstTaskOffset, DS.Sizes.glassCapsuleHeight)
                 
-                GlassStemView(height: trackHeight)
-                    .offset(y: firstTaskOffset)
-                    .opacity(date.isToday ? 0.9 : 0.7)
+                GlassStemView(
+                    height: trackHeight,
+                    accentColor: date.isToday ? DS.Colors.stone400 : DS.Colors.stone300
+                )
+                .offset(y: firstTaskOffset)
+                .opacity(date.isToday ? 0.95 : 0.8)
             }
 
             // Task pins

@@ -35,14 +35,14 @@ enum DS {
         static let teal500 = Color(hex: "#14B8A6")
         static let danger = Color(hex: "#EF4444")
         static let dangerLight = Color(hex: "#FEF2F2")
-        static let glassFillStrong = Color.white.opacity(0.1)
-        static let glassFill = Color.white.opacity(0.06)
-        static let glassFillLight = Color.white.opacity(0.02)
-        static let glassStroke = Color.white.opacity(0.12)
-        static let glassHighlight = Color.white.opacity(0.25)
-        static let glassCurveHighlight = Color.white.opacity(0.08)
-        static let glassLineStart = Color.white.opacity(0.08)
-        static let glassLineEnd = Color.white.opacity(0.03)
+        static let glassFillStrong = DS.Colors.stone900.opacity(0.18)
+        static let glassFill = DS.Colors.stone900.opacity(0.12)
+        static let glassFillLight = DS.Colors.stone900.opacity(0.06)
+        static let glassStroke = DS.Colors.stone700.opacity(0.35)
+        static let glassHighlight = Color.white.opacity(0.2)
+        static let glassCurveHighlight = Color.white.opacity(0.06)
+        static let glassLineStart = DS.Colors.stone400.opacity(0.7)
+        static let glassLineEnd = DS.Colors.stone300.opacity(0.45)
         static let glassShadow = Color.black.opacity(0.2)
 
         static let background = Color("Background")
@@ -88,9 +88,9 @@ enum DS {
         static let timeLabelWidth: CGFloat = 40
         static let weekTimelineHeight: CGFloat = 420
         static let hairline: CGFloat = 1
-        static let glassCapsuleWidth: CGFloat = 52
-        static let glassCapsuleHeight: CGFloat = 100
-        static let glassIconSize: CGFloat = 28
+        static let glassCapsuleWidth: CGFloat = 46
+        static let glassCapsuleHeight: CGFloat = 88
+        static let glassIconSize: CGFloat = 24
         static let glassStemWidth: CGFloat = 2
     }
 

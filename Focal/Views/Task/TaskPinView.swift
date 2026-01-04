@@ -133,17 +133,17 @@ struct LiquidGlassCapsuleView: View {
             
             VStack(spacing: DS.Spacing.xs) {
                 Text(time)
-                    .scaledFont(size: 9, weight: .medium, relativeTo: .caption2)
+                    .scaledFont(size: 8, weight: .medium, relativeTo: .caption2)
                     .foregroundStyle(DS.Colors.textSecondary)
-                    .tracking(0.3)
+                    .tracking(0.2)
                 
                 Text(title)
-                    .scaledFont(size: 10, weight: .semibold, relativeTo: .caption)
+                    .scaledFont(size: 9, weight: .semibold, relativeTo: .caption)
                     .foregroundStyle(DS.Colors.textPrimary)
                     .lineLimit(1)
             }
         }
-        .padding(.vertical, DS.Spacing.sm)
+        .padding(.vertical, DS.Spacing.xs)
         .padding(.horizontal, DS.Spacing.xs)
     }
     
@@ -158,7 +158,7 @@ struct LiquidGlassCapsuleView: View {
             endPoint: .trailing
         )
         .frame(height: DS.Sizes.hairline)
-        .padding(.horizontal, DS.Spacing.lg)
+        .padding(.horizontal, DS.Spacing.sm)
         .padding(.top, DS.Spacing.xs)
     }
     
@@ -175,7 +175,7 @@ struct LiquidGlassCapsuleView: View {
                 )
             )
             .frame(height: DS.Sizes.glassIconSize)
-            .padding(.horizontal, DS.Spacing.sm)
+            .padding(.horizontal, DS.Spacing.xs)
             .padding(.top, DS.Spacing.xs)
     }
 }
@@ -206,7 +206,7 @@ struct GlassIconPip: View {
                 .stroke(DS.Colors.glassStroke, lineWidth: DS.Sizes.hairline)
             
             Text(icon)
-                .scaledFont(size: 12, weight: .medium, relativeTo: .caption)
+                .scaledFont(size: 11, weight: .medium, relativeTo: .caption)
                 .foregroundStyle(DS.Colors.textPrimary)
         }
         .frame(width: DS.Sizes.glassIconSize, height: DS.Sizes.glassIconSize)
