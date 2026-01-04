@@ -2,7 +2,7 @@ import SwiftUI
 
 struct WeeklyTimelineView: View {
     @Environment(TaskStore.self) private var taskStore
-    @State private var selectedTask: TaskItem?
+    var onTaskTap: (TaskItem) -> Void = { _ in }
 
     private let timelineStartHour = 6
     private let timelineEndHour = 23
@@ -47,9 +47,7 @@ struct WeeklyTimelineView: View {
                                     startHour: timelineStartHour,
                                     endHour: timelineEndHour,
                                     gridStride: gridStride,
-                                    onTaskTap: { task in
-                                        selectedTask = task
-                                    }
+                                    onTaskTap: onTaskTap
                                 )
                             }
                         }
@@ -76,10 +74,6 @@ struct WeeklyTimelineView: View {
             }
         }
         .transition(.opacity)
-        .sheet(item: $selectedTask) { task in
-            TaskDetailView(task: task)
-                .environment(taskStore)
-        }
     }
 
     private var majorHours: [Int] {
@@ -192,7 +186,7 @@ struct TaskPinPosition: View {
             MiniTaskPin(task: task, hourHeight: hourHeight)
         }
         .buttonStyle(.plain)
-        .accessibilityHint("Double tap to view task details")
+        .accessibilityHint("Double tap to view the task preview")
         .offset(y: yOffset)
     }
 

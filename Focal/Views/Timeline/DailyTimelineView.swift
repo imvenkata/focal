@@ -4,6 +4,7 @@ struct DailyTimelineView: View {
     @Environment(TaskStore.self) private var taskStore
     @State private var selectedTask: TaskItem?
     @State private var showAddTask = false
+    var onClose: (() -> Void)?
 
     private let timelineStartHour = 6
     private let timelineEndHour = 23
@@ -12,15 +13,7 @@ struct DailyTimelineView: View {
     var body: some View {
         VStack(spacing: 0) {
             // Handle bar
-            HStack {
-                Spacer()
-                RoundedRectangle(cornerRadius: 100)
-                    .fill(DS.Colors.divider)
-                    .frame(width: 40, height: 4)
-                Spacer()
-            }
-            .padding(.top, 12)
-            .padding(.bottom, 8)
+            handleBar
             
             // Stats bar
             StatsBar(
@@ -162,6 +155,33 @@ struct DailyTimelineView: View {
             return max(minimumTaskHeight, scaledHeight)
         case .gap:
             return max(minimumGapHeight, scaledHeight)
+        }
+    }
+
+    private var handleBar: some View {
+        Group {
+            if let onClose {
+                Button(action: onClose) {
+                    handleCapsule
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Close day view")
+                .accessibilityHint("Returns to the week overview")
+            } else {
+                handleCapsule
+            }
+        }
+        .padding(.top, 12)
+        .padding(.bottom, 8)
+    }
+
+    private var handleCapsule: some View {
+        HStack {
+            Spacer()
+            RoundedRectangle(cornerRadius: 100)
+                .fill(DS.Colors.divider)
+                .frame(width: 40, height: 4)
+            Spacer()
         }
     }
 
