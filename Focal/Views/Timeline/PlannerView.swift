@@ -72,7 +72,12 @@ struct PlannerView: View {
     private func handlePreview(for task: TaskItem) {
         taskStore.selectDate(task.startTime)
         withAnimation(DS.Animation.spring) {
-            previewTask = task
+            // Toggle: if tapping the same task, hide preview; otherwise show new task
+            if previewTask?.id == task.id {
+                previewTask = nil
+            } else {
+                previewTask = task
+            }
         }
     }
 

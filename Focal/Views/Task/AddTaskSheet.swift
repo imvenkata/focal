@@ -27,178 +27,186 @@ struct AddTaskSheet: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: DS.Spacing.xl) {
-                    // Live preview card
-                    TaskPreviewCard(
-                        title: title.isEmpty ? "Task name" : title,
-                        icon: selectedIcon,
-                        color: selectedColor,
-                        time: selectedTime,
-                        duration: selectedDuration
-                    )
-                    .padding(.horizontal, DS.Spacing.xl)
+            VStack(spacing: 0) {
+                ScrollView {
+                    VStack(spacing: DS.Spacing.xl) {
+                        // Live preview card
+                        TaskPreviewCard(
+                            title: title.isEmpty ? "Task name" : title,
+                            icon: selectedIcon,
+                            color: selectedColor,
+                            time: selectedTime,
+                            duration: selectedDuration
+                        )
+                        .padding(.horizontal, DS.Spacing.xl)
 
-                    // Title input
-                    VStack(alignment: .leading, spacing: DS.Spacing.sm) {
-                        Text("TASK NAME")
-                            .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                            .foregroundStyle(DS.Colors.textSecondary)
-
-                        HStack(spacing: DS.Spacing.md) {
-                            // Icon picker button
-                            Button {
-                                showIconPicker = true
-                            } label: {
-                                Text(selectedIcon)
-                                    .scaledFont(size: 24, relativeTo: .title2)
-                                    .frame(width: 44, height: 44)
-                                    .background(selectedColor.lightColor)
-                                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
-                            }
-                            .accessibilityLabel("Choose icon")
-                            .accessibilityValue(selectedIcon)
-                            .accessibilityHint("Opens icon picker")
-
-                            TextField("What do you need to do?", text: $title)
-                                .scaledFont(size: 16, relativeTo: .body)
-                                .focused($isTitleFocused)
-                                .onChange(of: title) { _, newValue in
-                                    updateIconAndColor(for: newValue)
-                                }
-                        }
-                        .padding(DS.Spacing.md)
-                        .background(DS.Colors.cardBackground)
-                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
-                    }
-                    .padding(.horizontal, DS.Spacing.xl)
-
-                    // Color picker
-                    VStack(alignment: .leading, spacing: DS.Spacing.sm) {
-                        Text("COLOR")
-                            .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                            .foregroundStyle(DS.Colors.textSecondary)
-
-                        ColorPickerRow(selectedColor: $selectedColor)
-                    }
-                    .padding(.horizontal, DS.Spacing.xl)
-
-                    // When section
-                    VStack(alignment: .leading, spacing: DS.Spacing.sm) {
-                        Text("WHEN")
-                            .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                            .foregroundStyle(DS.Colors.textSecondary)
-
-                        VStack(spacing: 0) {
-                            // Date
-                            SettingRow(
-                                icon: "📅",
-                                title: "Date",
-                                value: selectedDate.formattedDate
-                            ) {
-                                showDatePicker = true
-                            }
-
-                            Divider()
-                                .padding(.leading, 52)
-
-                            // Time
-                            SettingRow(
-                                icon: "⏰",
-                                title: "Start Time",
-                                value: selectedTime.formattedTime
-                            ) {
-                                showTimePicker = true
-                            }
-                        }
-                        .background(DS.Colors.cardBackground)
-                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
-                    }
-                    .padding(.horizontal, DS.Spacing.xl)
-
-                    // Duration
-                    VStack(alignment: .leading, spacing: DS.Spacing.sm) {
-                        Text("DURATION")
-                            .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                            .foregroundStyle(DS.Colors.textSecondary)
-
-                        DurationPickerRow(selectedDuration: $selectedDuration)
-                    }
-                    .padding(.horizontal, DS.Spacing.xl)
-
-                    // Repeat
-                    VStack(alignment: .leading, spacing: DS.Spacing.sm) {
-                        HStack {
-                            Text("REPEAT")
+                        // Title input
+                        VStack(alignment: .leading, spacing: DS.Spacing.sm) {
+                            Text("TASK NAME")
                                 .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
                                 .foregroundStyle(DS.Colors.textSecondary)
 
-                            Spacer()
+                            HStack(spacing: DS.Spacing.md) {
+                                // Icon picker button
+                                Button {
+                                    showIconPicker = true
+                                } label: {
+                                    Text(selectedIcon)
+                                        .scaledFont(size: 24, relativeTo: .title2)
+                                        .frame(width: 44, height: 44)
+                                        .background(selectedColor.lightColor)
+                                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+                                }
+                                .accessibilityLabel("Choose icon")
+                                .accessibilityValue(selectedIcon)
+                                .accessibilityHint("Opens icon picker")
 
-                            Toggle("", isOn: $isRoutine)
-                                .labelsHidden()
-                                .tint(DS.Colors.sky)
-                        }
-
-                        if isRoutine {
-                            RepeatDaysPicker(selectedDays: $selectedRepeatDays)
-                        }
-                    }
-                    .padding(.horizontal, DS.Spacing.xl)
-
-                    // Reminder
-                    VStack(alignment: .leading, spacing: DS.Spacing.sm) {
-                        Text("REMINDER")
-                            .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                            .foregroundStyle(DS.Colors.textSecondary)
-
-                        ReminderPickerRow(selectedReminder: $reminder)
-                    }
-                    .padding(.horizontal, DS.Spacing.xl)
-
-                    // Energy
-                    VStack(alignment: .leading, spacing: DS.Spacing.sm) {
-                        Text("ENERGY")
-                            .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                            .foregroundStyle(DS.Colors.textSecondary)
-
-                        SettingRow(
-                            icon: selectedEnergyIcon,
-                            title: "Energy",
-                            value: selectedEnergyLabel
-                        ) {
-                            showEnergyPicker = true
-                        }
-                        .accessibilityLabel("Energy level")
-                        .accessibilityValue(selectedEnergyLabel)
-                        .accessibilityHint("Opens energy picker")
-                    }
-                    .padding(.horizontal, DS.Spacing.xl)
-
-                    // Notes
-                    VStack(alignment: .leading, spacing: DS.Spacing.sm) {
-                        Text("NOTES")
-                            .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                            .foregroundStyle(DS.Colors.textSecondary)
-
-                        TextEditor(text: $notes)
-                            .frame(minHeight: 80)
+                                TextField("What do you need to do?", text: $title)
+                                    .scaledFont(size: 16, relativeTo: .body)
+                                    .focused($isTitleFocused)
+                                    .onChange(of: title) { _, newValue in
+                                        updateIconAndColor(for: newValue)
+                                    }
+                            }
                             .padding(DS.Spacing.md)
                             .background(DS.Colors.cardBackground)
                             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
-                            .overlay {
-                                if notes.isEmpty {
-                                    Text("Add notes...")
-                                        .foregroundStyle(DS.Colors.textSecondary)
-                                        .padding(DS.Spacing.lg)
-                                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                                        .allowsHitTesting(false)
+                        }
+                        .padding(.horizontal, DS.Spacing.xl)
+
+                        // Color picker
+                        VStack(alignment: .leading, spacing: DS.Spacing.sm) {
+                            Text("COLOR")
+                                .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
+                                .foregroundStyle(DS.Colors.textSecondary)
+
+                            ColorPickerRow(selectedColor: $selectedColor)
+                        }
+                        .padding(.horizontal, DS.Spacing.xl)
+
+                        // When section
+                        VStack(alignment: .leading, spacing: DS.Spacing.sm) {
+                            Text("WHEN")
+                                .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
+                                .foregroundStyle(DS.Colors.textSecondary)
+
+                            VStack(spacing: 0) {
+                                // Date
+                                SettingRow(
+                                    icon: "📅",
+                                    title: "Date",
+                                    value: selectedDate.formattedDate
+                                ) {
+                                    showDatePicker = true
+                                }
+
+                                Divider()
+                                    .padding(.leading, 52)
+
+                                // Time
+                                SettingRow(
+                                    icon: "⏰",
+                                    title: "Start Time",
+                                    value: selectedTime.formattedTime
+                                ) {
+                                    showTimePicker = true
                                 }
                             }
-                    }
-                    .padding(.horizontal, DS.Spacing.xl)
+                            .background(DS.Colors.cardBackground)
+                            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+                        }
+                        .padding(.horizontal, DS.Spacing.xl)
 
-                    // Create button
+                        // Duration
+                        VStack(alignment: .leading, spacing: DS.Spacing.sm) {
+                            Text("DURATION")
+                                .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
+                                .foregroundStyle(DS.Colors.textSecondary)
+
+                            DurationPickerRow(selectedDuration: $selectedDuration)
+                        }
+                        .padding(.horizontal, DS.Spacing.xl)
+
+                        // Repeat
+                        VStack(alignment: .leading, spacing: DS.Spacing.sm) {
+                            HStack {
+                                Text("REPEAT")
+                                    .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
+                                    .foregroundStyle(DS.Colors.textSecondary)
+
+                                Spacer()
+
+                                Toggle("", isOn: $isRoutine)
+                                    .labelsHidden()
+                                    .tint(DS.Colors.sky)
+                            }
+
+                            if isRoutine {
+                                RepeatDaysPicker(selectedDays: $selectedRepeatDays)
+                            }
+                        }
+                        .padding(.horizontal, DS.Spacing.xl)
+
+                        // Reminder
+                        VStack(alignment: .leading, spacing: DS.Spacing.sm) {
+                            Text("REMINDER")
+                                .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
+                                .foregroundStyle(DS.Colors.textSecondary)
+
+                            ReminderPickerRow(selectedReminder: $reminder)
+                        }
+                        .padding(.horizontal, DS.Spacing.xl)
+
+                        // Energy
+                        VStack(alignment: .leading, spacing: DS.Spacing.sm) {
+                            Text("ENERGY")
+                                .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
+                                .foregroundStyle(DS.Colors.textSecondary)
+
+                            SettingRow(
+                                icon: selectedEnergyIcon,
+                                title: "Energy",
+                                value: selectedEnergyLabel
+                            ) {
+                                showEnergyPicker = true
+                            }
+                            .accessibilityLabel("Energy level")
+                            .accessibilityValue(selectedEnergyLabel)
+                            .accessibilityHint("Opens energy picker")
+                        }
+                        .padding(.horizontal, DS.Spacing.xl)
+
+                        // Notes
+                        VStack(alignment: .leading, spacing: DS.Spacing.sm) {
+                            Text("NOTES")
+                                .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
+                                .foregroundStyle(DS.Colors.textSecondary)
+
+                            TextEditor(text: $notes)
+                                .frame(minHeight: 80)
+                                .padding(DS.Spacing.md)
+                                .background(DS.Colors.cardBackground)
+                                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+                                .overlay {
+                                    if notes.isEmpty {
+                                        Text("Add notes...")
+                                            .foregroundStyle(DS.Colors.textSecondary)
+                                            .padding(DS.Spacing.lg)
+                                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                                            .allowsHitTesting(false)
+                                    }
+                                }
+                        }
+                        .padding(.horizontal, DS.Spacing.xl)
+                        .padding(.bottom, DS.Spacing.md)
+                    }
+                    .padding(.top, DS.Spacing.lg)
+                }
+
+                // Create button - Pinned to bottom, always visible
+                VStack(spacing: 0) {
+                    Divider()
+
                     Button {
                         createTask()
                     } label: {
@@ -212,9 +220,9 @@ struct AddTaskSheet: View {
                     }
                     .disabled(title.isEmpty)
                     .padding(.horizontal, DS.Spacing.xl)
-                    .padding(.bottom, DS.Spacing.xxl)
+                    .padding(.vertical, DS.Spacing.lg)
+                    .background(DS.Colors.background)
                 }
-                .padding(.top, DS.Spacing.lg)
             }
             .background(DS.Colors.background)
             .navigationTitle("New Task")
