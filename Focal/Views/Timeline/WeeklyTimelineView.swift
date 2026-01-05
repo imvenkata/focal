@@ -350,29 +350,15 @@ struct DraggedCapsuleOverlay: View {
 
     var body: some View {
         GeometryReader { geo in
-            ZStack {
-                MiniTaskPin(task: task, hourHeight: hourHeight)
-                    .scaleEffect(1.2)
-                    .rotationEffect(.degrees(sin(Date().timeIntervalSinceReferenceDate * 25) * 2.5))
-                    .shadow(color: task.color.color.opacity(0.6), radius: 24, y: 12)
-                    .shadow(color: Color.black.opacity(0.2), radius: 16, y: 8)
-
-                // Time badge overlay
-                VStack {
-                    Spacer()
-                    Text(dragState.formattedTargetTime)
-                        .scaledFont(size: 12, weight: .bold, design: .monospaced, relativeTo: .caption)
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, DS.Spacing.sm)
-                        .padding(.vertical, 4)
-                        .background(
-                            Capsule()
-                                .fill(DS.Colors.sage)
-                                .shadow(color: DS.Colors.sage.opacity(0.4), radius: 6, y: 3)
-                        )
-                        .offset(y: 45)
-                }
-            }
+            MiniTaskPin(
+                task: task,
+                hourHeight: hourHeight,
+                overrideTime: dragState.formattedTargetTime
+            )
+            .scaleEffect(1.2)
+            .rotationEffect(.degrees(sin(Date().timeIntervalSinceReferenceDate * 25) * 2.5))
+            .shadow(color: task.color.color.opacity(0.6), radius: 24, y: 12)
+            .shadow(color: Color.black.opacity(0.2), radius: 16, y: 8)
             .position(
                 x: dragState.dragLocation.x - geo.frame(in: .global).minX,
                 y: dragState.dragLocation.y - geo.frame(in: .global).minY

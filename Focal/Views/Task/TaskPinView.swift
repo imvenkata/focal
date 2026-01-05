@@ -64,12 +64,13 @@ struct TaskPinView: View {
 struct MiniTaskPin: View {
     let task: TaskItem
     var hourHeight: CGFloat = 60
-    
+    var overrideTime: String? = nil
+
     var body: some View {
         VStack(spacing: DS.Spacing.xs) {
             LiquidGlassCapsuleView(
                 title: task.title,
-                time: task.startTimeFormatted,
+                time: overrideTime ?? task.startTimeFormatted,
                 icon: task.icon,
                 accentColor: task.color.color,
                 sizeScale: capsuleScale
