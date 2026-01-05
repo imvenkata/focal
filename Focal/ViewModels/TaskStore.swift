@@ -46,7 +46,8 @@ final class TaskStore {
             var dayTasks = tasks.filter { $0.startTime.isSameDay(as: date) }
 
             // Add day markers (Rise & Shine at 6 AM, Wind Down at 10 PM)
-            dayTasks.append(contentsOf: dayMarkers(for: date))
+            // TODO: Re-enable when user selects routines feature
+            // dayTasks.append(contentsOf: dayMarkers(for: date))
 
             return dayTasks.sorted { $0.startTime < $1.startTime }
         }
