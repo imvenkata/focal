@@ -9,7 +9,7 @@ final class TaskItem {
     var colorName: String
     var startTime: Date
     var duration: TimeInterval
-    var isRoutine: Bool
+    var recurrenceOption: String?
     var repeatDays: [Int]
     var reminderOption: String?
     var energyLevel: Int
@@ -26,7 +26,7 @@ final class TaskItem {
         colorName: String = "sage",
         startTime: Date = Date(),
         duration: TimeInterval = 3600,
-        isRoutine: Bool = false,
+        recurrenceOption: String? = nil,
         repeatDays: [Int] = [],
         reminderOption: String? = nil,
         energyLevel: Int = 2,
@@ -38,7 +38,7 @@ final class TaskItem {
         self.colorName = colorName
         self.startTime = startTime
         self.duration = duration
-        self.isRoutine = isRoutine
+        self.recurrenceOption = recurrenceOption
         self.repeatDays = repeatDays
         self.reminderOption = reminderOption
         self.energyLevel = energyLevel
@@ -115,6 +115,20 @@ final class TaskItem {
         }
     }
 
+    var recurrenceFormatted: String {
+        guard let option = recurrenceOption, option != "None" else { return "" }
+
+        if option == "Custom", !repeatDays.isEmpty {
+            if repeatDays.count == 7 { return "Every day" }
+            if repeatDays.sorted() == [1, 2, 3, 4, 5] { return "Weekdays" }
+            if repeatDays.sorted() == [0, 6] { return "Weekends" }
+            let days = repeatDays.sorted().compactMap { Weekday(rawValue: $0)?.shortName }
+            return days.joined(separator: " ")
+        }
+
+        return option
+    }
+
     // MARK: - Methods
 
     func toggleCompletion() {
@@ -163,6 +177,19 @@ enum ReminderOption: String, CaseIterable, Identifiable {
         case .oneHour: return 60 * 60
         }
     }
+}
+
+// MARK: - Recurrence Option
+enum RecurrenceOption: String, CaseIterable, Identifiable {
+    case none = "None"
+    case daily = "Daily"
+    case weekly = "Weekly"
+    case biweekly = "Biweekly"
+    case monthly = "Monthly"
+    case yearly = "Yearly"
+    case custom = "Custom"
+
+    var id: String { rawValue }
 }
 
 // MARK: - Duration Presets

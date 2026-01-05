@@ -7,20 +7,10 @@ struct TimePickerSheet: View {
 
     @State private var selectedHour: Int
     @State private var selectedMinute: Int
-    @State private var selectedDuration: TimeInterval
+    @State private var selectedDurationMinutes: Int
 
     private let hours = Array(0...23)
     private let minutes = Array(stride(from: 0, to: 60, by: 5))
-    private let durations: [(label: String, value: TimeInterval)] = [
-        ("15 min", 15 * 60),
-        ("30 min", 30 * 60),
-        ("45 min", 45 * 60),
-        ("1 hour", 60 * 60),
-        ("1.5 hours", 90 * 60),
-        ("2 hours", 120 * 60),
-        ("3 hours", 180 * 60),
-        ("4 hours", 240 * 60)
-    ]
 
     init(selectedTime: Binding<Date>, duration: Binding<TimeInterval>) {
         self._selectedTime = selectedTime
@@ -30,8 +20,26 @@ struct TimePickerSheet: View {
         let components = calendar.dateComponents([.hour, .minute], from: selectedTime.wrappedValue)
         self._selectedHour = State(initialValue: components.hour ?? 9)
         self._selectedMinute = State(initialValue: (components.minute ?? 0 / 5) * 5)
-        self._selectedDuration = State(initialValue: duration.wrappedValue)
+
+        // Find nearest duration or default to 1 hour
+        let durationMinutes = Int(duration.wrappedValue / 60)
+        let nearestDuration = Self.durations.min(by: { abs($0.minutes - durationMinutes) < abs($1.minutes - durationMinutes) })?.minutes ?? 60
+        self._selectedDurationMinutes = State(initialValue: nearestDuration)
     }
+
+    private static let durations: [(label: String, minutes: Int)] = [
+        ("15m", 15),
+        ("30m", 30),
+        ("45m", 45),
+        ("1h", 60),
+        ("1.5h", 90),
+        ("2h", 120),
+        ("2.5h", 150),
+        ("3h", 180),
+        ("4h", 240),
+        ("5h", 300),
+        ("6h", 360)
+    ]
 
     var body: some View {
         VStack(spacing: 0) {
@@ -67,13 +75,8 @@ struct TimePickerSheet: View {
 
             ScrollView {
                 VStack(spacing: DS.Spacing.xl) {
-                    // Premium time wheels
+                    // Premium time & duration wheels
                     VStack(spacing: DS.Spacing.md) {
-                        Text("TIME")
-                            .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                            .foregroundStyle(DS.Colors.textSecondary)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-
                         HStack(spacing: DS.Spacing.md) {
                             // Hour wheel
                             PremiumWheelPicker(
@@ -92,42 +95,21 @@ struct TimePickerSheet: View {
                             PremiumWheelPicker(
                                 selection: $selectedMinute,
                                 items: minutes,
-                                label: "Minute",
+                                label: "Min",
                                 formatter: { String(format: "%02d", $0) }
+                            )
+
+                            // Duration wheel
+                            PremiumDurationPicker(
+                                selectedMinutes: $selectedDurationMinutes,
+                                durations: Self.durations
                             )
                         }
                     }
-                    .padding(.horizontal, DS.Spacing.xl)
-
-                    // Duration selector
-                    VStack(spacing: DS.Spacing.md) {
-                        Text("DURATION")
-                            .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                            .foregroundStyle(DS.Colors.textSecondary)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-
-                        LazyVGrid(columns: [
-                            GridItem(.flexible()),
-                            GridItem(.flexible()),
-                            GridItem(.flexible())
-                        ], spacing: DS.Spacing.sm) {
-                            ForEach(durations, id: \.value) { duration in
-                                DurationChip(
-                                    label: duration.label,
-                                    isSelected: selectedDuration == duration.value
-                                ) {
-                                    HapticManager.shared.selection()
-                                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                        selectedDuration = duration.value
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    .padding(.horizontal, DS.Spacing.xl)
+                    .padding(.horizontal, DS.Spacing.lg)
                     .padding(.bottom, DS.Spacing.xxl)
                 }
-                .padding(.top, DS.Spacing.sm)
+                .padding(.top, DS.Spacing.lg)
             }
         }
         .background(DS.Colors.background)
@@ -145,7 +127,7 @@ struct TimePickerSheet: View {
         if let newTime = calendar.date(from: components) {
             selectedTime = newTime
         }
-        duration = selectedDuration
+        duration = TimeInterval(selectedDurationMinutes * 60)
     }
 }
 
@@ -240,27 +222,171 @@ struct PremiumWheelPicker: View {
         VStack(spacing: DS.Spacing.xs) {
             Text(label.uppercased())
                 .scaledFont(size: 10, weight: .semibold, relativeTo: .caption2)
-                .foregroundStyle(DS.Colors.textSecondary)
+                .foregroundStyle(DS.Colors.sky.opacity(0.8))
 
-            Picker(label, selection: $selection) {
-                ForEach(items, id: \.self) { item in
-                    Text(formatter(item))
-                        .scaledFont(size: 24, weight: .semibold, design: .rounded, relativeTo: .title)
-                        .tag(item)
+            ZStack {
+                // Premium gradient background
+                RoundedRectangle(cornerRadius: DS.Radius.xl)
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                DS.Colors.cardBackground,
+                                DS.Colors.stone50
+                            ],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+
+                // Picker
+                Picker(label, selection: $selection) {
+                    ForEach(items, id: \.self) { item in
+                        Text(formatter(item))
+                            .scaledFont(size: 32, weight: .bold, design: .rounded, relativeTo: .largeTitle)
+                            .foregroundStyle(
+                                item == selection ?
+                                LinearGradient(
+                                    colors: [DS.Colors.sky, DS.Colors.sky.opacity(0.8)],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                ) :
+                                LinearGradient(
+                                    colors: [DS.Colors.stone400, DS.Colors.stone400],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            )
+                            .tag(item)
+                    }
                 }
+                .pickerStyle(.wheel)
+                .frame(height: 140)
+
+                // Center highlight overlay
+                VStack {
+                    Spacer()
+                    RoundedRectangle(cornerRadius: DS.Radius.md)
+                        .fill(DS.Colors.sky.opacity(0.06))
+                        .frame(height: 44)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: DS.Radius.md)
+                                .stroke(
+                                    LinearGradient(
+                                        colors: [DS.Colors.sky.opacity(0.3), DS.Colors.sky.opacity(0.1)],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    ),
+                                    lineWidth: 1.5
+                                )
+                        )
+                    Spacer()
+                }
+                .allowsHitTesting(false)
             }
-            .pickerStyle(.wheel)
-            .frame(height: 120)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
-            .background(
-                RoundedRectangle(cornerRadius: DS.Radius.lg)
-                    .fill(DS.Colors.cardBackground)
-            )
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xl))
             .overlay(
-                RoundedRectangle(cornerRadius: DS.Radius.lg)
-                    .stroke(DS.Colors.stone200.opacity(0.5), lineWidth: 1)
+                RoundedRectangle(cornerRadius: DS.Radius.xl)
+                    .stroke(
+                        LinearGradient(
+                            colors: [DS.Colors.stone200.opacity(0.6), DS.Colors.stone100.opacity(0.3)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 1
+                    )
             )
+            .shadow(color: Color.black.opacity(0.04), radius: 8, y: 2)
             .onChange(of: selection) { _, _ in
+                HapticManager.shared.selection()
+            }
+        }
+    }
+}
+
+// MARK: - Premium Duration Picker
+struct PremiumDurationPicker: View {
+    @Binding var selectedMinutes: Int
+    let durations: [(label: String, minutes: Int)]
+
+    var body: some View {
+        VStack(spacing: DS.Spacing.xs) {
+            Text("DURATION")
+                .scaledFont(size: 10, weight: .semibold, relativeTo: .caption2)
+                .foregroundStyle(DS.Colors.emerald500.opacity(0.9))
+
+            ZStack {
+                // Premium gradient background
+                RoundedRectangle(cornerRadius: DS.Radius.xl)
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                DS.Colors.emerald500.opacity(0.06),
+                                DS.Colors.emerald500.opacity(0.03)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+
+                // Picker
+                Picker("Duration", selection: $selectedMinutes) {
+                    ForEach(durations, id: \.minutes) { duration in
+                        Text(duration.label)
+                            .scaledFont(size: 24, weight: .bold, design: .rounded, relativeTo: .title)
+                            .foregroundStyle(
+                                duration.minutes == selectedMinutes ?
+                                LinearGradient(
+                                    colors: [DS.Colors.emerald500, DS.Colors.emerald500.opacity(0.8)],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                ) :
+                                LinearGradient(
+                                    colors: [DS.Colors.stone400, DS.Colors.stone400],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            )
+                            .tag(duration.minutes)
+                    }
+                }
+                .pickerStyle(.wheel)
+                .frame(height: 140)
+
+                // Center highlight overlay
+                VStack {
+                    Spacer()
+                    RoundedRectangle(cornerRadius: DS.Radius.md)
+                        .fill(DS.Colors.emerald500.opacity(0.08))
+                        .frame(height: 44)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: DS.Radius.md)
+                                .stroke(
+                                    LinearGradient(
+                                        colors: [DS.Colors.emerald500.opacity(0.4), DS.Colors.emerald500.opacity(0.2)],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    ),
+                                    lineWidth: 1.5
+                                )
+                        )
+                    Spacer()
+                }
+                .allowsHitTesting(false)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xl))
+            .overlay(
+                RoundedRectangle(cornerRadius: DS.Radius.xl)
+                    .stroke(
+                        LinearGradient(
+                            colors: [DS.Colors.emerald500.opacity(0.3), DS.Colors.emerald500.opacity(0.1)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 1
+                    )
+            )
+            .shadow(color: DS.Colors.emerald500.opacity(0.08), radius: 8, y: 2)
+            .onChange(of: selectedMinutes) { _, _ in
                 HapticManager.shared.selection()
             }
         }

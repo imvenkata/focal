@@ -36,6 +36,7 @@
 		A10000001000000000000023 /* AddTaskSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000023 /* AddTaskSheet.swift */; };
 		A10000001000000000000024 /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000024 /* TaskDetailView.swift */; };
 		A10000001000000000000025 /* DatePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000025 /* DatePickerSheet.swift */; };
+		F9E8D7C6B5A432109876 /* WhenPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F678901234 /* WhenPickerSheet.swift */; };
 		A10000001000000000000026 /* TimePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000026 /* TimePickerSheet.swift */; };
 		A10000001000000000000027 /* EnergyPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000027 /* EnergyPickerSheet.swift */; };
 		A10000001000000000000029 /* EmptyIntervalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000029 /* EmptyIntervalView.swift */; };
@@ -74,6 +75,7 @@
 		A20000001000000000000023 /* AddTaskSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskSheet.swift; sourceTree = "<group>"; };
 		A20000001000000000000024 /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
 		A20000001000000000000025 /* DatePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerSheet.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F678901234 /* WhenPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhenPickerSheet.swift; sourceTree = "<group>"; };
 		A20000001000000000000026 /* TimePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerSheet.swift; sourceTree = "<group>"; };
 		A20000001000000000000027 /* EnergyPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyPickerSheet.swift; sourceTree = "<group>"; };
 		A20000001000000000000029 /* EmptyIntervalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyIntervalView.swift; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				A20000001000000000000025 /* DatePickerSheet.swift */,
+				A1B2C3D4E5F678901234 /* WhenPickerSheet.swift */,
 				A20000001000000000000026 /* TimePickerSheet.swift */,
 				A20000001000000000000027 /* EnergyPickerSheet.swift */,
 				A20000001000000000000030 /* IconPickerView.swift */,
@@ -336,6 +339,7 @@
 				A10000001000000000000023 /* AddTaskSheet.swift in Sources */,
 				A10000001000000000000024 /* TaskDetailView.swift in Sources */,
 				A10000001000000000000025 /* DatePickerSheet.swift in Sources */,
+				F9E8D7C6B5A432109876 /* WhenPickerSheet.swift in Sources */,
 				A10000001000000000000026 /* TimePickerSheet.swift in Sources */,
 				A10000001000000000000027 /* EnergyPickerSheet.swift in Sources */,
 				A10000001000000000000030 /* IconPickerView.swift in Sources */,

@@ -64,7 +64,7 @@ final class TaskStore {
             colorName: "amber",
             startTime: calendar.date(bySettingHour: 6, minute: 0, second: 0, of: date)!,
             duration: 15 * 60,
-            isRoutine: true,
+            recurrenceOption: "Daily",
             energyLevel: 1
         )
 
@@ -74,7 +74,7 @@ final class TaskStore {
             colorName: "lavender",
             startTime: calendar.date(bySettingHour: 22, minute: 0, second: 0, of: date)!,
             duration: 15 * 60,
-            isRoutine: true,
+            recurrenceOption: "Daily",
             energyLevel: 0
         )
 

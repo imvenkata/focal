@@ -289,7 +289,7 @@ struct TaskPinPosition: View {
     }
 
     private var isRoutineMarker: Bool {
-        task.isRoutine
+        task.recurrenceOption != nil && task.recurrenceOption != "None"
     }
 
     var body: some View {

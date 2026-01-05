@@ -12,14 +12,13 @@ struct AddTaskSheet: View {
     @State private var selectedDate = Date()
     @State private var selectedTime = Date()
     @State private var selectedDuration: TimeInterval = 3600
-    @State private var isRoutine = false
-    @State private var selectedRepeatDays: Set<Int> = []
+    @State private var recurrence: RecurrenceOption = .none
+    @State private var selectedRecurrenceDays: Set<Int> = []
     @State private var reminder: ReminderOption = .none
     @State private var energyLevel = 2
     @State private var notes = ""
 
-    @State private var showDatePicker = false
-    @State private var showTimePicker = false
+    @State private var showWhenPicker = false
     @State private var showIconPicker = false
     @State private var showEnergyPicker = false
     @State private var showFullColorPicker = false
@@ -82,79 +81,34 @@ struct AddTaskSheet: View {
                                 .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
                                 .foregroundStyle(DS.Colors.textSecondary)
 
-                            HStack(spacing: DS.Spacing.sm) {
-                                // Date
-                                Button {
-                                    showDatePicker = true
-                                } label: {
-                                    HStack(spacing: DS.Spacing.sm) {
-                                        Text("📅")
-                                            .scaledFont(size: 16, relativeTo: .body)
+                            Button {
+                                showWhenPicker = true
+                            } label: {
+                                HStack(spacing: DS.Spacing.sm) {
+                                    Text("📅")
+                                        .scaledFont(size: 16, relativeTo: .body)
 
-                                        VStack(alignment: .leading, spacing: 2) {
-                                            Text("Date")
-                                                .scaledFont(size: 11, weight: .medium, relativeTo: .caption2)
-                                                .foregroundStyle(DS.Colors.textSecondary)
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text("When?")
+                                            .scaledFont(size: 11, weight: .medium, relativeTo: .caption2)
+                                            .foregroundStyle(DS.Colors.textSecondary)
 
-                                            Text(selectedDate.formattedDate)
-                                                .scaledFont(size: 14, weight: .medium, relativeTo: .callout)
-                                                .foregroundStyle(DS.Colors.textPrimary)
-                                        }
-
-                                        Spacer()
+                                        Text(whenSummary)
+                                            .scaledFont(size: 14, weight: .medium, relativeTo: .callout)
+                                            .foregroundStyle(DS.Colors.textPrimary)
                                     }
-                                    .padding(DS.Spacing.md)
-                                    .background(DS.Colors.cardBackground)
-                                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+
+                                    Spacer()
+
+                                    Image(systemName: "chevron.right")
+                                        .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
+                                        .foregroundStyle(DS.Colors.textSecondary)
                                 }
-                                .buttonStyle(.plain)
-
-                                // Time
-                                Button {
-                                    showTimePicker = true
-                                } label: {
-                                    HStack(spacing: DS.Spacing.sm) {
-                                        Text("⏰")
-                                            .scaledFont(size: 16, relativeTo: .body)
-
-                                        VStack(alignment: .leading, spacing: 2) {
-                                            Text("Time")
-                                                .scaledFont(size: 11, weight: .medium, relativeTo: .caption2)
-                                                .foregroundStyle(DS.Colors.textSecondary)
-
-                                            Text(selectedTime.formattedTime)
-                                                .scaledFont(size: 14, weight: .medium, relativeTo: .callout)
-                                                .foregroundStyle(DS.Colors.textPrimary)
-                                        }
-
-                                        Spacer()
-                                    }
-                                    .padding(DS.Spacing.md)
-                                    .background(DS.Colors.cardBackground)
-                                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
-                                }
-                                .buttonStyle(.plain)
+                                .padding(DS.Spacing.md)
+                                .background(DS.Colors.cardBackground)
+                                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
                             }
-                        }
-                        .padding(.horizontal, DS.Spacing.xl)
-
-                        // Repeat
-                        VStack(alignment: .leading, spacing: DS.Spacing.sm) {
-                            HStack {
-                                Text("REPEAT")
-                                    .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                                    .foregroundStyle(DS.Colors.textSecondary)
-
-                                Spacer()
-
-                                Toggle("", isOn: $isRoutine)
-                                    .labelsHidden()
-                                    .tint(DS.Colors.sky)
-                            }
-
-                            if isRoutine {
-                                RepeatDaysPicker(selectedDays: $selectedRepeatDays)
-                            }
+                            .buttonStyle(.plain)
                         }
                         .padding(.horizontal, DS.Spacing.xl)
 
@@ -244,11 +198,14 @@ struct AddTaskSheet: View {
                 showIconPicker = false
             }
         }
-        .sheet(isPresented: $showDatePicker) {
-            DatePickerSheet(selectedDate: $selectedDate)
-        }
-        .sheet(isPresented: $showTimePicker) {
-            TimePickerSheet(selectedTime: $selectedTime, duration: $selectedDuration)
+        .sheet(isPresented: $showWhenPicker) {
+            WhenPickerSheet(
+                selectedDate: $selectedDate,
+                selectedTime: $selectedTime,
+                selectedDuration: $selectedDuration,
+                recurrence: $recurrence,
+                selectedRecurrenceDays: $selectedRecurrenceDays
+            )
         }
         .sheet(isPresented: $showEnergyPicker) {
             EnergyPickerSheet(selectedLevel: $energyLevel)
@@ -274,6 +231,27 @@ struct AddTaskSheet: View {
 
     private var selectedEnergyIcon: String {
         selectedEnergy.icon
+    }
+
+    private var whenSummary: String {
+        let dateText = selectedDate.formattedDate // "Today" | "Tomorrow" | "Mon, 5 Jan"
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "h:mm a"
+        let timeText = timeFormatter.string(from: selectedTime)
+
+        let hours = Int(selectedDuration) / 3600
+        let minutes = Int(selectedDuration) % 3600 / 60
+        var durationText = ""
+        if hours > 0 && minutes > 0 {
+            durationText = "\(hours)h \(minutes)m"
+        } else if hours > 0 {
+            durationText = "\(hours)h"
+        } else {
+            durationText = "\(minutes)m"
+        }
+
+        let recurrenceText = recurrence == .none ? "" : " · \(recurrence.rawValue)"
+        return "\(dateText), \(timeText) · \(durationText)\(recurrenceText)"
     }
 
     private func updateIconAndColor(for title: String) {
@@ -302,8 +280,8 @@ struct AddTaskSheet: View {
             colorName: selectedColor.rawValue,
             startTime: startTime,
             duration: selectedDuration,
-            isRoutine: isRoutine,
-            repeatDays: Array(selectedRepeatDays),
+            recurrenceOption: recurrence == .none ? nil : recurrence.rawValue,
+            repeatDays: recurrence == .custom ? Array(selectedRecurrenceDays) : [],
             reminderOption: reminder == .none ? nil : reminder.rawValue,
             energyLevel: energyLevel,
             notes: notes.isEmpty ? nil : notes
