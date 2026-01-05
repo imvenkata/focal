@@ -30,48 +30,19 @@ struct AddTaskSheet: View {
             VStack(spacing: 0) {
                 ScrollView {
                     VStack(spacing: DS.Spacing.xl) {
-                        // Live preview card
-                        TaskPreviewCard(
-                            title: title.isEmpty ? "Task name" : title,
+                        // Editable preview card
+                        EditableTaskPreviewCard(
+                            title: $title,
                             icon: selectedIcon,
                             color: selectedColor,
                             time: selectedTime,
-                            duration: selectedDuration
-                        )
-                        .padding(.horizontal, DS.Spacing.xl)
-
-                        // Title input
-                        VStack(alignment: .leading, spacing: DS.Spacing.sm) {
-                            Text("TASK NAME")
-                                .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                                .foregroundStyle(DS.Colors.textSecondary)
-
-                            HStack(spacing: DS.Spacing.md) {
-                                // Icon picker button
-                                Button {
-                                    showIconPicker = true
-                                } label: {
-                                    Text(selectedIcon)
-                                        .scaledFont(size: 24, relativeTo: .title2)
-                                        .frame(width: 44, height: 44)
-                                        .background(selectedColor.lightColor)
-                                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
-                                }
-                                .accessibilityLabel("Choose icon")
-                                .accessibilityValue(selectedIcon)
-                                .accessibilityHint("Opens icon picker")
-
-                                TextField("What do you need to do?", text: $title)
-                                    .scaledFont(size: 16, relativeTo: .body)
-                                    .focused($isTitleFocused)
-                                    .onChange(of: title) { _, newValue in
-                                        updateIconAndColor(for: newValue)
-                                    }
+                            duration: selectedDuration,
+                            isTitleFocused: $isTitleFocused,
+                            onIconPickerTap: { showIconPicker = true },
+                            onTitleChange: { newValue in
+                                updateIconAndColor(for: newValue)
                             }
-                            .padding(DS.Spacing.md)
-                            .background(DS.Colors.cardBackground)
-                            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
-                        }
+                        )
                         .padding(.horizontal, DS.Spacing.xl)
 
                         // Color picker
@@ -90,30 +61,59 @@ struct AddTaskSheet: View {
                                 .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
                                 .foregroundStyle(DS.Colors.textSecondary)
 
-                            VStack(spacing: 0) {
+                            HStack(spacing: DS.Spacing.sm) {
                                 // Date
-                                SettingRow(
-                                    icon: "📅",
-                                    title: "Date",
-                                    value: selectedDate.formattedDate
-                                ) {
+                                Button {
                                     showDatePicker = true
-                                }
+                                } label: {
+                                    HStack(spacing: DS.Spacing.sm) {
+                                        Text("📅")
+                                            .scaledFont(size: 16, relativeTo: .body)
 
-                                Divider()
-                                    .padding(.leading, 52)
+                                        VStack(alignment: .leading, spacing: 2) {
+                                            Text("Date")
+                                                .scaledFont(size: 11, weight: .medium, relativeTo: .caption2)
+                                                .foregroundStyle(DS.Colors.textSecondary)
+
+                                            Text(selectedDate.formattedDate)
+                                                .scaledFont(size: 14, weight: .medium, relativeTo: .callout)
+                                                .foregroundStyle(DS.Colors.textPrimary)
+                                        }
+
+                                        Spacer()
+                                    }
+                                    .padding(DS.Spacing.md)
+                                    .background(DS.Colors.cardBackground)
+                                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+                                }
+                                .buttonStyle(.plain)
 
                                 // Time
-                                SettingRow(
-                                    icon: "⏰",
-                                    title: "Start Time",
-                                    value: selectedTime.formattedTime
-                                ) {
+                                Button {
                                     showTimePicker = true
+                                } label: {
+                                    HStack(spacing: DS.Spacing.sm) {
+                                        Text("⏰")
+                                            .scaledFont(size: 16, relativeTo: .body)
+
+                                        VStack(alignment: .leading, spacing: 2) {
+                                            Text("Time")
+                                                .scaledFont(size: 11, weight: .medium, relativeTo: .caption2)
+                                                .foregroundStyle(DS.Colors.textSecondary)
+
+                                            Text(selectedTime.formattedTime)
+                                                .scaledFont(size: 14, weight: .medium, relativeTo: .callout)
+                                                .foregroundStyle(DS.Colors.textPrimary)
+                                        }
+
+                                        Spacer()
+                                    }
+                                    .padding(DS.Spacing.md)
+                                    .background(DS.Colors.cardBackground)
+                                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
                                 }
+                                .buttonStyle(.plain)
                             }
-                            .background(DS.Colors.cardBackground)
-                            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
                         }
                         .padding(.horizontal, DS.Spacing.xl)
 
@@ -307,6 +307,82 @@ struct AddTaskSheet: View {
         taskStore.addTask(task)
         HapticManager.shared.notification(.success)
         dismiss()
+    }
+}
+
+// MARK: - Editable Task Preview Card
+struct EditableTaskPreviewCard: View {
+    @Binding var title: String
+    let icon: String
+    let color: TaskColor
+    let time: Date
+    let duration: TimeInterval
+    var isTitleFocused: FocusState<Bool>.Binding
+    let onIconPickerTap: () -> Void
+    let onTitleChange: (String) -> Void
+
+    var body: some View {
+        HStack(spacing: DS.Spacing.md) {
+            // Icon picker button
+            Button {
+                onIconPickerTap()
+            } label: {
+                ZStack {
+                    RoundedRectangle(cornerRadius: DS.Radius.md)
+                        .fill(color.color)
+
+                    RoundedRectangle(cornerRadius: DS.Radius.md)
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    Color.white.opacity(0.25),
+                                    Color.clear,
+                                    Color.black.opacity(0.15)
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        )
+
+                    RoundedRectangle(cornerRadius: DS.Radius.md)
+                        .stroke(color.color.saturated(by: 1.2), lineWidth: 1.5)
+
+                    Text(icon)
+                        .scaledFont(size: 20, relativeTo: .title3)
+                }
+                .frame(width: 40, height: 40)
+                .shadow(color: color.color.opacity(0.4), radius: 6, y: 3)
+                .shadow(color: Color.black.opacity(0.1), radius: 3, y: 2)
+            }
+            .accessibilityLabel("Choose icon")
+            .accessibilityValue(icon)
+            .accessibilityHint("Opens icon picker")
+
+            VStack(alignment: .leading, spacing: DS.Spacing.xs) {
+                // Editable title
+                TextField("Task name", text: $title)
+                    .scaledFont(size: 16, weight: .semibold, relativeTo: .body)
+                    .foregroundStyle(DS.Colors.textPrimary)
+                    .focused(isTitleFocused)
+                    .onChange(of: title) { _, newValue in
+                        onTitleChange(newValue)
+                    }
+
+                HStack(spacing: DS.Spacing.xs) {
+                    Text("✨")
+                        .scaledFont(size: 12, relativeTo: .caption)
+
+                    Text("\(time.formattedTime) · \(duration.formattedDuration)")
+                        .scaledFont(size: 12, relativeTo: .caption)
+                        .foregroundStyle(DS.Colors.textSecondary)
+                }
+            }
+
+            Spacer()
+        }
+        .padding(DS.Spacing.lg)
+        .background(color.lightColor)
+        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
     }
 }
 
