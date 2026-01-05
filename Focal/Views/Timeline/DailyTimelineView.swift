@@ -62,8 +62,8 @@ struct DailyTimelineView: View {
                 .padding(.bottom, 120) // Space for bottom nav
                 .overlay(alignment: .leading) {
                     TimelineGuideLine()
-                        .stroke(DS.Colors.stone200, style: StrokeStyle(lineWidth: 2, dash: [4, 4]))
-                        .frame(width: 2)
+                        .stroke(DS.Colors.stone200.opacity(0.15), style: StrokeStyle(lineWidth: 1.5, dash: [4, 4]))
+                        .frame(width: 1.5)
                         .frame(maxHeight: .infinity)
                         .padding(.leading, DS.Sizes.timeLabelWidth + DS.Spacing.xs)
                         .allowsHitTesting(false)

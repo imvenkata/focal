@@ -145,6 +145,42 @@ struct DayColumn: View {
 
     var body: some View {
         ZStack(alignment: .top) {
+            // Present day center vertical glow - Premium iPhone style
+            if date.isToday {
+                GeometryReader { geo in
+                    ZStack {
+                        // Outer glow
+                        RoundedRectangle(cornerRadius: DS.Radius.pill, style: .continuous)
+                            .fill(DS.Colors.coral.opacity(0.15))
+                            .frame(width: 8)
+                            .blur(radius: 8)
+
+                        // Inner glow
+                        RoundedRectangle(cornerRadius: DS.Radius.pill, style: .continuous)
+                            .fill(DS.Colors.coral.opacity(0.25))
+                            .frame(width: 3)
+                            .blur(radius: 3)
+
+                        // Core line
+                        RoundedRectangle(cornerRadius: DS.Radius.pill, style: .continuous)
+                            .fill(
+                                LinearGradient(
+                                    colors: [
+                                        DS.Colors.coral.opacity(0.4),
+                                        DS.Colors.coral.opacity(0.3),
+                                        DS.Colors.coral.opacity(0.2)
+                                    ],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            )
+                            .frame(width: 1.5)
+                    }
+                    .frame(maxHeight: .infinity)
+                    .position(x: geo.size.width / 2, y: geo.size.height / 2)
+                }
+            }
+
             // Drop target highlight background
             if isDropTarget {
                 RoundedRectangle(cornerRadius: DS.Radius.md)
@@ -159,7 +195,7 @@ struct DayColumn: View {
             // Grid lines
             ForEach(gridHours, id: \.self) { hour in
                 Rectangle()
-                    .fill(DS.Colors.stone200)
+                    .fill(DS.Colors.stone200.opacity(0.12))
                     .frame(height: 1)
                     .frame(maxWidth: .infinity)
                     .offset(y: CGFloat(hour - startHour) * hourHeight)
@@ -188,10 +224,9 @@ struct DayColumn: View {
 
                 GlassStemView(
                     height: trackHeight,
-                    accentColor: date.isToday ? DS.Colors.stone400 : DS.Colors.stone300
+                    accentColor: DS.Colors.stone300
                 )
                 .offset(y: firstTaskOffset)
-                .opacity(date.isToday ? 0.95 : 0.8)
             }
 
             // Task pins

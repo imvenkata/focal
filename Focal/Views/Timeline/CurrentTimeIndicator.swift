@@ -5,17 +5,28 @@ struct CurrentTimeIndicator: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            // Pulsing dot
-            Circle()
-                .fill(DS.Colors.coral)
-                .frame(width: 10, height: 10)
-                .scaleEffect(isPulsing ? 1.2 : 1)
-                .animation(
-                    .easeInOut(duration: 1.5).repeatForever(autoreverses: true),
-                    value: isPulsing
-                )
+            // Pulsing dot with premium glow
+            ZStack {
+                // Outer glow
+                Circle()
+                    .fill(DS.Colors.coral.opacity(0.4))
+                    .frame(width: 16, height: 16)
+                    .blur(radius: 4)
+                    .scaleEffect(isPulsing ? 1.3 : 1)
 
-            // Line
+                // Core dot
+                Circle()
+                    .fill(DS.Colors.coral)
+                    .frame(width: 10, height: 10)
+                    .shadow(color: DS.Colors.coral.opacity(0.6), radius: 6, x: 0, y: 0)
+                    .scaleEffect(isPulsing ? 1.15 : 1)
+            }
+            .animation(
+                .easeInOut(duration: 1.5).repeatForever(autoreverses: true),
+                value: isPulsing
+            )
+
+            // Line with subtle glow
             Rectangle()
                 .fill(
                     LinearGradient(
@@ -24,7 +35,8 @@ struct CurrentTimeIndicator: View {
                         endPoint: .trailing
                     )
                 )
-                .frame(height: 2)
+                .frame(height: 2.5)
+                .shadow(color: DS.Colors.coral.opacity(0.5), radius: 4, x: 0, y: 0)
         }
         .onAppear {
             isPulsing = true

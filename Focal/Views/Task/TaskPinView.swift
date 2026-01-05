@@ -79,7 +79,6 @@ struct MiniTaskPin: View {
 
             if task.duration > 1800 { // > 0.5 hours
                 GlassStemView(height: durationStemHeight, accentColor: task.color.color)
-                    .opacity(task.isPast ? 0.5 : 0.85)
             }
         }
         .accessibilityLabel("\(task.title), \(task.startTimeFormatted)")
@@ -229,10 +228,10 @@ struct GlassStemView: View {
 
     private var stemColor: Color {
         if let accentColor {
-            return accentColor.opacity(0.85)
+            return accentColor.opacity(0.2)
         }
 
-        return DS.Colors.glassLineStart
+        return DS.Colors.glassLineStart.opacity(0.2)
     }
 }
 
