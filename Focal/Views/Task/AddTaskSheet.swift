@@ -22,37 +22,58 @@ struct AddTaskSheet: View {
     @State private var showTimePicker = false
     @State private var showIconPicker = false
     @State private var showEnergyPicker = false
+    @State private var showFullColorPicker = false
 
     @FocusState private var isTitleFocused: Bool
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
+                // Premium close button
+                HStack {
+                    Spacer()
+
+                    Button {
+                        dismiss()
+                    } label: {
+                        ZStack {
+                            Circle()
+                                .fill(DS.Colors.stone100)
+                                .frame(width: 32, height: 32)
+
+                            Circle()
+                                .stroke(DS.Colors.stone200, lineWidth: 1)
+                                .frame(width: 32, height: 32)
+
+                            Image(systemName: "xmark")
+                                .scaledFont(size: 11, weight: .semibold, relativeTo: .caption)
+                                .foregroundStyle(DS.Colors.stone500)
+                        }
+                        .shadow(color: Color.black.opacity(0.06), radius: 4, y: 2)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Close")
+                }
+                .padding(.horizontal, DS.Spacing.xl)
+                .padding(.top, DS.Spacing.md)
+                .padding(.bottom, DS.Spacing.xs)
+
                 ScrollView {
-                    VStack(spacing: DS.Spacing.xl) {
-                        // Editable preview card
-                        EditableTaskPreviewCard(
+                    VStack(spacing: DS.Spacing.lg) {
+                        // Editable preview card with circular color picker
+                        EditableTaskPreviewCardWithColors(
                             title: $title,
                             icon: selectedIcon,
-                            color: selectedColor,
+                            selectedColor: $selectedColor,
                             time: selectedTime,
                             duration: selectedDuration,
                             isTitleFocused: $isTitleFocused,
                             onIconPickerTap: { showIconPicker = true },
+                            onColorMoreTap: { showFullColorPicker = true },
                             onTitleChange: { newValue in
                                 updateIconAndColor(for: newValue)
                             }
                         )
-                        .padding(.horizontal, DS.Spacing.xl)
-
-                        // Color picker
-                        VStack(alignment: .leading, spacing: DS.Spacing.sm) {
-                            Text("COLOR")
-                                .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                                .foregroundStyle(DS.Colors.textSecondary)
-
-                            ColorPickerRow(selectedColor: $selectedColor)
-                        }
                         .padding(.horizontal, DS.Spacing.xl)
 
                         // When section
@@ -114,16 +135,6 @@ struct AddTaskSheet: View {
                                 }
                                 .buttonStyle(.plain)
                             }
-                        }
-                        .padding(.horizontal, DS.Spacing.xl)
-
-                        // Duration
-                        VStack(alignment: .leading, spacing: DS.Spacing.sm) {
-                            Text("DURATION")
-                                .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                                .foregroundStyle(DS.Colors.textSecondary)
-
-                            DurationPickerRow(selectedDuration: $selectedDuration)
                         }
                         .padding(.horizontal, DS.Spacing.xl)
 
@@ -225,15 +236,6 @@ struct AddTaskSheet: View {
                 }
             }
             .background(DS.Colors.background)
-            .navigationTitle("New Task")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
-            }
         }
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
@@ -250,6 +252,9 @@ struct AddTaskSheet: View {
         }
         .sheet(isPresented: $showEnergyPicker) {
             EnergyPickerSheet(selectedLevel: $energyLevel)
+        }
+        .sheet(isPresented: $showFullColorPicker) {
+            FullColorPickerSheet(selectedColor: $selectedColor)
         }
         .onAppear {
             if let hour = presetHour {
@@ -307,6 +312,163 @@ struct AddTaskSheet: View {
         taskStore.addTask(task)
         HapticManager.shared.notification(.success)
         dismiss()
+    }
+}
+
+// MARK: - Editable Task Preview Card With Colors
+struct EditableTaskPreviewCardWithColors: View {
+    @Binding var title: String
+    let icon: String
+    @Binding var selectedColor: TaskColor
+    let time: Date
+    let duration: TimeInterval
+    var isTitleFocused: FocusState<Bool>.Binding
+    let onIconPickerTap: () -> Void
+    let onColorMoreTap: () -> Void
+    let onTitleChange: (String) -> Void
+
+    var body: some View {
+        HStack(spacing: DS.Spacing.md) {
+            // Icon picker button
+            Button {
+                onIconPickerTap()
+            } label: {
+                ZStack {
+                    RoundedRectangle(cornerRadius: DS.Radius.md)
+                        .fill(selectedColor.color)
+
+                    RoundedRectangle(cornerRadius: DS.Radius.md)
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    Color.white.opacity(0.25),
+                                    Color.clear,
+                                    Color.black.opacity(0.15)
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        )
+
+                    RoundedRectangle(cornerRadius: DS.Radius.md)
+                        .stroke(selectedColor.color.saturated(by: 1.2), lineWidth: 1.5)
+
+                    Text(icon)
+                        .scaledFont(size: 20, relativeTo: .title3)
+                }
+                .frame(width: 40, height: 40)
+                .shadow(color: selectedColor.color.opacity(0.4), radius: 6, y: 3)
+                .shadow(color: Color.black.opacity(0.1), radius: 3, y: 2)
+            }
+            .accessibilityLabel("Choose icon")
+            .accessibilityValue(icon)
+            .accessibilityHint("Opens icon picker")
+
+            VStack(alignment: .leading, spacing: DS.Spacing.xs) {
+                // Editable title
+                TextField("Task name", text: $title)
+                    .scaledFont(size: 16, weight: .semibold, relativeTo: .body)
+                    .foregroundStyle(DS.Colors.textPrimary)
+                    .focused(isTitleFocused)
+                    .onChange(of: title) { _, newValue in
+                        onTitleChange(newValue)
+                    }
+
+                HStack(spacing: DS.Spacing.xs) {
+                    Text("✨")
+                        .scaledFont(size: 12, relativeTo: .caption)
+
+                    Text("\(time.formattedTime) · \(duration.formattedDuration)")
+                        .scaledFont(size: 12, relativeTo: .caption)
+                        .foregroundStyle(DS.Colors.textSecondary)
+                }
+            }
+
+            Spacer()
+
+            // Circular color picker
+            CircularColorPicker(
+                selectedColor: $selectedColor,
+                onMoreTap: onColorMoreTap
+            )
+        }
+        .padding(DS.Spacing.lg)
+        .background(selectedColor.lightColor)
+        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+    }
+}
+
+// MARK: - Circular Color Picker
+struct CircularColorPicker: View {
+    @Binding var selectedColor: TaskColor
+    let onMoreTap: () -> Void
+
+    private let displayedColors: [TaskColor] = [.sage, .sky, .coral, .amber, .lavender, .rose]
+    private let circleRadius: CGFloat = 35
+
+    var body: some View {
+        ZStack {
+            // Color circles arranged in a circle
+            ForEach(Array(displayedColors.enumerated()), id: \.element) { index, color in
+                let angle = Angle(degrees: Double(index) * 60.0)
+                let x = cos(angle.radians) * circleRadius
+                let y = sin(angle.radians) * circleRadius
+
+                Button {
+                    HapticManager.shared.colorSelected()
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                        selectedColor = color
+                    }
+                } label: {
+                    ZStack {
+                        Circle()
+                            .fill(color.color)
+                            .frame(width: 24, height: 24)
+
+                        if selectedColor == color {
+                            Circle()
+                                .stroke(.white, lineWidth: 2)
+                                .frame(width: 20, height: 20)
+                        }
+                    }
+                    .shadow(color: color.color.opacity(0.4), radius: 4, y: 2)
+                }
+                .buttonStyle(.plain)
+                .offset(x: x, y: y)
+            }
+
+            // More button in center
+            Button {
+                HapticManager.shared.selection()
+                onMoreTap()
+            } label: {
+                ZStack {
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    DS.Colors.stone50,
+                                    DS.Colors.stone100
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        )
+                        .frame(width: 32, height: 32)
+
+                    Circle()
+                        .stroke(DS.Colors.stone200, lineWidth: 1)
+                        .frame(width: 32, height: 32)
+
+                    Image(systemName: "plus")
+                        .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
+                        .foregroundStyle(DS.Colors.stone500)
+                }
+                .shadow(color: Color.black.opacity(0.08), radius: 4, y: 2)
+            }
+            .buttonStyle(.plain)
+        }
+        .frame(width: 90, height: 90)
     }
 }
 
@@ -444,6 +606,146 @@ struct TaskPreviewCard: View {
         .padding(DS.Spacing.lg)
         .background(color.lightColor)
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+    }
+}
+
+// MARK: - Compact Color Picker
+struct CompactColorPicker: View {
+    @Binding var selectedColor: TaskColor
+    let onMoreTap: () -> Void
+
+    private let displayedColors: [TaskColor] = [.sage, .sky, .coral, .amber, .lavender, .rose]
+
+    var body: some View {
+        HStack(spacing: DS.Spacing.sm) {
+            // First 3 colors
+            ForEach(displayedColors.prefix(3)) { color in
+                ColorButton(color: color, isSelected: selectedColor == color) {
+                    HapticManager.shared.colorSelected()
+                    selectedColor = color
+                }
+            }
+
+            // More button in the middle
+            Button {
+                onMoreTap()
+            } label: {
+                ZStack {
+                    Circle()
+                        .fill(DS.Colors.stone100)
+                        .frame(width: 32, height: 32)
+
+                    Image(systemName: "plus.circle.fill")
+                        .scaledFont(size: 16, weight: .semibold, relativeTo: .body)
+                        .foregroundStyle(DS.Colors.stone500)
+                }
+                .frame(width: DS.Sizes.minTouchTarget, height: DS.Sizes.minTouchTarget)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("More colors")
+            .accessibilityHint("Opens full color picker")
+
+            // Last 3 colors
+            ForEach(displayedColors.suffix(3)) { color in
+                ColorButton(color: color, isSelected: selectedColor == color) {
+                    HapticManager.shared.colorSelected()
+                    selectedColor = color
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Color Button
+struct ColorButton: View {
+    let color: TaskColor
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            ZStack {
+                Circle()
+                    .fill(color.color)
+                    .frame(width: 32, height: 32)
+
+                if isSelected {
+                    Circle()
+                        .stroke(.white, lineWidth: 2.5)
+                        .frame(width: 24, height: 24)
+
+                    Circle()
+                        .stroke(color.color.opacity(0.3), lineWidth: 4)
+                        .frame(width: 38, height: 38)
+                }
+            }
+            .frame(width: DS.Sizes.minTouchTarget, height: DS.Sizes.minTouchTarget)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(color.displayName)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+}
+
+// MARK: - Full Color Picker Sheet
+struct FullColorPickerSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    @Binding var selectedColor: TaskColor
+
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: DS.Spacing.xl) {
+                // Color grid
+                LazyVGrid(columns: [
+                    GridItem(.flexible()),
+                    GridItem(.flexible()),
+                    GridItem(.flexible()),
+                    GridItem(.flexible())
+                ], spacing: DS.Spacing.lg) {
+                    ForEach(TaskColor.allCases) { color in
+                        Button {
+                            HapticManager.shared.colorSelected()
+                            selectedColor = color
+                            dismiss()
+                        } label: {
+                            VStack(spacing: DS.Spacing.sm) {
+                                ZStack {
+                                    Circle()
+                                        .fill(color.color)
+                                        .frame(width: 60, height: 60)
+
+                                    if selectedColor == color {
+                                        Circle()
+                                            .stroke(.white, lineWidth: 3)
+                                            .frame(width: 48, height: 48)
+                                    }
+                                }
+                                .shadow(color: color.color.opacity(0.3), radius: 8, y: 4)
+
+                                Text(color.displayName)
+                                    .scaledFont(size: 12, weight: .medium, relativeTo: .caption)
+                                    .foregroundStyle(DS.Colors.textSecondary)
+                            }
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(DS.Spacing.xl)
+
+                Spacer()
+            }
+            .background(DS.Colors.background)
+            .navigationTitle("Choose Color")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .presentationDetents([.medium, .large])
     }
 }
 
