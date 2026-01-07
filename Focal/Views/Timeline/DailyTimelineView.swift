@@ -83,7 +83,7 @@ struct DailyTimelineView: View {
         .shadow(color: Color.black.opacity(0.06), radius: 24, y: -4)
         .transition(.move(edge: .bottom).combined(with: .opacity))
         .sheet(isPresented: $showAddTask) {
-            AddTaskSheet()
+            PlannerTaskCreationSheet()
                 .environment(taskStore)
         }
         .sheet(item: $selectedTask) { task in

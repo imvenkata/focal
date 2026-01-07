@@ -34,6 +34,7 @@
 		A10000001000000000000021 /* DailyTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000021 /* DailyTimelineView.swift */; };
 		A10000001000000000000022 /* PlannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000022 /* PlannerView.swift */; };
 		A10000001000000000000023 /* AddTaskSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000023 /* AddTaskSheet.swift */; };
+		A10000001000000000000032 /* PlannerTaskCreationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000032 /* PlannerTaskCreationSheet.swift */; };
 		A10000001000000000000024 /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000024 /* TaskDetailView.swift */; };
 		A10000001000000000000025 /* DatePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000025 /* DatePickerSheet.swift */; };
 		F9E8D7C6B5A432109876 /* WhenPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F678901234 /* WhenPickerSheet.swift */; };
@@ -73,6 +74,7 @@
 		A20000001000000000000021 /* DailyTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTimelineView.swift; sourceTree = "<group>"; };
 		A20000001000000000000022 /* PlannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlannerView.swift; sourceTree = "<group>"; };
 		A20000001000000000000023 /* AddTaskSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskSheet.swift; sourceTree = "<group>"; };
+		A20000001000000000000032 /* PlannerTaskCreationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlannerTaskCreationSheet.swift; sourceTree = "<group>"; };
 		A20000001000000000000024 /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
 		A20000001000000000000025 /* DatePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerSheet.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F678901234 /* WhenPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhenPickerSheet.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				A20000001000000000000017 /* TaskPinView.swift */,
 				A20000001000000000000018 /* TaskCardView.swift */,
 				A20000001000000000000023 /* AddTaskSheet.swift */,
+				A20000001000000000000032 /* PlannerTaskCreationSheet.swift */,
 				A20000001000000000000024 /* TaskDetailView.swift */,
 			);
 			path = Task;
@@ -337,6 +340,7 @@
 				A10000001000000000000021 /* DailyTimelineView.swift in Sources */,
 				A10000001000000000000022 /* PlannerView.swift in Sources */,
 				A10000001000000000000023 /* AddTaskSheet.swift in Sources */,
+				A10000001000000000000032 /* PlannerTaskCreationSheet.swift in Sources */,
 				A10000001000000000000024 /* TaskDetailView.swift in Sources */,
 				A10000001000000000000025 /* DatePickerSheet.swift in Sources */,
 				F9E8D7C6B5A432109876 /* WhenPickerSheet.swift in Sources */,

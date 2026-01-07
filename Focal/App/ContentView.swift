@@ -32,7 +32,7 @@ struct ContentView: View {
         }
         .ignoresSafeArea(.keyboard)
         .sheet(isPresented: $showAddTask) {
-            AddTaskSheet()
+            PlannerTaskCreationSheet()
                 .environment(taskStore)
         }
     }

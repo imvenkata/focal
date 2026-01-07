@@ -5,6 +5,7 @@ enum DS {
     // MARK: - Colors
     enum Colors {
         static let coral = Color(hex: "#E8847C")
+        static let coralDark = Color(hex: "#D66B63")
         static let coralLight = Color(hex: "#FDF2F1")
         static let sage = Color(hex: "#7BAE7F")
         static let sageLight = Color(hex: "#F2F7F2")
@@ -46,6 +47,16 @@ enum DS {
         static let glassShadow = Color.black.opacity(0.28)
         static let glassTextPrimary = Color.white
         static let glassTextSecondary = Color.white.opacity(0.78)
+
+        static let plannerBackground = Color(hex: "#0D0D0D")
+        static let plannerSurface = Color(hex: "#1A1A1A")
+        static let plannerSurfaceTertiary = Color(hex: "#2A2A2A")
+        static let plannerSurfaceElevated = Color(hex: "#333333")
+        static let plannerTextPrimary = Color(hex: "#FFFFFF")
+        static let plannerTextSecondary = Color(hex: "#FFFFFF").opacity(0.6)
+        static let plannerTextMuted = Color(hex: "#FFFFFF").opacity(0.4)
+        static let plannerDivider = Color(hex: "#FFFFFF").opacity(0.08)
+        static let plannerBlue = Color(hex: "#5B9BD5")
 
         static let background = Color("Background")
         static let cardBackground = Color("CardBackground")
