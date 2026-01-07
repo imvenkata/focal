@@ -149,7 +149,7 @@ struct LiquidGlassCapsuleView: View {
     }
     
     private var content: some View {
-        VStack(spacing: DS.Spacing.xs) {
+        VStack(spacing: DS.Spacing.xs * 0.6) {
             GlassIconPip(
                 icon: icon,
                 accentColor: accentColor,
@@ -179,19 +179,19 @@ struct LiquidGlassCapsuleView: View {
     }
     
     private var timeFontSize: CGFloat {
-        10 * sizeScale
+        9 * sizeScale
     }
 
     private var iconFontSize: CGFloat {
-        13 * sizeScale
+        12 * sizeScale
     }
     
     private var contentVerticalPadding: CGFloat {
-        DS.Spacing.xs * sizeScale
+        DS.Spacing.xs * 0.5 * sizeScale
     }
     
     private var contentHorizontalPadding: CGFloat {
-        DS.Spacing.xs * sizeScale
+        DS.Spacing.xs * 0.6 * sizeScale
     }
 }
 

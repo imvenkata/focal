@@ -99,12 +99,12 @@ enum DS {
         static let sheetHandle: CGFloat = 36
         static let minTouchTarget: CGFloat = 44
         static let timeLabelWidth: CGFloat = 40
-        static let weekTimelineHeight: CGFloat = 420
+        static let weekTimelineHeight: CGFloat = 320
         static let hairline: CGFloat = 1
-        static let glassCapsuleWidth: CGFloat = 42
-        static let glassCapsuleHeight: CGFloat = 76
-        static let glassIconSize: CGFloat = 22
-        static let glassStemWidth: CGFloat = 1.5
+        static let glassCapsuleWidth: CGFloat = 34
+        static let glassCapsuleHeight: CGFloat = 48
+        static let glassIconSize: CGFloat = 16
+        static let glassStemWidth: CGFloat = 1.2
     }
 
     // MARK: - Animation

@@ -9,7 +9,7 @@ struct WeekSelector: View {
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: DS.Spacing.sm) {
+            HStack(spacing: DS.Spacing.xs * 0.75) {
                 ForEach(Array(weekDates.enumerated()), id: \.offset) { index, date in
                     DayCircle(
                         date: date,
@@ -40,34 +40,34 @@ struct DayCircle: View {
 
     var body: some View {
         Button(action: action) {
-            VStack(spacing: 4) {
+            VStack(spacing: DS.Spacing.xs * 0.75) {
                 // Weekday label
                 Text(date.shortWeekdayName.uppercased())
-                    .scaledFont(size: 10, weight: .medium, relativeTo: .caption2)
+                    .scaledFont(size: 9, weight: .medium, relativeTo: .caption2)
                     .foregroundStyle(DS.Colors.stone400)
-                    .tracking(1)
+                    .tracking(0.8)
 
                 // Day number with circle
                 ZStack {
                     Circle()
                         .fill(circleColor)
-                        .frame(width: 36, height: 36)
+                        .frame(width: 28, height: 28)
                         .shadow(color: isSelected ? DS.Colors.stone800.opacity(0.25) : Color.clear, radius: 8, y: 2)
 
                     Text("\(date.dayNumber)")
-                        .scaledFont(size: 14, weight: .semibold, relativeTo: .callout)
+                        .scaledFont(size: 12, weight: .semibold, relativeTo: .callout)
                         .foregroundStyle(textColor)
                 }
 
                 // Task indicator dots
-                HStack(spacing: 2) {
+                HStack(spacing: DS.Spacing.xs * 0.5) {
                     ForEach(Array(tasksForDay.prefix(3).enumerated()), id: \.offset) { index, task in
                         Circle()
                             .fill(task.color.color)
-                            .frame(width: 8, height: 8)
+                            .frame(width: 5, height: 5)
                     }
                 }
-                .frame(height: 8)
+                .frame(height: 5)
             }
             .frame(width: DS.Sizes.minTouchTarget)
         }
