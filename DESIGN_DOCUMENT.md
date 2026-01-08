@@ -104,7 +104,7 @@ extension Color {
 │   │  │   │   🏋  │   │   │          │
 │ 18│  │   │   │   🎉 │   │          │
 │   │  │   │   │   │   │   │          │
-│ 22│  🌙 🌙 🌙 🌙 🌙 🌙 🌙          │
+│ 22│  │   │   │   │   │   │          │
 └─────────────────────────────────────┘
 │ 📥    📅    ✨    ⚙️         [+]  │
 └─────────────────────────────────────┘
@@ -148,18 +148,18 @@ extension Color {
 │    ┄┄┄┄│  ☀️  │  Rise and Shine  ○ │
 │        └──────┘                     │
 │    ┄┄┄┄                             │
-│ 09:00      💤 A well-spent interval │
 │    ┄┄┄┄                             │
 │ 12:00  ┌──────┐  12:00-13:00 (1hr) │
 │    ┄┄┄┄│  🏋️ │  Gym              ○ │
-│    ┄┄┄┄│      │                     │
-│ 13:00  └──────┘                     │
+│    ┄┄┄┄│      │  ○ Warm up         │
+│    ┄┄┄┄│      │  ○ Strength        │
+│        └──────┘                     │
 │    ┄┄┄┄                             │
 │ ─●────────────── 17:32             │
-│    ┄┄┄┄  ⏱ Use 4h 28m, task approaching │
+│    ┄┄┄┄  ⏱ 4h 28m, task approaching │
 │          [+ Add Task]               │
 │    ┄┄┄┄                             │
-│ 22:00  ┌──────┐  22:00 ↻           │
+│ 20:00  ┌──────┐  20:00-21:00       │
 │    ┄┄┄┄│  🌙  │  Wind Down        ○ │
 │        └──────┘                     │
 └─────────────────────────────────────┘
@@ -168,9 +168,9 @@ extension Color {
 **Components:**
 - `DayHeader` - Date with Week/Day toggle
 - `StatsBar` - Energy level, task count, completed count
-- `VerticalTimeline` - Dashed line connecting tasks
-- `TaskCard` - Pill + title + time + checkbox
-- `EmptyInterval` - Message + Add Task CTA
+- `VerticalTimeline` - Dashed line connecting task capsules (shows only task start times, not hourly markers)
+- `TaskCard` - Pill + title + time + checkbox + subtasks/notes preview
+- `EmptyInterval` - Empty space (no message)
 - `CurrentTimeLine` - Pulsing dot + gradient line
 
 **Task Card States:**
@@ -390,90 +390,7 @@ extension Color {
 | Creative | write, draw, music | ✍️ 🎨 🎵 | Lavender |
 | Travel | travel, flight, drive | ✈️ 🚗 | Sky |
 
-**Algorithm:**
-```swift
-func findMatchingIcon(_ title: String) -> IconData? {
-    let lower = title.lowercased()
-    
-    // 1. Exact match
-    if let exact = iconMappings[lower] { return exact }
-    
-    // 2. Contains keyword
-    for (keyword, data) in iconMappings {
-        if lower.contains(keyword) { return data }
-    }
-    
-    // 3. Word-by-word
-    for word in lower.split(separator: " ") {
-        if let match = iconMappings[String(word)] { return match }
-    }
-    
-    return nil
-}
-```
 
----
-
-## Data Models
-
-### Task
-
-```swift
-struct Task: Identifiable, Codable {
-    let id: UUID
-    var title: String
-    var icon: String
-    var color: TaskColor
-    var startTime: Date
-    var duration: TimeInterval // in seconds
-    var isRoutine: Bool
-    var repeatDays: Set<Weekday>
-    var reminder: ReminderOption?
-    var energyLevel: Int // 0-4
-    var subtasks: [Subtask]
-    var notes: String?
-    var isCompleted: Bool
-    var completedAt: Date?
-    var createdAt: Date
-    var updatedAt: Date
-}
-
-struct Subtask: Identifiable, Codable {
-    let id: UUID
-    var title: String
-    var isCompleted: Bool
-}
-
-enum TaskColor: String, Codable, CaseIterable {
-    case coral, sage, sky, lavender, amber, rose, slate, night
-    
-    var color: Color { ... }
-    var lightColor: Color { ... }
-}
-
-enum Weekday: Int, Codable, CaseIterable {
-    case sunday = 0, monday, tuesday, wednesday, thursday, friday, saturday
-}
-
-enum ReminderOption: String, Codable {
-    case none, fiveMin, fifteenMin, thirtyMin, oneHour
-}
-```
-
-### User Preferences
-
-```swift
-struct UserPreferences: Codable {
-    var defaultTaskDuration: TimeInterval
-    var defaultReminderOption: ReminderOption
-    var weekStartsOn: Weekday
-    var showCompletedTasks: Bool
-    var hapticFeedbackEnabled: Bool
-    var preferredColorScheme: ColorScheme?
-}
-```
-
----
 
 ## Navigation Flow
 
@@ -563,12 +480,3 @@ struct UserPreferences: Codable {
 - Color not sole indicator (icons + labels)
 - Reduced motion support
 - High contrast mode support
-
----
-
-## Version History
-
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | Jan 2026 | Initial design specification |
-

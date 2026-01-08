@@ -51,6 +51,39 @@ struct TaskCardView: View {
                             .scaledFont(size: 16, weight: .semibold, relativeTo: .body)
                             .foregroundStyle(titleColor)
                             .strikethrough(task.isCompleted, color: secondaryTextColor)
+
+                        // Subtasks or Notes
+                        if !task.subtasks.isEmpty {
+                            VStack(alignment: .leading, spacing: 4) {
+                                ForEach(task.subtasks.prefix(3)) { subtask in
+                                    HStack(spacing: 6) {
+                                        Image(systemName: subtask.isCompleted ? "checkmark.circle.fill" : "circle")
+                                            .scaledFont(size: 10, relativeTo: .caption2)
+                                            .foregroundStyle(subtask.isCompleted ? DS.Colors.emerald500 : DS.Colors.stone400)
+
+                                        Text(subtask.title)
+                                            .scaledFont(size: 12, weight: .regular, relativeTo: .caption)
+                                            .foregroundStyle(DS.Colors.stone500)
+                                            .strikethrough(subtask.isCompleted, color: DS.Colors.stone400)
+                                            .lineLimit(1)
+                                    }
+                                }
+
+                                if task.subtasks.count > 3 {
+                                    Text("+\(task.subtasks.count - 3) more")
+                                        .scaledFont(size: 11, weight: .medium, relativeTo: .caption2)
+                                        .foregroundStyle(DS.Colors.stone400)
+                                        .padding(.leading, 16)
+                                }
+                            }
+                            .padding(.top, 4)
+                        } else if let notes = task.notes, !notes.isEmpty {
+                            Text(notes)
+                                .scaledFont(size: 12, weight: .regular, relativeTo: .caption)
+                                .foregroundStyle(DS.Colors.stone500)
+                                .lineLimit(2)
+                                .padding(.top, 4)
+                        }
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

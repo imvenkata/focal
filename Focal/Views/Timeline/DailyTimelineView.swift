@@ -7,8 +7,8 @@ struct DailyTimelineView: View {
     var onClose: (() -> Void)?
 
     private let timelineStartHour = 6
-    private let timelineEndHour = 23
-    private let minuteHeight: CGFloat = 1
+    private let timelineEndHour = 22
+    private let minuteHeight: CGFloat = 0.5
 
     var body: some View {
         VStack(spacing: 0) {
@@ -30,7 +30,8 @@ struct DailyTimelineView: View {
                     ForEach(timelineSegments) { segment in
                         TimelineSegmentRow(
                             timeLabel: segment.showsTimeLabel ? segment.startTime : nil,
-                            minHeight: segmentMinHeight(for: segment)
+                            minHeight: segmentMinHeight(for: segment),
+                            showEndTime: segment.showsEndTimeLabel
                         ) {
                             switch segment {
                             case .task(let task):
@@ -40,16 +41,16 @@ struct DailyTimelineView: View {
                                     onTap: { selectedTask = task },
                                     onDelete: { taskStore.deleteTask(task) }
                                 )
-                            case .gap(_, _, let duration):
-                                EmptyIntervalView(gap: duration)
-                                    .padding(.leading, DS.Sizes.taskPillDefault + DS.Spacing.md)
+                            case .gap:
+                                Color.clear.frame(height: 1)
                             }
                         }
                     }
 
                     TimelineSegmentRow(
                         timeLabel: nil,
-                        minHeight: DS.Sizes.minTouchTarget
+                        minHeight: DS.Sizes.minTouchTarget,
+                        showEndTime: false
                     ) {
                         AddTaskRow {
                             showAddTask = true
@@ -59,7 +60,7 @@ struct DailyTimelineView: View {
                 }
                 .padding(.horizontal, DS.Spacing.xl)
                 .padding(.vertical, DS.Spacing.md)
-                .padding(.bottom, 120) // Space for bottom nav
+                .padding(.bottom, 80) // Space for bottom nav
                 .overlay(alignment: .leading) {
                     TimelineGuideLine()
                         .stroke(DS.Colors.stone200.opacity(0.15), style: StrokeStyle(lineWidth: 1.5, dash: [4, 4]))
@@ -101,11 +102,11 @@ struct DailyTimelineView: View {
     }
 
     private var minimumTaskHeight: CGFloat {
-        DS.Sizes.taskPillDefault + DS.Spacing.lg
+        56 // Reduced from pill + spacing to fit compressed timeline
     }
 
     private var minimumGapHeight: CGFloat {
-        DS.Sizes.minTouchTarget
+        20 // Reduced to fit compressed timeline
     }
 
     private var timelineSegments: [TimelineSegment] {
@@ -238,21 +239,42 @@ private enum TimelineSegment: Identifiable {
             return false
         }
     }
+
+    var showsEndTimeLabel: Bool {
+        switch self {
+        case .task:
+            return true
+        case .gap:
+            return false
+        }
+    }
+
+    var endTime: Date {
+        switch self {
+        case .task(let task):
+            return task.endTime
+        case .gap(_, let start, let duration):
+            return start.addingTimeInterval(duration)
+        }
+    }
 }
 
 // MARK: - Timeline Segment Row
 private struct TimelineSegmentRow<Content: View>: View {
     let timeLabel: Date?
     let minHeight: CGFloat
+    let showEndTime: Bool
     @ViewBuilder let content: () -> Content
 
     var body: some View {
-        HStack(alignment: .top, spacing: DS.Spacing.sm) {
-            TimelineTimeLabel(time: timeLabel)
-            content()
-                .frame(maxWidth: .infinity, alignment: .leading)
+        VStack(spacing: 0) {
+            HStack(alignment: .top, spacing: DS.Spacing.sm) {
+                TimelineTimeLabel(time: timeLabel)
+                content()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .frame(minHeight: minHeight, alignment: .top)
         }
-        .frame(minHeight: minHeight, alignment: .top)
     }
 }
 

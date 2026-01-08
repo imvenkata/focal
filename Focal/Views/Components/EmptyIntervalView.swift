@@ -4,28 +4,9 @@ struct EmptyIntervalView: View {
     let gap: TimeInterval
     
     var body: some View {
-        HStack(spacing: DS.Spacing.sm) {
-            Text("💤")
-                .scaledFont(size: 14, relativeTo: .callout)
-            
-            Text(gapMessage)
-                .scaledFont(size: 14, relativeTo: .callout)
-                .foregroundStyle(DS.Colors.stone400)
-                .italic()
-        }
-        .padding(.vertical, DS.Spacing.md)
-        .accessibilityLabel("Free time interval: \(gapMessage)")
-    }
-    
-    private var gapMessage: String {
-        let hours = Int(gap) / 3600
-        let minutes = Int(gap) % 3600 / 60
-        
-        if hours > 0 {
-            return "A well-spent interval of \(hours)h \(minutes)m."
-        } else {
-            return "A well-spent interval."
-        }
+        Color.clear
+            .frame(height: 1)
+            .accessibilityLabel("Free time interval")
     }
 }
 
