@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-You are helping build **Structured Planner**, a native iOS app built with Swift and SwiftUI. The app is a visual task management and scheduling tool inspired by Tiimo and Structured.
+You are helping build **Planner** simlar to tiimo & structured main focus for Neurodivergent peope, a native iOS app built with Swift and SwiftUI. The app is a visual task management and scheduling tool inspired by Tiimo and Structured.
 
 **Tech Stack:**
 - Language: Swift 5.9+
@@ -133,34 +133,3 @@ Build screens in this order:
 9. **Picker Sheets** - Time, Date, Energy
 10. **Bottom Navigation** - Tab bar + FAB
 11. **Polish** - Animations, haptics, accessibility
-
----
-
-## Common Issues & Solutions
-
-**Issue:** Sheet doesn't animate smoothly
-**Solution:** Use `.interactiveDismissDisabled()` sparingly, ensure no heavy computation in sheet body
-
-**Issue:** Timeline scroll jumps
-**Solution:** Use `ScrollViewReader` with `.scrollPosition(id:)` in iOS 17+
-
-**Issue:** Auto icon not updating
-**Solution:** Ensure `@State` or `@Published` property is being observed correctly
-
-**Issue:** Current time indicator not visible
-**Solution:** Check z-index with `.zIndex()` modifier, ensure parent isn't clipping
-
----
-
-## Resources
-
-- [Apple HIG - Planning Apps](https://developer.apple.com/design/human-interface-guidelines/)
-- [SwiftUI Documentation](https://developer.apple.com/documentation/swiftui/)
-- [SF Symbols](https://developer.apple.com/sf-symbols/)
-
----
-
-## Contact
-
-For design questions, refer to `DESIGN_DOCUMENT.md`
-For implementation questions, ask the AI assistant with context from this file.

@@ -120,31 +120,52 @@ struct LiquidGlassCapsuleView: View {
     
     var body: some View {
         ZStack {
-            // Solid accent background
             Capsule()
-                .fill(accentColor)
+                .fill(DS.Colors.cardBackground)
 
-            // Gradient overlay for depth
             Capsule()
                 .fill(
                     LinearGradient(
                         colors: [
-                            Color.white.opacity(0.25),
-                            Color.clear,
-                            Color.black.opacity(0.15)
+                            accentTint.opacity(0.26),
+                            accentTint.opacity(0.08)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+
+            Capsule()
+                .fill(
+                    LinearGradient(
+                        colors: [
+                            DS.Colors.glassHighlight,
+                            Color.clear
                         ],
                         startPoint: .top,
                         endPoint: .bottom
                     )
                 )
 
-            // Border
             Capsule()
-                .stroke(accentColor.saturated(by: 1.2), lineWidth: 1.5)
+                .stroke(
+                    LinearGradient(
+                        colors: [
+                            DS.Colors.glassHighlight.opacity(0.8),
+                            accentTint.opacity(0.2)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    ),
+                    lineWidth: DS.Sizes.hairline
+                )
+
+            Capsule()
+                .stroke(accentTint.opacity(0.28), lineWidth: DS.Sizes.hairline)
         }
         .frame(width: capsuleWidth, height: capsuleHeight)
-        .shadow(color: accentColor.opacity(0.45), radius: 12, y: 6)
-        .shadow(color: Color.black.opacity(0.2), radius: 8, y: 4)
+        .shadow(color: accentTint.opacity(0.2), radius: 10, y: 5)
+        .shadow(color: Color.black.opacity(0.08), radius: 6, y: 3)
         .overlay(content)
     }
     
@@ -159,7 +180,7 @@ struct LiquidGlassCapsuleView: View {
 
             Text(time)
                 .scaledFont(size: timeFontSize, weight: .semibold, relativeTo: .caption2)
-                .foregroundStyle(DS.Colors.glassTextSecondary)
+                .foregroundStyle(DS.Colors.textPrimary.opacity(0.8))
                 .tracking(0.3 * sizeScale)
         }
         .padding(.vertical, contentVerticalPadding)
@@ -193,6 +214,10 @@ struct LiquidGlassCapsuleView: View {
     private var contentHorizontalPadding: CGFloat {
         DS.Spacing.xs * 0.6 * sizeScale
     }
+
+    private var accentTint: Color {
+        accentColor.saturated(by: 0.65)
+    }
 }
 
 struct GlassIconPip: View {
@@ -204,15 +229,36 @@ struct GlassIconPip: View {
     var body: some View {
         ZStack {
             Circle()
-                .fill(Color.white.opacity(0.25))
+                .fill(DS.Colors.cardBackground)
 
             Circle()
-                .stroke(Color.white.opacity(0.4), lineWidth: 1)
+                .fill(
+                    LinearGradient(
+                        colors: [DS.Colors.stone50, DS.Colors.stone100],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
+
+            Circle()
+                .stroke(
+                    LinearGradient(
+                        colors: [accentTint.opacity(0.4), DS.Colors.stone200],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    ),
+                    lineWidth: DS.Sizes.hairline
+                )
 
             Text(icon)
                 .scaledFont(size: iconSize, weight: .semibold, relativeTo: .caption)
         }
         .frame(width: size, height: size)
+        .shadow(color: accentTint.opacity(0.12), radius: 4, y: 2)
+    }
+
+    private var accentTint: Color {
+        accentColor.saturated(by: 0.7)
     }
 }
 

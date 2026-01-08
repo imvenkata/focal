@@ -2,8 +2,8 @@
 	"servers": {
 		"server": {
 			"type": "stdio",
-			"command": "memory",
-			"args": []
+			"command": ".venv/bin/memory",
+			"args": ["server"]
 		}
 	},
 	"inputs": []
