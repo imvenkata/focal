@@ -14,6 +14,12 @@ You are helping build **Planner** simlar to tiimo & structured main focus for Ne
 
 ---
 
+## Agent Notes
+
+- Do not load or scan the `DerivedData` directory.
+
+---
+
 ## Project Structure
 
 - App: StructuredPlannerApp.swift, ContentView.swift
