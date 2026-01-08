@@ -4,18 +4,24 @@ struct TaskCardView: View {
     let task: TaskItem
     let onToggleComplete: () -> Void
     let onTap: () -> Void
+    let onLongPress: (() -> Void)?
     let onDelete: (() -> Void)?
+    let pillHeight: CGFloat?
 
     init(
         task: TaskItem,
         onToggleComplete: @escaping () -> Void,
         onTap: @escaping () -> Void,
+        onLongPress: (() -> Void)? = nil,
+        pillHeight: CGFloat? = nil,
         onDelete: (() -> Void)? = nil
     ) {
         self.task = task
         self.onToggleComplete = onToggleComplete
         self.onTap = onTap
+        self.onLongPress = onLongPress
         self.onDelete = onDelete
+        self.pillHeight = pillHeight
     }
 
     var body: some View {
@@ -25,7 +31,7 @@ struct TaskCardView: View {
             } label: {
                 HStack(alignment: .top, spacing: DS.Spacing.lg) {
                     // Task pill - scaled by duration
-                    DayViewTaskPill(task: task)
+                    DayViewTaskPill(task: task, height: pillHeight)
                     
                     // Content
                     VStack(alignment: .leading, spacing: DS.Spacing.xs) {
@@ -89,6 +95,12 @@ struct TaskCardView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .buttonStyle(.plain)
+            .simultaneousGesture(
+                LongPressGesture(minimumDuration: 0.35)
+                    .onEnded { _ in
+                        onLongPress?()
+                    }
+            )
             .accessibilityElement(children: .combine)
             .accessibilityLabel("\(task.title), \(task.timeRangeFormatted), \(task.isCompleted ? "completed" : "pending")")
             .accessibilityHint("Double tap to view details")
@@ -117,7 +129,6 @@ struct TaskCardView: View {
             .buttonStyle(.plain)
             .accessibilityLabel(task.isCompleted ? "Mark incomplete" : "Mark complete")
         }
-        .padding(.vertical, DS.Spacing.sm)
         .padding(.horizontal, DS.Spacing.sm)
         .background(task.isActive ? task.color.lightColor.opacity(0.5) : Color.clear)
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
@@ -169,14 +180,15 @@ struct TaskCardView: View {
 // MARK: - Day View Task Pill
 struct DayViewTaskPill: View {
     let task: TaskItem
-    private let pillWidth: CGFloat = 44
+    let height: CGFloat?
+    private let pillWidth: CGFloat = DS.Sizes.taskPillDefault
 
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: DS.Radius.md)
                 .fill(task.color.color)
 
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: DS.Radius.md)
                 .fill(
                     LinearGradient(
                         colors: [
@@ -189,7 +201,7 @@ struct DayViewTaskPill: View {
                     )
                 )
 
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: DS.Radius.md)
                 .stroke(task.color.color.saturated(by: 1.2), lineWidth: 1.5)
 
             Text(task.icon)
@@ -201,11 +213,12 @@ struct DayViewTaskPill: View {
     }
 
     private var pillHeight: CGFloat {
-        if task.duration > 1800 {
-            return max(44, CGFloat(task.duration) / 3600.0 * 50)
-        } else {
-            return 44
+        if let height {
+            return max(DS.Sizes.taskPillDefault, height)
         }
+
+        let hours = CGFloat(task.duration) / 3600.0
+        return max(DS.Sizes.taskPillDefault, hours * DS.Sizes.taskPillDefault)
     }
 }
 

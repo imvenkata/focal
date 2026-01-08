@@ -9,6 +9,11 @@ struct DailyTimelineView: View {
     private let timelineStartHour = 6
     private let timelineEndHour = 22
     private let minuteHeight: CGFloat = 0.5
+    private var timelineVerticalPadding: CGFloat { DS.Spacing.md }
+    private var timelineBottomPadding: CGFloat { DS.Sizes.bottomNavHeight + DS.Spacing.md }
+    private var timelineLineOffset: CGFloat {
+        DS.Sizes.timeLabelWidth + DS.Spacing.sm + DS.Spacing.sm + DS.Sizes.taskPillDefault / 2
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -28,9 +33,11 @@ struct DailyTimelineView: View {
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVStack(spacing: 0) {
                     ForEach(timelineSegments) { segment in
+                        let rowHeight = segmentMinHeight(for: segment)
                         TimelineSegmentRow(
-                            timeLabel: segment.showsTimeLabel ? segment.startTime : nil,
-                            minHeight: segmentMinHeight(for: segment),
+                            startTime: segment.showsTimeLabel ? segment.startTime : nil,
+                            endTime: segment.showsEndTimeLabel ? segment.endTime : nil,
+                            minHeight: rowHeight,
                             showEndTime: segment.showsEndTimeLabel
                         ) {
                             switch segment {
@@ -39,48 +46,50 @@ struct DailyTimelineView: View {
                                     task: task,
                                     onToggleComplete: { taskStore.toggleCompletion(for: task) },
                                     onTap: { selectedTask = task },
+                                    onLongPress: { HapticManager.shared.dragActivated() },
+                                    pillHeight: rowHeight,
                                     onDelete: { taskStore.deleteTask(task) }
                                 )
                             case .gap:
-                                Color.clear.frame(height: 1)
+                                EmptyIntervalView(
+                                    gap: segment.duration,
+                                    startTime: segment.startTime,
+                                    endTime: segment.endTime,
+                                    minHeight: rowHeight,
+                                    onAddTask: { showAddTask = true }
+                                )
                             }
                         }
                     }
-
-                    TimelineSegmentRow(
-                        timeLabel: nil,
-                        minHeight: DS.Sizes.minTouchTarget,
-                        showEndTime: false
-                    ) {
-                        AddTaskRow {
-                            showAddTask = true
-                        }
-                        .padding(.leading, DS.Sizes.taskPillDefault + DS.Spacing.md)
-                    }
                 }
                 .padding(.horizontal, DS.Spacing.xl)
-                .padding(.vertical, DS.Spacing.md)
-                .padding(.bottom, 80) // Space for bottom nav
+                .padding(.vertical, timelineVerticalPadding)
+                .padding(.bottom, timelineBottomPadding) // Space for bottom nav
                 .overlay(alignment: .leading) {
                     TimelineGuideLine()
                         .stroke(DS.Colors.stone200.opacity(0.15), style: StrokeStyle(lineWidth: 1.5, dash: [4, 4]))
                         .frame(width: 1.5)
                         .frame(maxHeight: .infinity)
-                        .padding(.leading, DS.Sizes.timeLabelWidth + DS.Spacing.xs)
+                        .padding(.leading, timelineLineOffset)
                         .allowsHitTesting(false)
                 }
                 .overlay(alignment: .topLeading) {
                     if shouldShowCurrentTimeIndicator {
                         CurrentTimeIndicator()
-                            .padding(.leading, DS.Sizes.timeLabelWidth + DS.Spacing.xs)
-                            .offset(y: currentTimeOffset + DS.Spacing.md)
+                            .padding(.leading, timelineLineOffset)
+                            .offset(y: currentTimeOffset + timelineVerticalPadding)
                             .allowsHitTesting(false)
                     }
                 }
             }
+            .refreshable {
+                await MainActor.run {
+                    HapticManager.shared.selection()
+                }
+            }
         }
         .background(DS.Colors.cardBackground)
-        .clipShape(RoundedRectangle(cornerRadius: 32, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxxl, style: .continuous))
         .shadow(color: Color.black.opacity(0.06), radius: 24, y: -4)
         .transition(.move(edge: .bottom).combined(with: .opacity))
         .sheet(isPresented: $showAddTask) {
@@ -102,11 +111,11 @@ struct DailyTimelineView: View {
     }
 
     private var minimumTaskHeight: CGFloat {
-        56 // Reduced from pill + spacing to fit compressed timeline
+        DS.Sizes.taskPillDefault
     }
 
     private var minimumGapHeight: CGFloat {
-        20 // Reduced to fit compressed timeline
+        DS.Spacing.xl
     }
 
     private var timelineSegments: [TimelineSegment] {
@@ -172,16 +181,16 @@ struct DailyTimelineView: View {
                 handleCapsule
             }
         }
-        .padding(.top, 12)
-        .padding(.bottom, 8)
+        .padding(.top, DS.Spacing.md)
+        .padding(.bottom, DS.Spacing.sm)
     }
 
     private var handleCapsule: some View {
         HStack {
             Spacer()
-            RoundedRectangle(cornerRadius: 100)
+            RoundedRectangle(cornerRadius: DS.Radius.pill)
                 .fill(DS.Colors.divider)
-                .frame(width: 40, height: 4)
+                .frame(width: DS.Sizes.sheetHandle, height: DS.Spacing.xs)
             Spacer()
         }
     }
@@ -236,7 +245,7 @@ private enum TimelineSegment: Identifiable {
         case .task:
             return true
         case .gap:
-            return false
+            return true
         }
     }
 
@@ -261,7 +270,8 @@ private enum TimelineSegment: Identifiable {
 
 // MARK: - Timeline Segment Row
 private struct TimelineSegmentRow<Content: View>: View {
-    let timeLabel: Date?
+    let startTime: Date?
+    let endTime: Date?
     let minHeight: CGFloat
     let showEndTime: Bool
     @ViewBuilder let content: () -> Content
@@ -269,11 +279,17 @@ private struct TimelineSegmentRow<Content: View>: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack(alignment: .top, spacing: DS.Spacing.sm) {
-                TimelineTimeLabel(time: timeLabel)
+                TimelineTimeLabel(time: startTime)
                 content()
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .frame(minHeight: minHeight, alignment: .top)
+            .overlay(alignment: .bottomLeading) {
+                if showEndTime, let endTime {
+                    TimelineTimeLabel(time: endTime, color: DS.Colors.stone300)
+                        .allowsHitTesting(false)
+                }
+            }
         }
     }
 }
@@ -281,13 +297,14 @@ private struct TimelineSegmentRow<Content: View>: View {
 // MARK: - Timeline Time Label
 private struct TimelineTimeLabel: View {
     let time: Date?
+    var color: Color = DS.Colors.stone400
 
     var body: some View {
         Group {
             if let time {
                 Text(time.formattedTime)
-                    .scaledFont(size: 10, weight: .medium, design: .monospaced, relativeTo: .caption2)
-                    .foregroundStyle(DS.Colors.stone400)
+                    .scaledFont(size: 11, weight: .medium, design: .monospaced, relativeTo: .caption)
+                    .foregroundStyle(color)
             } else {
                 Color.clear
             }
@@ -303,38 +320,6 @@ private struct TimelineGuideLine: Shape {
         path.move(to: CGPoint(x: rect.midX, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
         return path
-    }
-}
-
-// MARK: - Add Task Row
-private struct AddTaskRow: View {
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: DS.Spacing.sm) {
-                ZStack {
-                    Circle()
-                        .fill(DS.Colors.amber)
-                        .frame(width: 24, height: 24)
-
-                    Image(systemName: "plus")
-                        .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                        .foregroundStyle(.white)
-                }
-
-                Text("Add Task")
-                    .scaledFont(size: 14, weight: .semibold, relativeTo: .callout)
-                    .foregroundStyle(DS.Colors.amber)
-            }
-            .padding(.horizontal, DS.Spacing.md)
-            .padding(.vertical, DS.Spacing.sm)
-            .background(DS.Colors.stone50)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("Add task")
-        .accessibilityHint("Opens the new task sheet")
     }
 }
 
