@@ -227,6 +227,144 @@ enum DS {
         static func error() { HapticManager.shared.notification(.error) }
         static func selection() { HapticManager.shared.selection() }
     }
+
+    // MARK: - Task Capsule Configuration
+
+    /// Capsule size variants for different contexts
+    enum CapsuleSize {
+        case small   // 44pt - Widgets, compact lists
+        case medium  // 56pt - Default daily view
+        case large   // 72pt - Focus mode, detail cards
+
+        var height: CGFloat {
+            switch self {
+            case .small: return 44
+            case .medium: return 56
+            case .large: return 72
+            }
+        }
+
+        var horizontalPadding: CGFloat {
+            switch self {
+            case .small: return 12
+            case .medium: return 16
+            case .large: return 20
+            }
+        }
+
+        var verticalPadding: CGFloat {
+            switch self {
+            case .small: return 8
+            case .medium: return 12
+            case .large: return 16
+            }
+        }
+
+        var iconSize: CGFloat {
+            switch self {
+            case .small: return 16
+            case .medium: return 20
+            case .large: return 24
+            }
+        }
+
+        var titleSize: CGFloat {
+            switch self {
+            case .small: return 14
+            case .medium: return 16
+            case .large: return 18
+            }
+        }
+
+        var subtitleSize: CGFloat {
+            switch self {
+            case .small: return 11
+            case .medium: return 12
+            case .large: return 14
+            }
+        }
+
+        var titleFont: Font {
+            switch self {
+            case .small: return .system(size: 14, weight: .semibold)
+            case .medium: return .system(size: 16, weight: .semibold)
+            case .large: return .system(size: 18, weight: .semibold)
+            }
+        }
+
+        var subtitleFont: Font {
+            switch self {
+            case .small: return .system(size: 11, weight: .regular)
+            case .medium: return .system(size: 12, weight: .regular)
+            case .large: return .system(size: 14, weight: .regular)
+            }
+        }
+
+        var checkboxSize: CGFloat {
+            switch self {
+            case .small: return 20
+            case .medium: return 24
+            case .large: return 28
+            }
+        }
+
+        var stripeWidth: CGFloat { 3 }
+    }
+
+    /// Visual states for task capsules
+    enum CapsuleState {
+        case `default`   // Standard appearance
+        case pressed     // Being tapped
+        case selected    // Active/highlighted (e.g., currently running task)
+        case completed   // Task marked done
+        case overdue     // Past due, not completed
+        case dragged     // Being dragged for reordering
+        case disabled    // Non-interactive
+        case dimmed      // Focus mode - other tasks dimmed
+
+        var opacity: Double {
+            switch self {
+            case .default, .pressed, .selected, .overdue, .dragged: return 1.0
+            case .completed: return 0.55
+            case .disabled: return 0.4
+            case .dimmed: return 0.3
+            }
+        }
+
+        var scale: CGFloat {
+            switch self {
+            case .pressed: return 0.97
+            case .dragged: return 1.15
+            default: return 1.0
+            }
+        }
+
+        var brightness: Double {
+            switch self {
+            case .pressed: return -0.08
+            default: return 0
+            }
+        }
+
+        var showStrikethrough: Bool {
+            self == .completed
+        }
+
+        var showCheckmark: Bool {
+            self == .completed
+        }
+
+        var showWarningBadge: Bool {
+            self == .overdue
+        }
+    }
+
+    /// Context for capsule display
+    enum CapsuleContext {
+        case list       // Full-width list view
+        case timeline   // Positioned in timeline
+        case widget     // Compact widget display
+    }
 }
 
 // MARK: - Color Extension

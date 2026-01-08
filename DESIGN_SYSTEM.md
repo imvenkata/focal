@@ -11,10 +11,11 @@
 2. [Spacing & Layout](#spacing--layout)
 3. [Color System](#color-system)
 4. [Components](#components)
-5. [Interaction & Motion](#interaction--motion)
-6. [Iconography](#iconography)
-7. [States](#states)
-8. [Design Tokens (Swift)](#design-tokens-swift)
+5. [Task Capsule Component Spec](#task-capsule-component-spec)
+6. [Interaction & Motion](#interaction--motion)
+7. [Iconography](#iconography)
+8. [States](#states)
+9. [Design Tokens (Swift)](#design-tokens-swift)
 
 ---
 
@@ -538,6 +539,291 @@ See Task Card above. Additional variants:
 | Border | 1pt `stone200` |
 | Icon | 11pt semibold, `stone500` |
 | Shadow | subtle |
+
+---
+
+## Task Capsule Component Spec
+
+The Task Capsule is the primary UI element for displaying tasks in Focal. This specification provides detailed blueprints for implementing a Structured-like task capsule with neurodivergent-friendly considerations.
+
+### Capsule Anatomy
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ ┃  ○  │ 📝 │ Task Title Here              │ 09:00-10:00 │ ⋯ │
+│ ┃     │    │ 2/4 subtasks                 │    (1h)     │   │
+└─────────────────────────────────────────────────────────────────┘
+  │  │    │              │                        │          │
+  │  │    │              │                        │          └── Overflow menu (list only)
+  │  │    │              │                        └── Time range + duration badge
+  │  │    │              └── Title + optional subtitle (subtask count or notes)
+  │  │    └── Icon pill (emoji on colored background)
+  │  └── Checkbox/completion indicator (44pt touch target)
+  └── Category color stripe (3pt width)
+```
+
+### Visual Style
+
+| Property | Value | Notes |
+|----------|-------|-------|
+| Shape | Rounded rectangle | Pill-like appearance |
+| Corner radius | `DS.Radius.md` (12pt) | Consistent with cards |
+| Background | Clear (default), tinted (active/overdue) | State-dependent |
+| Border | None (default), 1.5pt color (active) | Subtle emphasis |
+| Shadow | `shadowRaised` default | `shadowColored` when active |
+| Stripe | 3pt vertical bar, full height | Category color accent |
+
+**Variant Options:**
+1. **With stripe** (default): Left color accent stripe
+2. **Without stripe**: Cleaner look, icon provides color
+3. **Minimal**: Timeline context, icon only
+
+### Sizes
+
+| Size | Height | H-Padding | V-Padding | Icon | Title | Subtitle | Checkbox | Use Case |
+|------|--------|-----------|-----------|------|-------|----------|----------|----------|
+| `small` | 44pt | 12pt | 8pt | 16pt | 14pt semibold | 11pt | 20pt | Widgets, compact lists |
+| `medium` | 56pt | 16pt | 12pt | 20pt | 16pt semibold | 12pt | 24pt | **Default** - daily view |
+| `large` | 72pt | 20pt | 16pt | 24pt | 18pt semibold | 14pt | 28pt | Focus mode, detail cards |
+
+**Internal Spacing:**
+- Icon-to-title gap: `DS.Spacing.md` (12pt)
+- Title-to-time gap: `DS.Spacing.sm` (8pt)
+- Minimum touch target: 44pt × 44pt (checkbox, overflow)
+
+### Color Behavior
+
+**Category Accent (Left Stripe):**
+```swift
+Rectangle()
+    .fill(task.color.color)
+    .frame(width: 3)
+```
+
+**Icon Pill:**
+- Background: Task category color
+- Gradient overlay: white 25% → clear → black 15%
+- Border: 1pt saturated color
+- Shadow: Colored shadow at 35% opacity
+
+**Text Colors by State:**
+
+| State | Title | Subtitle | Time Badge |
+|-------|-------|----------|------------|
+| Default | `textPrimary` | `textSecondary` | `textSecondary` |
+| Active | `textPrimary` | `textSecondary` | `textSecondary` |
+| Completed | `textMuted` + strikethrough | `textMuted` | `textMuted` |
+| Overdue | `textPrimary` | `textSecondary` | `danger` |
+| Dimmed | `textMuted` | `textMuted` | `textMuted` |
+
+### States (8 Total)
+
+| State | Background | Border | Opacity | Scale | Shadow | Special Treatment |
+|-------|------------|--------|---------|-------|--------|-------------------|
+| `default` | clear | none | 1.0 | 1.0 | raised | - |
+| `pressed` | clear | none | 1.0 | 0.97 | raised | brightness -8% |
+| `selected` | lightColor@50% | color 1.5pt | 1.0 | 1.0 | colored | Ring indicator |
+| `completed` | clear | none | 0.55 | 1.0 | none | Strikethrough, checkmark |
+| `overdue` | `dangerLight` | `danger` 1pt | 1.0 | 1.0 | raised | Warning badge |
+| `dragged` | clear | none | 1.0 | 1.15 | floating | Rotation ±2°, shake |
+| `disabled` | `stone100` | none | 0.4 | 1.0 | none | Non-interactive |
+| `dimmed` | clear | none | 0.3 | 1.0 | none | Focus mode inactive |
+
+**State Determination Logic:**
+```swift
+private var capsuleState: DS.CapsuleState {
+    if isPressed { return .pressed }
+    if task.isCompleted { return .completed }
+    if task.isPast && !task.isCompleted { return .overdue }
+    if task.isActive { return .selected }
+    return .default
+}
+```
+
+### Motion Specifications
+
+| Action | Animation | Duration | Haptic | Reduce Motion |
+|--------|-----------|----------|--------|---------------|
+| **Add** | scale(0→1) + opacity | `bounce` (0.3s) | success | opacity only, 0.1s |
+| **Complete** | checkmark scale in | `spring` (0.4s) | success | instant |
+| **Press** | scale(0.97), brightness -8% | `quick` (0.25s) | light | brightness only |
+| **Drag start** | scale(1.15), shadow enhance | `interactiveSpring` | heavy | scale only |
+| **Dragging** | sine rotation ±2° | continuous | soft (on move) | disabled |
+| **Drop** | scale(1.0), snap to position | `spring` (0.4s) | success | instant |
+| **Expand** | matchedGeometryEffect | `gentle` (0.5s) | medium | crossfade |
+| **Delete** | offset + opacity(0) | `easeOut` (0.2s) | warning | opacity only |
+
+**Drag Animation Details:**
+```swift
+struct DraggableCapsuleModifier: ViewModifier {
+    @Binding var isDragging: Bool
+    @State private var rotationAngle: Double = 0
+
+    func body(content: Content) -> some View {
+        content
+            .scaleEffect(isDragging ? 1.15 : 1.0)
+            .rotationEffect(.degrees(isDragging ? rotationAngle : 0))
+            .shadow(color: isDragging ? .black.opacity(0.2) : .clear,
+                    radius: isDragging ? 20 : 0, y: isDragging ? 10 : 0)
+            .animation(.interactiveSpring(response: 0.15, dampingFraction: 0.8))
+            .onChange(of: isDragging) { dragging in
+                if dragging {
+                    // Continuous shake animation
+                    withAnimation(.linear(duration: 0.1).repeatForever(autoreverses: true)) {
+                        rotationAngle = 2
+                    }
+                } else {
+                    rotationAngle = 0
+                }
+            }
+    }
+}
+```
+
+### Accessibility
+
+**Dynamic Type Behavior:**
+
+| Element | Max Lines | Truncation | Scaling |
+|---------|-----------|------------|---------|
+| Title | 2 | Ellipsis | Full Dynamic Type |
+| Subtitle | 1 | Ellipsis | Full Dynamic Type |
+| Time badge | 1 | Never | `caption2` relative |
+| Duration | 1 | Never | `caption2` relative |
+
+**VoiceOver Labels:**
+```swift
+.accessibilityElement(children: .combine)
+.accessibilityLabel("\(task.title), \(task.timeRangeFormatted), \(statusText)")
+.accessibilityHint("Double tap to view details")
+.accessibilityAddTraits(task.isCompleted ? .isSelected : [])
+
+// Status text examples:
+// "in progress" - active task
+// "completed" - done
+// "overdue" - past due
+// "" - default upcoming
+```
+
+**Touch Targets:**
+- Checkbox: 44pt × 44pt (centered on 24pt visual)
+- Overflow menu: 44pt × 44pt
+- Full capsule: Tappable for detail view
+
+**Contrast Requirements:**
+- Title on background: 4.5:1 minimum (WCAG AA)
+- Time badge: 4.5:1 minimum
+- Completed text (muted): 3:1 acceptable (decorative)
+
+### Layout Rules
+
+#### List View Context
+```
+Screen Edge (20pt margin)
+├── TaskCapsuleView (full width - 40pt)
+│   ├── Stripe (3pt)
+│   ├── Content (padded)
+│   └── Overflow menu
+├── Gap (8pt)
+├── TaskCapsuleView
+...
+```
+
+**List Specifications:**
+- Full width minus screen margins (`DS.Spacing.xl` × 2)
+- Vertical gap: `DS.Spacing.sm` (8pt)
+- Swipe actions: Leading (complete), Trailing (delete)
+- Section grouping: By date header when applicable
+
+#### Timeline View Context
+```
+Hour    │ Tasks
+────────┼──────────────────────
+09:00   │ ┌──────────────┐
+        │ │ Task A       │ ← Height = duration × minuteHeight
+10:00   │ └──────────────┘
+        │ ┌──────────────┐
+        │ │ Task B       │
+11:00   │ │              │
+        │ └──────────────┘
+```
+
+**Timeline Specifications:**
+- Position: `Y = (startHour - timelineStart) × hourHeight`
+- Height: `duration (minutes) × minuteHeight`
+- Width: Column width minus padding
+- Corner radius: Reduced to `DS.Radius.sm` (8pt)
+
+**Overlap Handling:**
+
+| Scenario | Treatment |
+|----------|-----------|
+| 2 tasks overlap | Side-by-side, 50% width each |
+| 3+ tasks overlap | Show first 2 + "+N" badge |
+| Same start time | Stack with 4pt offset, z-index by creation |
+
+**Conflict Badge:**
+```
+┌──────────────────────┐
+│ Task A        │ +2   │ ← Badge shows hidden count
+└──────────────────────┘
+```
+
+### Component Implementation
+
+**SwiftUI Usage:**
+```swift
+// Basic usage
+TaskCapsuleView(task: task)
+
+// Configured
+TaskCapsuleView(
+    task: task,
+    size: .medium,
+    context: .list,
+    showStripe: true,
+    onTap: { showDetail = true },
+    onComplete: { task.toggleCompletion() },
+    onDelete: { store.delete(task) }
+)
+
+// With modifiers
+TaskCapsuleView(task: task)
+    .dimmedCapsule(isFocusMode && !task.isActive)
+    .draggableCapsule(isDragging: $isDragging)
+    .addCapsuleAnimation() // For newly created tasks
+```
+
+**Available Modifiers:**
+- `.dimmedCapsule(_ isDimmed: Bool)` - Focus mode dimming
+- `.draggableCapsule(isDragging: Binding<Bool>)` - Drag state
+- `.addCapsuleAnimation()` - Entry animation
+
+### Design Tokens Reference
+
+```swift
+// Size configuration
+DS.CapsuleSize.small.height      // 44pt
+DS.CapsuleSize.medium.height     // 56pt
+DS.CapsuleSize.large.height      // 72pt
+
+DS.CapsuleSize.medium.titleFont  // .system(size: 16, weight: .semibold)
+DS.CapsuleSize.medium.iconSize   // 20pt
+DS.CapsuleSize.medium.checkboxSize // 24pt
+
+// State configuration
+DS.CapsuleState.completed.opacity       // 0.55
+DS.CapsuleState.pressed.scale           // 0.97
+DS.CapsuleState.dragged.scale           // 1.15
+DS.CapsuleState.dimmed.opacity          // 0.3
+DS.CapsuleState.completed.showCheckmark // true
+DS.CapsuleState.overdue.showWarningBadge // true
+
+// Context
+DS.CapsuleContext.list      // Full-width list
+DS.CapsuleContext.timeline  // Positioned in timeline
+DS.CapsuleContext.widget    // Compact widget display
+```
 
 ---
 
