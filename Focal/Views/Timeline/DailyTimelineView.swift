@@ -7,12 +7,13 @@ struct DailyTimelineView: View {
     var onClose: (() -> Void)?
 
     private let timelineStartHour = 6
-    private let timelineEndHour = 22
+    private let timelineEndHour = 23  // Aligned with weekly view (was 22)
     private let minuteHeight: CGFloat = 0.5
     private var timelineVerticalPadding: CGFloat { DS.Spacing.md }
     private var timelineBottomPadding: CGFloat { DS.Sizes.bottomNavHeight + DS.Spacing.md }
     private var timelineLineOffset: CGFloat {
-        DS.Sizes.timeLabelWidth + DS.Spacing.sm + DS.Spacing.sm + DS.Sizes.taskPillDefault / 2
+        // Aligned with weekly view: time label width + spacing to content
+        DS.Sizes.timeLabelWidth + DS.Spacing.sm
     }
 
     var body: some View {
@@ -98,7 +99,7 @@ struct DailyTimelineView: View {
         }
         .background(DS.Colors.surfacePrimary)
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxxl, style: .continuous))
-        .shadow(color: Color.black.opacity(0.06), radius: 24, y: -4)
+        .shadow(color: DS.Colors.overlay.opacity(0.08), radius: 24, y: -4)
         .transition(.move(edge: .bottom).combined(with: .opacity))
         .sheet(isPresented: $showAddTask) {
             PlannerTaskCreationSheet()

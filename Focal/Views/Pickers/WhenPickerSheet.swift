@@ -77,7 +77,7 @@ struct WhenPickerSheet: View {
                             .scaledFont(size: 11, weight: .semibold, relativeTo: .caption)
                             .foregroundStyle(DS.Colors.accent)
                     }
-                    .shadow(color: Color.black.opacity(0.06), radius: 4, y: 2)
+                    .shadowResting()
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel("Done")

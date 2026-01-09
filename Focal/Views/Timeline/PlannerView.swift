@@ -231,7 +231,7 @@ private struct TaskPreviewSheet: View {
         }
         .background(DS.Colors.surfacePrimary)
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxl, style: .continuous))
-        .shadow(color: Color.black.opacity(0.12), radius: 20, y: 6)
+        .shadowLifted()
         .offset(y: dragOffset < 0 ? dragOffset * 0.15 : 0)
         .contentShape(Rectangle())
         .simultaneousGesture(
@@ -269,7 +269,7 @@ private struct TaskPreviewIcon: View {
                 .fill(
                     LinearGradient(
                         colors: [
-                            Color.white.opacity(0.25),
+                            DS.Colors.textInverse.opacity(0.25),
                             Color.clear,
                             Color.black.opacity(0.15)
                         ],
@@ -285,8 +285,7 @@ private struct TaskPreviewIcon: View {
                 .scaledFont(size: 18, relativeTo: .title3)
         }
         .frame(width: 44, height: 44)
-        .shadow(color: task.color.color.opacity(0.35), radius: 6, y: 3)
-        .shadow(color: Color.black.opacity(0.12), radius: 4, y: 2)
+        .shadowColored(task.color.color)
         .opacity(task.isCompleted ? 0.65 : 1)
     }
 }

@@ -13,15 +13,15 @@ struct FABButton: View {
                     .fill(
                         LinearGradient(
                             gradient: Gradient(colors: [
-                                DS.Colors.stone700,
-                                DS.Colors.stone900
+                                DS.Colors.primary,
+                                DS.Colors.secondary
                             ]),
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
                     )
                     .frame(width: DS.Sizes.fabSize, height: DS.Sizes.fabSize)
-                    .shadow(color: DS.Colors.stone900.opacity(0.3), radius: 16, x: 0, y: 8)
+                    .shadowLifted()
                 
                 Image(systemName: "plus")
                     .scaledFont(size: 28, weight: .semibold, relativeTo: .title)
@@ -57,7 +57,7 @@ struct CompactFABButton: View {
                     .foregroundStyle(DS.Colors.primary)
             }
             .frame(width: size, height: size)
-            .shadow(color: Color.black.opacity(0.18), radius: 10, y: 4)
+            .shadowLifted()
         }
         .buttonStyle(PressableStyle(scaleAmount: 0.97))
         .accessibilityLabel("Add new task")

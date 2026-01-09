@@ -96,7 +96,7 @@ struct TaskCardView: View {
             }
             .buttonStyle(.plain)
             .simultaneousGesture(
-                LongPressGesture(minimumDuration: 0.35)
+                LongPressGesture(minimumDuration: 0.25)  // Aligned with weekly view for consistency
                     .onEnded { _ in
                         onLongPress?()
                     }
@@ -192,7 +192,7 @@ struct DayViewTaskPill: View {
                 .fill(
                     LinearGradient(
                         colors: [
-                            Color.white.opacity(0.25),
+                            DS.Colors.textInverse.opacity(0.25),
                             Color.clear,
                             Color.black.opacity(0.15)
                         ],
@@ -208,8 +208,7 @@ struct DayViewTaskPill: View {
                 .scaledFont(size: 20, relativeTo: .title3)
         }
         .frame(width: pillWidth, height: pillHeight)
-        .shadow(color: task.color.color.opacity(0.45), radius: 8, y: 4)
-        .shadow(color: Color.black.opacity(0.12), radius: 4, y: 2)
+        .shadowColored(task.color.color)
     }
 
     private var pillHeight: CGFloat {
@@ -240,7 +239,7 @@ struct CompactTaskCard: View {
                         .fill(
                             LinearGradient(
                                 colors: [
-                                    Color.white.opacity(0.25),
+                                    DS.Colors.textInverse.opacity(0.25),
                                     Color.clear,
                                     Color.black.opacity(0.15)
                                 ],
@@ -257,7 +256,7 @@ struct CompactTaskCard: View {
                     Text(task.icon)
                         .scaledFont(size: 16, relativeTo: .headline)
                 }
-                .shadow(color: task.color.color.opacity(0.35), radius: 4, y: 2)
+                .shadowColored(task.color.color)
 
                 // Title
                 Text(task.title)

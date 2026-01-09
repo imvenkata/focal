@@ -48,7 +48,7 @@ struct AddTaskSheet: View {
                                 .scaledFont(size: 11, weight: .semibold, relativeTo: .caption)
                                 .foregroundStyle(DS.Colors.textSecondary)
                         }
-                        .shadow(color: Color.black.opacity(0.06), radius: 4, y: 2)
+                        .shadowResting()
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel("Close")
@@ -319,7 +319,7 @@ struct EditableTaskPreviewCardWithColors: View {
                         .fill(
                             LinearGradient(
                                 colors: [
-                                    Color.white.opacity(0.25),
+                                    DS.Colors.textInverse.opacity(0.25),
                                     Color.clear,
                                     Color.black.opacity(0.15)
                                 ],
@@ -335,8 +335,7 @@ struct EditableTaskPreviewCardWithColors: View {
                         .scaledFont(size: 20, relativeTo: .title3)
                 }
                 .frame(width: 40, height: 40)
-                .shadow(color: selectedColor.color.opacity(0.4), radius: 6, y: 3)
-                .shadow(color: Color.black.opacity(0.1), radius: 3, y: 2)
+                .shadowColored(selectedColor.color)
             }
             .accessibilityLabel("Choose icon")
             .accessibilityValue(icon)
@@ -409,7 +408,7 @@ struct CircularColorPicker: View {
                                 .frame(width: 20, height: 20)
                         }
                     }
-                    .shadow(color: color.color.opacity(0.4), radius: 4, y: 2)
+                    .shadowResting()
                 }
                 .buttonStyle(.plain)
                 .offset(x: x, y: y)
@@ -442,7 +441,7 @@ struct CircularColorPicker: View {
                         .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
                         .foregroundStyle(DS.Colors.textSecondary)
                 }
-                .shadow(color: Color.black.opacity(0.08), radius: 4, y: 2)
+                .shadowResting()
             }
             .buttonStyle(.plain)
         }
@@ -475,7 +474,7 @@ struct EditableTaskPreviewCard: View {
                         .fill(
                             LinearGradient(
                                 colors: [
-                                    Color.white.opacity(0.25),
+                                    DS.Colors.textInverse.opacity(0.25),
                                     Color.clear,
                                     Color.black.opacity(0.15)
                                 ],
@@ -491,8 +490,7 @@ struct EditableTaskPreviewCard: View {
                         .scaledFont(size: 20, relativeTo: .title3)
                 }
                 .frame(width: 40, height: 40)
-                .shadow(color: color.color.opacity(0.4), radius: 6, y: 3)
-                .shadow(color: Color.black.opacity(0.1), radius: 3, y: 2)
+                .shadowColored(color.color)
             }
             .accessibilityLabel("Choose icon")
             .accessibilityValue(icon)
@@ -545,7 +543,7 @@ struct TaskPreviewCard: View {
                     .fill(
                         LinearGradient(
                             colors: [
-                                Color.white.opacity(0.25),
+                                DS.Colors.textInverse.opacity(0.25),
                                 Color.clear,
                                 Color.black.opacity(0.15)
                             ],
@@ -561,8 +559,7 @@ struct TaskPreviewCard: View {
                     .scaledFont(size: 20, relativeTo: .title3)
             }
             .frame(width: 40, height: 40)
-            .shadow(color: color.color.opacity(0.4), radius: 6, y: 3)
-            .shadow(color: Color.black.opacity(0.1), radius: 3, y: 2)
+            .shadowColored(color.color)
 
             VStack(alignment: .leading, spacing: DS.Spacing.xs) {
                 Text(title)
@@ -698,7 +695,7 @@ struct FullColorPickerSheet: View {
                                             .frame(width: 48, height: 48)
                                     }
                                 }
-                                .shadow(color: color.color.opacity(0.3), radius: 8, y: 4)
+                                .shadowColored(color.color)
 
                                 Text(color.displayName)
                                     .scaledFont(size: 12, weight: .medium, relativeTo: .caption)

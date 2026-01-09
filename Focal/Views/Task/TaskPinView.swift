@@ -17,7 +17,7 @@ struct TaskPinView: View {
                     .fill(
                         LinearGradient(
                             colors: [
-                                Color.white.opacity(0.25),
+                                DS.Colors.textInverse.opacity(0.25),
                                 Color.clear,
                                 Color.black.opacity(0.15)
                             ],
@@ -34,8 +34,7 @@ struct TaskPinView: View {
                 Text(task.icon)
                     .scaledFont(size: size * 0.5, relativeTo: .title3)
             }
-            .shadow(color: task.color.color.opacity(0.45), radius: 10, y: 5)
-            .shadow(color: Color.black.opacity(0.15), radius: 6, y: 3)
+            .shadowColored(task.color.color)
             .opacity(task.isCompleted ? 0.65 : 1)
             .overlay {
                 if task.isCompleted {
@@ -164,8 +163,7 @@ struct LiquidGlassCapsuleView: View {
                 .stroke(accentTint.opacity(0.28), lineWidth: DS.Sizes.hairline)
         }
         .frame(width: capsuleWidth, height: capsuleHeight)
-        .shadow(color: accentTint.opacity(0.2), radius: 10, y: 5)
-        .shadow(color: Color.black.opacity(0.08), radius: 6, y: 3)
+        .shadowResting()
         .overlay(content)
     }
     
@@ -253,7 +251,7 @@ struct GlassIconPip: View {
                 .scaledFont(size: iconSize, weight: .semibold, relativeTo: .caption)
         }
         .frame(width: size, height: size)
-        .shadow(color: accentTint.opacity(0.12), radius: 4, y: 2)
+        .shadowResting()
     }
 
     private var accentTint: Color {

@@ -101,8 +101,9 @@ enum Colors {
     static let cardBackground = Color("CardBackground")
     
     // Text
-    static let textPrimary = Color.primary // Adapts automatically
-    static let textSecondary = Color.secondary
+    static let textPrimary = Color("TextPrimary")
+    static let textSecondary = Color("TextSecondary")
+    static let textTertiary = Color("TextTertiary")
     
     // Task colors remain the same (vibrant in both modes)
     static let coral = Color(hex: "#E8847C")

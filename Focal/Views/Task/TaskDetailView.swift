@@ -271,7 +271,7 @@ struct TaskDetailView: View {
                     .padding(.bottom, DS.Spacing.xxl)
                     .background(DS.Colors.surfacePrimary)
                     .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxxl, style: .continuous))
-                    .shadow(color: .black.opacity(0.08), radius: 24, x: 0, y: -DS.Spacing.xs)
+                    .shadow(color: DS.Colors.overlay.opacity(0.12), radius: 24, x: 0, y: -DS.Spacing.xs)
                     .padding(.top, -DS.Spacing.lg)
                 }
             }
@@ -486,7 +486,7 @@ private struct TaskDetailHeader: View {
                                     Circle()
                                         .stroke(task.color.color, lineWidth: DS.Spacing.xs / 2)
                                 )
-                                .shadow(color: .black.opacity(0.12), radius: 8, x: 0, y: 4)
+                                .shadowResting()
                         }
                         .buttonStyle(.plain)
                         .offset(x: -DS.Spacing.sm, y: DS.Spacing.sm)
@@ -615,7 +615,7 @@ private struct TaskDetailPill: View {
                 .fill(
                     LinearGradient(
                         colors: [
-                            Color.white.opacity(0.25),
+                            DS.Colors.textInverse.opacity(0.25),
                             Color.clear,
                             Color.black.opacity(0.15)
                         ],
@@ -632,8 +632,7 @@ private struct TaskDetailPill: View {
             Text(task.icon)
                 .scaledFont(size: DS.Sizes.taskPillLarge * 0.5, relativeTo: .title2)
         }
-        .shadow(color: task.color.color.opacity(0.45), radius: 12, y: 6)
-        .shadow(color: Color.black.opacity(0.15), radius: 8, y: 4)
+        .shadowColored(task.color.color)
         .opacity(task.isCompleted ? 0.65 : 1)
     }
 }
@@ -672,7 +671,7 @@ private struct TaskDetailColorPicker: View {
         .padding(DS.Spacing.md)
         .background(DS.Colors.surfacePrimary)
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xl, style: .continuous))
-        .shadow(color: .black.opacity(0.12), radius: 12, x: 0, y: 6)
+        .shadowLifted()
     }
 }
 

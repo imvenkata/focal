@@ -116,29 +116,23 @@ Text("Title").font(.title2.weight(.bold))
 | Level | Shadow | Use Case |
 |-------|--------|----------|
 | `flat` | none | Inline elements, dividers |
-| `raised` | `0 2px 4px rgba(0,0,0,0.06)` | Cards at rest |
-| `elevated` | `0 4px 12px rgba(0,0,0,0.08)` | Floating cards, dropdowns |
-| `floating` | `0 8px 20px rgba(0,0,0,0.12)` | FAB, modals |
-| `overlay` | `0 16px 32px rgba(0,0,0,0.16)` | Sheets, full overlays |
-| `colored` | `0 4px 8px {color}@45%` | Task pills with brand color |
+| `resting` | `0 1px 4px overlay@8%` | Cards at rest, quiet surfaces |
+| `lifted` | `0 6px 12px overlay@16%` | Pressed/dragged, focus surfaces |
+| `colored` | `0 4px 8px {color}@25%` | Task accents, active pills (sparingly) |
 
 ```swift
 // Shadow implementations
 extension View {
-    func shadowRaised() -> some View {
-        self.shadow(color: .black.opacity(0.06), radius: 4, x: 0, y: 2)
+    func shadowResting() -> some View {
+        self.shadow(color: DS.Colors.overlay.opacity(0.08), radius: 4, x: 0, y: 1)
     }
 
-    func shadowElevated() -> some View {
-        self.shadow(color: .black.opacity(0.08), radius: 12, x: 0, y: 4)
-    }
-
-    func shadowFloating() -> some View {
-        self.shadow(color: .black.opacity(0.12), radius: 20, x: 0, y: 8)
+    func shadowLifted() -> some View {
+        self.shadow(color: DS.Colors.overlay.opacity(0.16), radius: 12, x: 0, y: 6)
     }
 
     func shadowColored(_ color: Color) -> some View {
-        self.shadow(color: color.opacity(0.45), radius: 8, x: 0, y: 4)
+        self.shadow(color: color.opacity(0.25), radius: 8, x: 0, y: 4)
     }
 }
 ```
@@ -318,7 +312,7 @@ The palette is designed to be distinguishable for common color vision deficienci
 | Corner radius | 50% (circle) |
 | Background | Linear gradient stone700 → stone900 |
 | Icon | 28pt, white, "plus" |
-| Shadow | `0 8px 16px stone900@30%` |
+| Shadow | `shadowLifted` |
 | Press state | scale 0.95 |
 
 ### Cards
@@ -351,7 +345,7 @@ The palette is designed to be distinguishable for common color vision deficienci
 | Corner radius | 12pt |
 | Background | Task color + gradient overlay |
 | Border | 1.5pt saturated color |
-| Shadow | Colored shadow 45% opacity |
+| Shadow | `shadowColored` (25% opacity), optional |
 | Icon size | 20pt centered |
 
 #### Standard Card
@@ -360,7 +354,7 @@ The palette is designed to be distinguishable for common color vision deficienci
 | Padding | 16pt |
 | Corner radius | 16pt |
 | Background | `bgSecondary` |
-| Shadow | shadowRaised |
+| Shadow | `shadowResting` |
 
 ### Chips & Tags
 
@@ -391,7 +385,7 @@ The palette is designed to be distinguishable for common color vision deficienci
 |----------|-------|
 | Size | 32pt circle (touch: 44pt) |
 | Selected indicator | 2pt white inner ring |
-| Shadow | colored shadow |
+| Shadow | `shadowColored` (subtle) |
 
 ### Calendar Blocks
 
@@ -505,7 +499,7 @@ See Task Card above. Additional variants:
 | Corner radius | 24pt |
 | Padding | 24pt |
 | Background | `bgSecondary` |
-| Shadow | shadowOverlay |
+| Shadow | `shadowLifted` |
 
 ### Navigation
 
@@ -540,7 +534,7 @@ See Task Card above. Additional variants:
 | Background | `stone100` |
 | Border | 1pt `stone200` |
 | Icon | 11pt semibold, `stone500` |
-| Shadow | subtle |
+| Shadow | `shadowResting` |
 
 ---
 
@@ -572,7 +566,7 @@ The Task Capsule is the primary UI element for displaying tasks in Focal. This s
 | Corner radius | `DS.Radius.md` (12pt) | Consistent with cards |
 | Background | Clear (default), tinted (active/overdue) | State-dependent |
 | Border | None (default), 1.5pt color (active) | Subtle emphasis |
-| Shadow | `shadowRaised` default | `shadowColored` when active |
+| Shadow | `shadowResting` (optional) | `shadowColored` when active |
 | Stripe | 3pt vertical bar, full height | Category color accent |
 
 **Variant Options:**
@@ -606,7 +600,7 @@ Rectangle()
 - Background: Task category color
 - Gradient overlay: white 25% → clear → black 15%
 - Border: 1pt saturated color
-- Shadow: Colored shadow at 35% opacity
+- Shadow: `shadowColored` (25% opacity)
 
 **Text Colors by State:**
 
@@ -622,12 +616,12 @@ Rectangle()
 
 | State | Background | Border | Opacity | Scale | Shadow | Special Treatment |
 |-------|------------|--------|---------|-------|--------|-------------------|
-| `default` | clear | none | 1.0 | 1.0 | raised | - |
-| `pressed` | clear | none | 1.0 | 0.97 | raised | brightness -8% |
+| `default` | clear | none | 1.0 | 1.0 | resting | - |
+| `pressed` | clear | none | 1.0 | 0.97 | resting | brightness -8% |
 | `selected` | lightColor@50% | color 1.5pt | 1.0 | 1.0 | colored | Ring indicator |
 | `completed` | clear | none | 0.55 | 1.0 | none | Strikethrough, checkmark |
-| `overdue` | `dangerLight` | `danger` 1pt | 1.0 | 1.0 | raised | Warning badge |
-| `dragged` | clear | none | 1.0 | 1.15 | floating | Rotation ±2°, shake |
+| `overdue` | `dangerLight` | `danger` 1pt | 1.0 | 1.0 | resting | Warning badge |
+| `dragged` | clear | none | 1.0 | 1.05 | lifted | Subtle lift only |
 | `disabled` | `stone100` | none | 0.4 | 1.0 | none | Non-interactive |
 | `dimmed` | clear | none | 0.3 | 1.0 | none | Focus mode inactive |
 
@@ -649,8 +643,8 @@ private var capsuleState: DS.CapsuleState {
 | **Add** | scale(0→1) + opacity | `bounce` (0.3s) | success | opacity only, 0.1s |
 | **Complete** | checkmark scale in | `spring` (0.4s) | success | instant |
 | **Press** | scale(0.97), brightness -8% | `quick` (0.25s) | light | brightness only |
-| **Drag start** | scale(1.15), shadow enhance | `interactiveSpring` | heavy | scale only |
-| **Dragging** | sine rotation ±2° | continuous | soft (on move) | disabled |
+| **Drag start** | scale(1.05), shadowLifted | `interactiveSpring` | heavy | scale only |
+| **Dragging** | steady lift + scale | continuous | selection on snap (optional) | disabled |
 | **Drop** | scale(1.0), snap to position | `spring` (0.4s) | success | instant |
 | **Expand** | matchedGeometryEffect | `gentle` (0.5s) | medium | crossfade |
 | **Delete** | offset + opacity(0) | `easeOut` (0.2s) | warning | opacity only |
@@ -659,25 +653,17 @@ private var capsuleState: DS.CapsuleState {
 ```swift
 struct DraggableCapsuleModifier: ViewModifier {
     @Binding var isDragging: Bool
-    @State private var rotationAngle: Double = 0
 
     func body(content: Content) -> some View {
-        content
-            .scaleEffect(isDragging ? 1.15 : 1.0)
-            .rotationEffect(.degrees(isDragging ? rotationAngle : 0))
-            .shadow(color: isDragging ? .black.opacity(0.2) : .clear,
-                    radius: isDragging ? 20 : 0, y: isDragging ? 10 : 0)
-            .animation(.interactiveSpring(response: 0.15, dampingFraction: 0.8))
-            .onChange(of: isDragging) { dragging in
-                if dragging {
-                    // Continuous shake animation
-                    withAnimation(.linear(duration: 0.1).repeatForever(autoreverses: true)) {
-                        rotationAngle = 2
-                    }
-                } else {
-                    rotationAngle = 0
-                }
-            }
+        let base = content
+            .scaleEffect(isDragging ? 1.05 : 1.0)
+            .animation(.interactiveSpring(response: 0.18, dampingFraction: 0.85))
+
+        if isDragging {
+            base.shadowLifted()
+        } else {
+            base
+        }
     }
 }
 ```
@@ -816,7 +802,7 @@ DS.CapsuleSize.medium.checkboxSize // 24pt
 // State configuration
 DS.CapsuleState.completed.opacity       // 0.55
 DS.CapsuleState.pressed.scale           // 0.97
-DS.CapsuleState.dragged.scale           // 1.15
+DS.CapsuleState.dragged.scale           // 1.05
 DS.CapsuleState.dimmed.opacity          // 0.3
 DS.CapsuleState.completed.showCheckmark // true
 DS.CapsuleState.overdue.showWarningBadge // true
@@ -1345,21 +1331,6 @@ enum DS {
         static func body(weight: Font.Weight) -> Font { .body.weight(weight) }
     }
 
-    // MARK: - Shadows
-    enum Shadows {
-        static func raised() -> some View {
-            Color.black.opacity(0.06).blur(radius: 4).offset(y: 2)
-        }
-
-        static func elevated() -> some View {
-            Color.black.opacity(0.08).blur(radius: 12).offset(y: 4)
-        }
-
-        static func floating() -> some View {
-            Color.black.opacity(0.12).blur(radius: 20).offset(y: 8)
-        }
-    }
-
     // MARK: - Haptics
     enum Haptics {
         static func light() { HapticManager.shared.impact(.light) }
@@ -1378,33 +1349,37 @@ extension View {
     // Card styles
     func cardStyle() -> some View {
         self
-            .background(DS.Colors.bgSecondary)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
-            .shadow(color: .black.opacity(0.06), radius: 12, x: 0, y: 4)
+            .background(DS.Colors.surfacePrimary)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous)
+                    .stroke(DS.Colors.borderSubtle, lineWidth: DS.Sizes.hairline)
+            )
+            .shadowResting()
     }
 
     func elevatedStyle() -> some View {
         self
-            .background(DS.Colors.bgSecondary)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
-            .shadow(color: .black.opacity(0.1), radius: 20, x: 0, y: 8)
+            .background(DS.Colors.surfacePrimary)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous)
+                    .stroke(DS.Colors.borderSubtle.opacity(0.6), lineWidth: DS.Sizes.hairline)
+            )
+            .shadowLifted()
     }
 
     // Shadow helpers
-    func shadowRaised() -> some View {
-        self.shadow(color: .black.opacity(0.06), radius: 4, x: 0, y: 2)
+    func shadowResting() -> some View {
+        self.shadow(color: DS.Colors.overlay.opacity(0.08), radius: 4, x: 0, y: 1)
     }
 
-    func shadowElevated() -> some View {
-        self.shadow(color: .black.opacity(0.08), radius: 12, x: 0, y: 4)
-    }
-
-    func shadowFloating() -> some View {
-        self.shadow(color: .black.opacity(0.12), radius: 20, x: 0, y: 8)
+    func shadowLifted() -> some View {
+        self.shadow(color: DS.Colors.overlay.opacity(0.16), radius: 12, x: 0, y: 6)
     }
 
     func shadowColored(_ color: Color) -> some View {
-        self.shadow(color: color.opacity(0.45), radius: 8, x: 0, y: 4)
+        self.shadow(color: color.opacity(0.25), radius: 8, x: 0, y: 4)
     }
 
     // Reduce motion helper
@@ -1420,7 +1395,7 @@ struct AdaptiveAnimationModifier<V: Equatable>: ViewModifier {
 
     func body(content: Content) -> some View {
         content.animation(
-            reduceMotion ? .linear(duration: 0.1) : animation,
+            reduceMotion ? DS.Animation.reduced : animation,
             value: value
         )
     }
@@ -1509,7 +1484,7 @@ struct GhostButtonStyle: ButtonStyle {
      .buttonStyle(SecondaryButtonStyle())
 
  // Shadows
- .shadowRaised()
+ .shadowResting()
  .shadowColored(task.color.color)
 
  // Cards

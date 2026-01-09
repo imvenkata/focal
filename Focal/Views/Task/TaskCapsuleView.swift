@@ -192,7 +192,7 @@ struct TaskCapsuleView: View {
                 .fill(
                     LinearGradient(
                         colors: [
-                            Color.white.opacity(0.25),
+                            DS.Colors.textInverse.opacity(0.25),
                             Color.clear,
                             Color.black.opacity(0.15)
                         ],
@@ -208,7 +208,7 @@ struct TaskCapsuleView: View {
                 .font(.system(size: size.iconSize))
         }
         .frame(width: size.iconSize + 12, height: size.iconSize + 12)
-        .shadow(color: task.color.color.opacity(0.35), radius: 4, y: 2)
+        .shadowColored(task.color.color)
     }
 
     // MARK: - Title Section
@@ -408,30 +408,16 @@ private struct CapsuleButtonStyle: ButtonStyle {
 
 struct DraggableCapsuleModifier: ViewModifier {
     @Binding var isDragging: Bool
-    @State private var rotationAngle: Double = 0
 
     func body(content: Content) -> some View {
-        content
-            .scaleEffect(isDragging ? 1.15 : 1.0)
-            .rotationEffect(.degrees(isDragging ? rotationAngle : 0))
-            .shadow(
-                color: isDragging ? .black.opacity(0.2) : .clear,
-                radius: isDragging ? 20 : 0,
-                y: isDragging ? 10 : 0
-            )
-            .animation(.interactiveSpring(response: 0.15, dampingFraction: 0.8), value: isDragging)
-            .onChange(of: isDragging) { _, dragging in
-                if dragging {
-                    startShakeAnimation()
-                } else {
-                    rotationAngle = 0
-                }
-            }
-    }
+        let base = content
+            .scaleEffect(isDragging ? 1.05 : 1.0)
+            .animation(.interactiveSpring(response: 0.18, dampingFraction: 0.85), value: isDragging)
 
-    private func startShakeAnimation() {
-        withAnimation(.linear(duration: 0.1).repeatForever(autoreverses: true)) {
-            rotationAngle = 2
+        if isDragging {
+            base.shadowLifted()
+        } else {
+            base
         }
     }
 }

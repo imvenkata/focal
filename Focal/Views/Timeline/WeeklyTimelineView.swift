@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 // MARK: - Column Frame Preference Key
 private struct ColumnFramePreferenceKey: PreferenceKey {
@@ -9,10 +10,16 @@ private struct ColumnFramePreferenceKey: PreferenceKey {
     }
 }
 
+private enum AutoScrollDirection {
+    case up
+    case down
+}
+
 struct WeeklyTimelineView: View {
     @Environment(TaskStore.self) private var taskStore
     @Environment(TaskDragState.self) private var dragState
     var onTaskTap: (TaskItem) -> Void = { _ in }
+    @State private var scrollView: UIScrollView?
 
     private let timelineStartHour = 6
     private let timelineEndHour = 23
@@ -20,6 +27,10 @@ struct WeeklyTimelineView: View {
         DS.Sizes.weekTimelineHeight / CGFloat(timelineEndHour - timelineStartHour)
     }
     private let gridStride = 3
+    // Auto-scroll configuration (timer managed via onChange)
+    @State private var autoScrollTimer: Timer?
+    private let autoScrollEdgeThreshold: CGFloat = DS.Spacing.xxxxl
+    private let autoScrollMaxSpeed: CGFloat = DS.Sizes.weekTimelineHeight
 
     var body: some View {
         VStack(spacing: 0) {
@@ -97,6 +108,26 @@ struct WeeklyTimelineView: View {
                     .padding(.bottom, DS.Spacing.lg)
                     .animation(DS.Animation.quick, value: dragState.isDragging)
             }
+            .scrollDisabled(dragState.isDragging)
+            .background(ScrollViewIntrospector { scrollView in
+                self.scrollView = scrollView
+            })
+            .onChange(of: dragState.isDragging) { _, isDragging in
+                if isDragging {
+                    // Start auto-scroll timer only when dragging
+                    autoScrollTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / 60.0, repeats: true) { _ in
+                        handleAutoScrollTick()
+                    }
+                } else {
+                    // Stop timer when not dragging to save CPU
+                    autoScrollTimer?.invalidate()
+                    autoScrollTimer = nil
+                }
+            }
+            .onDisappear {
+                autoScrollTimer?.invalidate()
+                autoScrollTimer = nil
+            }
         }
         .transition(.opacity)
     }
@@ -121,6 +152,81 @@ struct WeeklyTimelineView: View {
         let minute = now.minute
         let hoursSinceStart = CGFloat(hour - timelineStartHour) + CGFloat(minute) / 60.0
         return hoursSinceStart * hourHeight
+    }
+
+    private func handleAutoScrollTick() {
+        guard dragState.isDragging, let scrollView else { return }
+
+        let frame = scrollView.convert(scrollView.bounds, to: nil)
+        let dragY = dragState.dragLocation.y
+        let topTrigger = frame.minY + autoScrollEdgeThreshold
+        let bottomTrigger = frame.maxY - autoScrollEdgeThreshold
+
+        var direction: AutoScrollDirection?
+        var intensity: CGFloat = 0
+
+        if dragY < topTrigger {
+            direction = .up
+            intensity = min(1, (topTrigger - dragY) / autoScrollEdgeThreshold)
+        } else if dragY > bottomTrigger {
+            direction = .down
+            intensity = min(1, (dragY - bottomTrigger) / autoScrollEdgeThreshold)
+        }
+
+        guard let direction else { return }
+
+        let speed = autoScrollMaxSpeed * intensity
+        let delta = speed * (1.0 / 60.0)
+        let signedDelta = direction == .up ? -delta : delta
+
+        let minOffset = -scrollView.adjustedContentInset.top
+        let maxOffset = max(
+            scrollView.contentSize.height - scrollView.bounds.height + scrollView.adjustedContentInset.bottom,
+            minOffset
+        )
+
+        let newOffset = min(max(scrollView.contentOffset.y + signedDelta, minOffset), maxOffset)
+
+        guard abs(newOffset - scrollView.contentOffset.y) > 0.1 else { return }
+        scrollView.setContentOffset(CGPoint(x: 0, y: newOffset), animated: false)
+        dragState.updateDrag(location: dragState.dragLocation)
+    }
+}
+
+private struct ScrollViewIntrospector: UIViewRepresentable {
+    let onResolve: (UIScrollView) -> Void
+
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView(frame: .zero)
+        resolveScrollView(from: view)
+        return view
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {
+        resolveScrollView(from: uiView)
+    }
+
+    private func resolveScrollView(from view: UIView) {
+        DispatchQueue.main.async {
+            if let scrollView = view.findScrollView() {
+                onResolve(scrollView)
+            }
+        }
+    }
+}
+
+private extension UIView {
+    func findScrollView() -> UIScrollView? {
+        var current: UIView? = self
+
+        while let view = current {
+            if let scrollView = view as? UIScrollView {
+                return scrollView
+            }
+            current = view.superview
+        }
+
+        return nil
     }
 }
 
@@ -184,12 +290,31 @@ struct DayColumn: View {
             // Drop target highlight background
             if isDropTarget {
                 RoundedRectangle(cornerRadius: DS.Radius.md)
-                    .fill(DS.Colors.accent.opacity(0.12))
-                .overlay(
-                    RoundedRectangle(cornerRadius: DS.Radius.md)
-                        .stroke(DS.Colors.accent.opacity(0.4), style: StrokeStyle(lineWidth: 2, dash: [6, 4]))
-                )
+                    .fill(DS.Colors.accent.opacity(0.08))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: DS.Radius.md)
+                            .stroke(DS.Colors.accent.opacity(0.35), style: StrokeStyle(lineWidth: 1.5, dash: [6, 4]))
+                    )
                     .transition(.opacity.combined(with: .scale(scale: 0.98)))
+            }
+
+            // Drop zone preview - shows where task will land
+            if isDropTarget, let task = dragState.draggedTask, let targetHour = dragState.targetHour {
+                let targetMinute = dragState.targetMinute
+                let hoursSinceStart = CGFloat(targetHour - startHour) + CGFloat(targetMinute) / 60.0
+                let previewYOffset = hoursSinceStart * hourHeight
+
+                RoundedRectangle(cornerRadius: DS.Radius.sm)
+                    .fill(DS.Colors.accent.opacity(0.2))
+                    .frame(width: DS.Sizes.glassCapsuleWidth, height: DS.Sizes.glassCapsuleHeight)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: DS.Radius.sm)
+                            .stroke(DS.Colors.accent.opacity(0.5), lineWidth: 1.5)
+                    )
+                    .offset(y: previewYOffset)
+                    .transition(.opacity.combined(with: .scale(scale: 0.9)))
+                    .animation(DS.Animation.quick, value: targetHour)
+                    .animation(DS.Animation.quick, value: targetMinute)
             }
 
             // Grid lines
@@ -231,6 +356,7 @@ struct DayColumn: View {
 
             // Task pins
             ForEach(tasks) { task in
+                let isBeingDragged = dragState.isDraggedTask(task)
                 TaskPinPosition(
                     task: task,
                     hourHeight: hourHeight,
@@ -243,7 +369,10 @@ struct DayColumn: View {
                         }
                     }
                 )
-                .opacity(dragState.isDraggedTask(task) ? 0.3 : 1)
+                // Ghost effect for source pill when dragging
+                .opacity(isBeingDragged ? 0.15 : 1)
+                .blur(radius: isBeingDragged ? 2 : 0)
+                .animation(DS.Animation.quick, value: isBeingDragged)
             }
 
         }
@@ -281,8 +410,9 @@ struct TaskPinPosition: View {
     let onTap: () -> Void
     var onDrop: ((TaskItem, Int, Int, Int) -> Void)? = nil  // task, dayIndex, hour, minute
 
-    private let longPressThreshold: TimeInterval = 0.2
-    private let dragDistanceThreshold: CGFloat = 5
+    // Unified thresholds for consistent gesture feel across daily/weekly views
+    private let longPressThreshold: TimeInterval = 0.25
+    private let dragDistanceThreshold: CGFloat = DS.Spacing.sm  // Slightly larger for less accidental activation
 
     private var isDragging: Bool {
         dragState.isDraggedTask(task)
@@ -293,19 +423,21 @@ struct TaskPinPosition: View {
     }
 
     var body: some View {
-        MiniTaskPin(task: task, hourHeight: hourHeight)
-            .scaleEffect(hasActivatedDrag || isDragging ? 1.15 : 1.0)
-            .rotationEffect(isDragging ? shakeRotation : .zero)
-            .shadow(
-                color: isDragging ? task.color.color.opacity(0.5) : .clear,
-                radius: isDragging ? 20 : 0,
-                y: isDragging ? 10 : 0
-            )
+        let base = MiniTaskPin(task: task, hourHeight: hourHeight)
+            .scaleEffect(hasActivatedDrag || isDragging ? 1.05 : 1.0)
             .offset(y: yOffset)
-            .animation(isDragging ? shakeAnimation : DS.Animation.bounce, value: isDragging)
-            .animation(DS.Animation.bounce, value: hasActivatedDrag)
-            .gesture(isRoutineMarker ? nil : dragGesture)
-            .accessibilityHint(isRoutineMarker ? "Routine marker" : "Hold to drag, tap to preview")
+            .animation(DS.Animation.gentle, value: isDragging)
+            .animation(DS.Animation.gentle, value: hasActivatedDrag)
+
+        Group {
+            if isDragging {
+                base.shadowLifted()
+            } else {
+                base
+            }
+        }
+        .gesture(isRoutineMarker ? nil : dragGesture)
+        .accessibilityHint(isRoutineMarker ? "Routine marker" : "Hold to drag, tap to preview")
     }
 
     private var dragGesture: some Gesture {
@@ -325,9 +457,10 @@ struct TaskPinPosition: View {
                 )
 
                 // Activate drag mode after holding for threshold time
-                if !hasActivatedDrag && elapsed >= longPressThreshold {
+                if !hasActivatedDrag && (elapsed >= longPressThreshold || distance >= dragDistanceThreshold) {
                     hasActivatedDrag = true
                     dragState.startDrag(task: task, columnIndex: columnIndex, location: value.location)
+                    dragState.updateDrag(location: value.location)
                 }
 
                 // Update drag location if in drag mode
@@ -361,14 +494,6 @@ struct TaskPinPosition: View {
             }
     }
 
-    private var shakeRotation: Angle {
-        .degrees(sin(Date().timeIntervalSinceReferenceDate * 25) * 2)
-    }
-
-    private var shakeAnimation: Animation {
-        Animation.linear(duration: 0.1).repeatForever(autoreverses: true)
-    }
-
     private var yOffset: CGFloat {
         let taskHour = task.startTime.hour
         let taskMinute = task.startTime.minute
@@ -390,15 +515,15 @@ struct DraggedCapsuleOverlay: View {
                 hourHeight: hourHeight,
                 overrideTime: dragState.formattedTargetTime
             )
-            .scaleEffect(1.2)
-            .rotationEffect(.degrees(sin(Date().timeIntervalSinceReferenceDate * 25) * 2.5))
-            .shadow(color: task.color.color.opacity(0.6), radius: 24, y: 12)
-            .shadow(color: Color.black.opacity(0.2), radius: 16, y: 8)
+            .scaleEffect(1.06)
+            .shadowLifted()
             .position(
                 x: dragState.dragLocation.x - geo.frame(in: .global).minX,
                 y: dragState.dragLocation.y - geo.frame(in: .global).minY
             )
-            .animation(.interactiveSpring(response: 0.15, dampingFraction: 0.8), value: dragState.dragLocation)
+            .transaction { transaction in
+                transaction.animation = nil
+            }
         }
         .allowsHitTesting(false)
     }

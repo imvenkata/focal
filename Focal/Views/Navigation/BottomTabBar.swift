@@ -33,7 +33,7 @@ struct BottomTabBar: View {
         .background(.ultraThinMaterial)
         .overlay(alignment: .top) {
             Rectangle()
-                .fill(DS.Colors.stone100)
+                .fill(DS.Colors.borderSubtle)
                 .frame(height: 1)
         }
         .overlay(alignment: .top) {
@@ -57,11 +57,11 @@ struct TabButton: View {
             VStack(spacing: DS.Spacing.xs) {
                 Image(systemName: tab.icon)
                     .scaledFont(size: 20, weight: isSelected ? .semibold : .regular, relativeTo: .body)
-                    .foregroundStyle(isSelected ? DS.Colors.stone800 : DS.Colors.stone400)
+                    .foregroundStyle(isSelected ? DS.Colors.textPrimary : DS.Colors.textTertiary)
 
                 Text(tab.label)
                     .scaledFont(size: 10, weight: .medium, relativeTo: .caption2)
-                    .foregroundStyle(isSelected ? DS.Colors.stone800 : DS.Colors.stone400)
+                    .foregroundStyle(isSelected ? DS.Colors.textPrimary : DS.Colors.textTertiary)
             }
             .frame(maxWidth: .infinity)
             .frame(height: DS.Sizes.minTouchTarget)
@@ -79,5 +79,5 @@ struct TabButton: View {
             print("Add tapped")
         })
     }
-    .background(DS.Colors.background)
+    .background(DS.Colors.bgPrimary)
 }

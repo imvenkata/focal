@@ -17,14 +17,10 @@
 		A10000001000000000000008 /* IconMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000008 /* IconMapper.swift */; };
 		A10000001000000000000009 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000009 /* HapticManager.swift */; };
 		A10000001000000000000010 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000010 /* DateExtensions.swift */; };
-		A10BB315BB394583A9F66BC45 /* ScaledFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B5219DBAD054D1545A12A03 /* ScaledFont.swift */; };
 		A10000001000000000000011 /* TaskStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000011 /* TaskStore.swift */; };
-		A10000001000000000000031 /* TaskDragState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000031 /* TaskDragState.swift */; };
 		A10000001000000000000012 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000012 /* Tab.swift */; };
 		A10000001000000000000013 /* BottomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000013 /* BottomTabBar.swift */; };
-		A18439BC0ACADDAA14905961A /* FABButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26DBE8B1DE2506AE8AD00664 /* FABButton.swift */; };
 		A10000001000000000000014 /* WeekSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000014 /* WeekSelector.swift */; };
-		A10B813E21666375B367175F3 /* SubtaskRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A282333FC8F8804A9C1BB400A /* SubtaskRow.swift */; };
 		A10000001000000000000015 /* StatsBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000015 /* StatsBar.swift */; };
 		A10000001000000000000016 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000016 /* ProgressBar.swift */; };
 		A10000001000000000000017 /* TaskPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000017 /* TaskPinView.swift */; };
@@ -34,18 +30,23 @@
 		A10000001000000000000021 /* DailyTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000021 /* DailyTimelineView.swift */; };
 		A10000001000000000000022 /* PlannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000022 /* PlannerView.swift */; };
 		A10000001000000000000023 /* AddTaskSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000023 /* AddTaskSheet.swift */; };
-		A10000001000000000000032 /* PlannerTaskCreationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000032 /* PlannerTaskCreationSheet.swift */; };
 		A10000001000000000000024 /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000024 /* TaskDetailView.swift */; };
 		A10000001000000000000025 /* DatePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000025 /* DatePickerSheet.swift */; };
-		F9E8D7C6B5A432109876 /* WhenPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F678901234 /* WhenPickerSheet.swift */; };
 		A10000001000000000000026 /* TimePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000026 /* TimePickerSheet.swift */; };
 		A10000001000000000000027 /* EnergyPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000027 /* EnergyPickerSheet.swift */; };
+		A10000001000000000000028 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000028 /* Assets.xcassets */; };
 		A10000001000000000000029 /* EmptyIntervalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000029 /* EmptyIntervalView.swift */; };
 		A10000001000000000000030 /* IconPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000030 /* IconPickerView.swift */; };
-		A10000001000000000000028 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000028 /* Assets.xcassets */; };
+		A10000001000000000000031 /* TaskDragState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000031 /* TaskDragState.swift */; };
+		A10000001000000000000032 /* PlannerTaskCreationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000032 /* PlannerTaskCreationSheet.swift */; };
+		A10B813E21666375B367175F3 /* SubtaskRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A282333FC8F8804A9C1BB400A /* SubtaskRow.swift */; };
+		A10BB315BB394583A9F66BC45 /* ScaledFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B5219DBAD054D1545A12A03 /* ScaledFont.swift */; };
+		A18439BC0ACADDAA14905961A /* FABButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26DBE8B1DE2506AE8AD00664 /* FABButton.swift */; };
+		F9E8D7C6B5A432109876 /* WhenPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F678901234 /* WhenPickerSheet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A1B2C3D4E5F678901234 /* WhenPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhenPickerSheet.swift; sourceTree = "<group>"; };
 		A20000001000000000000000 /* Focal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Focal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A20000001000000000000001 /* FocalApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocalApp.swift; sourceTree = "<group>"; };
 		A20000001000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -57,14 +58,10 @@
 		A20000001000000000000008 /* IconMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconMapper.swift; sourceTree = "<group>"; };
 		A20000001000000000000009 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		A20000001000000000000010 /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
-		A2B5219DBAD054D1545A12A03 /* ScaledFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaledFont.swift; sourceTree = "<group>"; };
 		A20000001000000000000011 /* TaskStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStore.swift; sourceTree = "<group>"; };
-		A20000001000000000000031 /* TaskDragState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDragState.swift; sourceTree = "<group>"; };
 		A20000001000000000000012 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		A20000001000000000000013 /* BottomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomTabBar.swift; sourceTree = "<group>"; };
-		A26DBE8B1DE2506AE8AD00664 /* FABButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FABButton.swift; sourceTree = "<group>"; };
 		A20000001000000000000014 /* WeekSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekSelector.swift; sourceTree = "<group>"; };
-		A282333FC8F8804A9C1BB400A /* SubtaskRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtaskRow.swift; sourceTree = "<group>"; };
 		A20000001000000000000015 /* StatsBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsBar.swift; sourceTree = "<group>"; };
 		A20000001000000000000016 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		A20000001000000000000017 /* TaskPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPinView.swift; sourceTree = "<group>"; };
@@ -74,15 +71,18 @@
 		A20000001000000000000021 /* DailyTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTimelineView.swift; sourceTree = "<group>"; };
 		A20000001000000000000022 /* PlannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlannerView.swift; sourceTree = "<group>"; };
 		A20000001000000000000023 /* AddTaskSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskSheet.swift; sourceTree = "<group>"; };
-		A20000001000000000000032 /* PlannerTaskCreationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlannerTaskCreationSheet.swift; sourceTree = "<group>"; };
 		A20000001000000000000024 /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
 		A20000001000000000000025 /* DatePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerSheet.swift; sourceTree = "<group>"; };
-		A1B2C3D4E5F678901234 /* WhenPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhenPickerSheet.swift; sourceTree = "<group>"; };
 		A20000001000000000000026 /* TimePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerSheet.swift; sourceTree = "<group>"; };
 		A20000001000000000000027 /* EnergyPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyPickerSheet.swift; sourceTree = "<group>"; };
+		A20000001000000000000028 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A20000001000000000000029 /* EmptyIntervalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyIntervalView.swift; sourceTree = "<group>"; };
 		A20000001000000000000030 /* IconPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconPickerView.swift; sourceTree = "<group>"; };
-		A20000001000000000000028 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A20000001000000000000031 /* TaskDragState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDragState.swift; sourceTree = "<group>"; };
+		A20000001000000000000032 /* PlannerTaskCreationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlannerTaskCreationSheet.swift; sourceTree = "<group>"; };
+		A26DBE8B1DE2506AE8AD00664 /* FABButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FABButton.swift; sourceTree = "<group>"; };
+		A282333FC8F8804A9C1BB400A /* SubtaskRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtaskRow.swift; sourceTree = "<group>"; };
+		A2B5219DBAD054D1545A12A03 /* ScaledFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaledFont.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -494,7 +494,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.focal.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.venkat.focal.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -524,7 +524,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.focal.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.venkat.focal.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

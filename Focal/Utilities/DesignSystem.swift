@@ -56,7 +56,7 @@ enum DS {
         static let textSecondary = Color("TextSecondary")
         static let textTertiary = Color("TextTertiary")
         static let textMuted = textTertiary
-        static let textInverse = Color.white
+        static let textInverse = Color("TextInverse")
 
         // Semantic - Border
         static let divider = Color("Divider")
@@ -88,40 +88,18 @@ enum DS {
         static let amber100 = amberLight
         static let amber600 = amber
 
-        // Neutral Scale (Stone)
-        static let stone50 = Color(hex: "#FAFAF9")
-        static let stone100 = Color(hex: "#F5F5F4")
-        static let stone200 = Color(hex: "#E7E5E4")
-        static let stone300 = Color(hex: "#D6D3D1")
-        static let stone400 = Color(hex: "#A8A29E")
-        static let stone500 = Color(hex: "#78716C")
-        static let stone700 = Color(hex: "#44403C")
-        static let stone800 = Color(hex: "#292524")
-        static let stone900 = Color(hex: "#1C1917")
-
-        // Planner (Dark Mode)
-        static let plannerBackground = Color(hex: "#0D0D0D")
-        static let plannerSurface = Color(hex: "#1A1A1A")
-        static let plannerSurfaceTertiary = Color(hex: "#2A2A2A")
-        static let plannerSurfaceElevated = Color(hex: "#333333")
-        static let plannerTextPrimary = Color(hex: "#FFFFFF")
-        static let plannerTextSecondary = Color(hex: "#FFFFFF").opacity(0.6)
-        static let plannerTextMuted = Color(hex: "#FFFFFF").opacity(0.4)
-        static let plannerDivider = Color(hex: "#FFFFFF").opacity(0.08)
-        static let plannerBlue = Color(hex: "#5B9BD5")
-
         // Glass Effect
-        static let glassFillStrong = stone900.opacity(0.48)
-        static let glassFill = stone900.opacity(0.36)
-        static let glassFillLight = stone900.opacity(0.28)
-        static let glassStroke = stone700.opacity(0.7)
-        static let glassHighlight = Color.white.opacity(0.24)
-        static let glassCurveHighlight = Color.white.opacity(0.12)
-        static let glassLineStart = stone400.opacity(0.9)
-        static let glassLineEnd = stone300.opacity(0.7)
-        static let glassShadow = Color.black.opacity(0.28)
-        static let glassTextPrimary = Color.white
-        static let glassTextSecondary = Color.white.opacity(0.78)
+        static let glassFillStrong = overlay.opacity(0.48)
+        static let glassFill = overlay.opacity(0.36)
+        static let glassFillLight = overlay.opacity(0.24)
+        static let glassStroke = borderStrong.opacity(0.7)
+        static let glassHighlight = textInverse.opacity(0.24)
+        static let glassCurveHighlight = textInverse.opacity(0.12)
+        static let glassLineStart = textSecondary.opacity(0.9)
+        static let glassLineEnd = textTertiary.opacity(0.7)
+        static let glassShadow = overlay.opacity(0.28)
+        static let glassTextPrimary = textInverse
+        static let glassTextSecondary = textInverse.opacity(0.78)
     }
 
     // MARK: - Spacing (4pt/8pt grid)
@@ -346,7 +324,7 @@ enum DS {
         var scale: CGFloat {
             switch self {
             case .pressed: return 0.97
-            case .dragged: return 1.15
+            case .dragged: return 1.05
             default: return 1.0
             }
         }
@@ -427,33 +405,37 @@ extension View {
     // Card Styles
     func cardStyle() -> some View {
         self
-            .background(DS.Colors.bgSecondary)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
-            .shadow(color: .black.opacity(0.06), radius: 12, x: 0, y: 4)
+            .background(DS.Colors.surfacePrimary)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous)
+                    .stroke(DS.Colors.borderSubtle, lineWidth: DS.Sizes.hairline)
+            )
+            .shadowResting()
     }
 
     func elevatedStyle() -> some View {
         self
-            .background(DS.Colors.bgSecondary)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
-            .shadow(color: .black.opacity(0.1), radius: 20, x: 0, y: 8)
+            .background(DS.Colors.surfacePrimary)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous)
+                    .stroke(DS.Colors.borderSubtle.opacity(0.6), lineWidth: DS.Sizes.hairline)
+            )
+            .shadowLifted()
     }
 
     // Shadow Helpers
-    func shadowRaised() -> some View {
-        self.shadow(color: .black.opacity(0.06), radius: 4, x: 0, y: 2)
+    func shadowResting() -> some View {
+        self.shadow(color: DS.Colors.overlay.opacity(0.08), radius: 4, x: 0, y: 1)
     }
 
-    func shadowElevated() -> some View {
-        self.shadow(color: .black.opacity(0.08), radius: 12, x: 0, y: 4)
-    }
-
-    func shadowFloating() -> some View {
-        self.shadow(color: .black.opacity(0.12), radius: 20, x: 0, y: 8)
+    func shadowLifted() -> some View {
+        self.shadow(color: DS.Colors.overlay.opacity(0.16), radius: 12, x: 0, y: 6)
     }
 
     func shadowColored(_ color: Color) -> some View {
-        self.shadow(color: color.opacity(0.45), radius: 8, x: 0, y: 4)
+        self.shadow(color: color.opacity(0.25), radius: 8, x: 0, y: 4)
     }
 
     // Reduce Motion Support
@@ -606,7 +588,7 @@ struct SkeletonView: View {
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .fill(
                         LinearGradient(
-                            colors: [.clear, Color.white.opacity(0.4), .clear],
+                            colors: [.clear, DS.Colors.textInverse.opacity(0.4), .clear],
                             startPoint: .leading,
                             endPoint: .trailing
                         )
@@ -630,18 +612,18 @@ struct CloseButton: View {
         Button(action: action) {
             ZStack {
                 Circle()
-                    .fill(DS.Colors.stone100)
+                    .fill(DS.Colors.surfaceSecondary)
                     .frame(width: DS.Sizes.closeButtonSize, height: DS.Sizes.closeButtonSize)
 
                 Circle()
-                    .stroke(DS.Colors.stone200, lineWidth: 1)
+                    .stroke(DS.Colors.borderSubtle, lineWidth: 1)
                     .frame(width: DS.Sizes.closeButtonSize, height: DS.Sizes.closeButtonSize)
 
                 Image(systemName: "xmark")
                     .font(.system(size: 11, weight: .semibold))
-                    .foregroundStyle(DS.Colors.stone500)
+                    .foregroundStyle(DS.Colors.textSecondary)
             }
-            .shadowRaised()
+            .shadowResting()
         }
         .buttonStyle(PressableStyle(scaleAmount: 0.9))
         .accessibilityLabel("Close")
