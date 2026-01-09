@@ -51,11 +51,11 @@ struct ColorPickerView: View {
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, DS.Spacing.sm)
-                        .background(
-                            RoundedRectangle(cornerRadius: DS.Radius.lg)
-                                .fill(selectedColor == color ? color.lightColor : DS.Colors.cardBackground)
-                        )
-                    }
+                                .background(
+                                    RoundedRectangle(cornerRadius: DS.Radius.lg)
+                                        .fill(selectedColor == color ? color.lightColor : DS.Colors.surfacePrimary)
+                                )
+                        }
                     .buttonStyle(.plain)
                     .accessibilityLabel("\(color.rawValue) color")
                     .accessibilityAddTraits(selectedColor == color ? .isSelected : [])
@@ -66,6 +66,7 @@ struct ColorPickerView: View {
         }
         .presentationDetents([.medium])
         .presentationDragIndicator(.visible)
+        .background(DS.Colors.bgPrimary)
     }
 }
 

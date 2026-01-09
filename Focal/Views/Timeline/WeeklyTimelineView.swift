@@ -92,7 +92,7 @@ struct WeeklyTimelineView: View {
 
                 Text(dragState.isDragging ? "Drag to change day/time • Release to schedule" : "Hold & drag to reschedule")
                     .scaledFont(size: 12, weight: .medium, relativeTo: .caption)
-                    .foregroundStyle(dragState.isDragging ? DS.Colors.sage : DS.Colors.stone400)
+                    .foregroundStyle(dragState.isDragging ? DS.Colors.accent : DS.Colors.textTertiary)
                     .padding(.top, DS.Spacing.md)
                     .padding(.bottom, DS.Spacing.lg)
                     .animation(DS.Animation.quick, value: dragState.isDragging)
@@ -151,13 +151,13 @@ struct DayColumn: View {
                     ZStack {
                         // Outer glow
                         RoundedRectangle(cornerRadius: DS.Radius.pill, style: .continuous)
-                            .fill(DS.Colors.coral.opacity(0.15))
+                            .fill(DS.Colors.secondary.opacity(0.15))
                             .frame(width: 8)
                             .blur(radius: 8)
 
                         // Inner glow
                         RoundedRectangle(cornerRadius: DS.Radius.pill, style: .continuous)
-                            .fill(DS.Colors.coral.opacity(0.25))
+                            .fill(DS.Colors.secondary.opacity(0.25))
                             .frame(width: 3)
                             .blur(radius: 3)
 
@@ -166,9 +166,9 @@ struct DayColumn: View {
                             .fill(
                                 LinearGradient(
                                     colors: [
-                                        DS.Colors.coral.opacity(0.4),
-                                        DS.Colors.coral.opacity(0.3),
-                                        DS.Colors.coral.opacity(0.2)
+                                        DS.Colors.secondary.opacity(0.4),
+                                        DS.Colors.secondary.opacity(0.3),
+                                        DS.Colors.secondary.opacity(0.2)
                                     ],
                                     startPoint: .top,
                                     endPoint: .bottom
@@ -184,18 +184,18 @@ struct DayColumn: View {
             // Drop target highlight background
             if isDropTarget {
                 RoundedRectangle(cornerRadius: DS.Radius.md)
-                    .fill(DS.Colors.sage.opacity(0.12))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: DS.Radius.md)
-                            .stroke(DS.Colors.sage.opacity(0.4), style: StrokeStyle(lineWidth: 2, dash: [6, 4]))
-                    )
+                    .fill(DS.Colors.accent.opacity(0.12))
+                .overlay(
+                    RoundedRectangle(cornerRadius: DS.Radius.md)
+                        .stroke(DS.Colors.accent.opacity(0.4), style: StrokeStyle(lineWidth: 2, dash: [6, 4]))
+                )
                     .transition(.opacity.combined(with: .scale(scale: 0.98)))
             }
 
             // Grid lines
             ForEach(gridHours, id: \.self) { hour in
                 Rectangle()
-                    .fill(DS.Colors.stone200.opacity(0.12))
+                    .fill(DS.Colors.borderSubtle.opacity(0.35))
                     .frame(height: 1)
                     .frame(maxWidth: .infinity)
                     .offset(y: CGFloat(hour - startHour) * hourHeight)
@@ -224,7 +224,7 @@ struct DayColumn: View {
 
                 GlassStemView(
                     height: trackHeight,
-                    accentColor: DS.Colors.stone300
+                    accentColor: DS.Colors.borderStrong
                 )
                 .offset(y: firstTaskOffset)
             }
@@ -411,7 +411,7 @@ private struct WeekTimeLabel: View {
     var body: some View {
         Text(String(format: "%02d", hour))
             .scaledFont(size: 9, weight: .medium, design: .monospaced, relativeTo: .caption2)
-            .foregroundStyle(DS.Colors.stone400)
+            .foregroundStyle(DS.Colors.textTertiary)
             .frame(width: DS.Sizes.timeLabelWidth, alignment: .trailing)
     }
 }
@@ -430,27 +430,27 @@ private struct WeeklyMiniStatsBar: View {
                     .scaledFont(size: 12, relativeTo: .caption)
                 Text("\(energy)")
                     .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                    .foregroundStyle(DS.Colors.stone700)
+                    .foregroundStyle(DS.Colors.textPrimary)
             }
             .padding(.horizontal, DS.Spacing.md)
             .padding(.vertical, DS.Spacing.xs)
-            .background(DS.Colors.cardBackground.opacity(0.6))
+            .background(DS.Colors.surfacePrimary.opacity(0.7))
             .overlay(
                 RoundedRectangle(cornerRadius: DS.Radius.pill)
-                    .stroke(DS.Colors.stone200.opacity(0.6), lineWidth: 1)
+                    .stroke(DS.Colors.borderSubtle.opacity(0.6), lineWidth: 1)
             )
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.pill))
 
             GeometryReader { proxy in
                 ZStack(alignment: .leading) {
                     Capsule()
-                        .fill(DS.Colors.stone200)
+                        .fill(DS.Colors.borderSubtle)
                         .frame(height: 6)
 
                     Capsule()
                         .fill(
                             LinearGradient(
-                                colors: [DS.Colors.emerald500, DS.Colors.teal500],
+                                colors: [DS.Colors.accent, DS.Colors.primary],
                                 startPoint: .leading,
                                 endPoint: .trailing
                             )
@@ -462,7 +462,7 @@ private struct WeeklyMiniStatsBar: View {
 
             Text("\(completed)/\(total)")
                 .scaledFont(size: 10, weight: .medium, design: .monospaced, relativeTo: .caption2)
-                .foregroundStyle(DS.Colors.stone500)
+                .foregroundStyle(DS.Colors.textTertiary)
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(completed) of \(total) tasks completed this week")

@@ -7,6 +7,8 @@ struct ContentView: View {
     @State private var showAddTask = false
 
     var body: some View {
+        let showsBottomFab = !(selectedTab == .planner && taskStore.viewMode == .day)
+
         ZStack(alignment: .bottom) {
             // Main content
             Group {
@@ -28,7 +30,7 @@ struct ContentView: View {
             // Bottom navigation
             BottomTabBar(selectedTab: $selectedTab, onAddTapped: {
                 showAddTask = true
-            })
+            }, showsFAB: showsBottomFab)
         }
         .ignoresSafeArea(.keyboard)
         .sheet(isPresented: $showAddTask) {

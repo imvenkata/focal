@@ -35,7 +35,7 @@ struct EnergyPickerSheet: View {
                     }
                     .padding(DS.Spacing.xl)
                     .frame(maxWidth: .infinity)
-                    .background(DS.Colors.cardBackground)
+                    .background(DS.Colors.surfacePrimary)
                     .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
                     .padding(.horizontal, DS.Spacing.xl)
                 }
@@ -50,7 +50,7 @@ struct EnergyPickerSheet: View {
                 Spacer()
             }
             .padding(.top, DS.Spacing.xxl)
-            .background(DS.Colors.background)
+            .background(DS.Colors.bgPrimary)
             .navigationTitle("Energy")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -92,7 +92,7 @@ struct EnergyLevelButton: View {
             Text(level.icon)
                 .scaledFont(size: 24, relativeTo: .title2)
                 .frame(width: 52, height: 52)
-                .background(isSelected ? energyColor.opacity(0.2) : DS.Colors.cardBackground)
+                .background(isSelected ? energyColor.opacity(0.2) : DS.Colors.surfacePrimary)
                 .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
                 .overlay {
                     if isSelected {

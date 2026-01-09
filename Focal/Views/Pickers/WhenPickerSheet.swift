@@ -66,16 +66,16 @@ struct WhenPickerSheet: View {
                 } label: {
                     ZStack {
                         Circle()
-                            .fill(DS.Colors.stone100)
+                            .fill(DS.Colors.surfaceSecondary)
                             .frame(width: 32, height: 32)
 
                         Circle()
-                            .stroke(DS.Colors.stone200, lineWidth: 1)
+                            .stroke(DS.Colors.borderSubtle, lineWidth: 1)
                             .frame(width: 32, height: 32)
 
                         Image(systemName: "checkmark")
                             .scaledFont(size: 11, weight: .semibold, relativeTo: .caption)
-                            .foregroundStyle(DS.Colors.emerald500)
+                            .foregroundStyle(DS.Colors.accent)
                     }
                     .shadow(color: Color.black.opacity(0.06), radius: 4, y: 2)
                 }
@@ -104,7 +104,7 @@ struct WhenPickerSheet: View {
                 .padding(.bottom, DS.Spacing.xxxl)
             }
         }
-        .background(DS.Colors.background)
+        .background(DS.Colors.bgPrimary)
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
     }
@@ -124,7 +124,7 @@ struct WhenPickerSheet: View {
                     selectedDate = Date()
                 }
                 .scaledFont(size: 14, weight: .medium, relativeTo: .callout)
-                .foregroundStyle(DS.Colors.sky)
+                .foregroundStyle(DS.Colors.primary)
             }
             .padding(.horizontal, DS.Spacing.xl)
 
@@ -134,7 +134,7 @@ struct WhenPickerSheet: View {
                 displayedComponents: .date
             )
             .datePickerStyle(.graphical)
-            .tint(DS.Colors.sky)
+            .tint(DS.Colors.primary)
             .padding(.horizontal, DS.Spacing.md)
         }
     }
@@ -158,7 +158,7 @@ struct WhenPickerSheet: View {
 
                 Text(":")
                     .scaledFont(size: 32, weight: .bold, design: .rounded, relativeTo: .largeTitle)
-                    .foregroundStyle(DS.Colors.stone300)
+                    .foregroundStyle(DS.Colors.textTertiary)
                     .offset(y: -8)
 
                 // Minute wheel
@@ -255,7 +255,7 @@ struct RecurrencePill: View {
                 .foregroundStyle(isSelected ? .white : DS.Colors.textPrimary)
                 .padding(.horizontal, DS.Spacing.md)
                 .padding(.vertical, DS.Spacing.sm)
-                .background(isSelected ? DS.Colors.sky : DS.Colors.cardBackground)
+                .background(isSelected ? DS.Colors.primary : DS.Colors.surfacePrimary)
                 .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
         }
         .buttonStyle(.plain)

@@ -56,6 +56,7 @@ struct DailyTimelineView: View {
                                     startTime: segment.startTime,
                                     endTime: segment.endTime,
                                     minHeight: rowHeight,
+                                    showsAddButton: false,
                                     onAddTask: { showAddTask = true }
                                 )
                             }
@@ -67,7 +68,7 @@ struct DailyTimelineView: View {
                 .padding(.bottom, timelineBottomPadding) // Space for bottom nav
                 .overlay(alignment: .leading) {
                     TimelineGuideLine()
-                        .stroke(DS.Colors.stone200.opacity(0.15), style: StrokeStyle(lineWidth: 1.5, dash: [4, 4]))
+                        .stroke(DS.Colors.borderSubtle.opacity(0.35), style: StrokeStyle(lineWidth: 1.5, dash: [4, 4]))
                         .frame(width: 1.5)
                         .frame(maxHeight: .infinity)
                         .padding(.leading, timelineLineOffset)
@@ -88,7 +89,14 @@ struct DailyTimelineView: View {
                 }
             }
         }
-        .background(DS.Colors.cardBackground)
+        .overlay(alignment: .bottomTrailing) {
+            CompactFABButton {
+                showAddTask = true
+            }
+            .padding(.trailing, DS.Spacing.md)
+            .padding(.bottom, DS.Sizes.bottomNavHeight + DS.Spacing.sm)
+        }
+        .background(DS.Colors.surfacePrimary)
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxxl, style: .continuous))
         .shadow(color: Color.black.opacity(0.06), radius: 24, y: -4)
         .transition(.move(edge: .bottom).combined(with: .opacity))
@@ -286,7 +294,7 @@ private struct TimelineSegmentRow<Content: View>: View {
             .frame(minHeight: minHeight, alignment: .top)
             .overlay(alignment: .bottomLeading) {
                 if showEndTime, let endTime {
-                    TimelineTimeLabel(time: endTime, color: DS.Colors.stone300)
+                    TimelineTimeLabel(time: endTime, color: DS.Colors.textTertiary)
                         .allowsHitTesting(false)
                 }
             }
@@ -297,7 +305,7 @@ private struct TimelineSegmentRow<Content: View>: View {
 // MARK: - Timeline Time Label
 private struct TimelineTimeLabel: View {
     let time: Date?
-    var color: Color = DS.Colors.stone400
+    var color: Color = DS.Colors.textTertiary
 
     var body: some View {
         Group {
@@ -329,5 +337,5 @@ private struct TimelineGuideLine: Shape {
 
     return DailyTimelineView()
         .environment(store)
-        .background(DS.Colors.background)
+        .background(DS.Colors.bgPrimary)
 }

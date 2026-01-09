@@ -121,7 +121,7 @@ struct LiquidGlassCapsuleView: View {
     var body: some View {
         ZStack {
             Capsule()
-                .fill(DS.Colors.cardBackground)
+                .fill(DS.Colors.surfacePrimary)
 
             Capsule()
                 .fill(
@@ -229,12 +229,12 @@ struct GlassIconPip: View {
     var body: some View {
         ZStack {
             Circle()
-                .fill(DS.Colors.cardBackground)
+                .fill(DS.Colors.surfacePrimary)
 
             Circle()
                 .fill(
                     LinearGradient(
-                        colors: [DS.Colors.stone50, DS.Colors.stone100],
+                        colors: [DS.Colors.surfaceSecondary, DS.Colors.surfacePrimary],
                         startPoint: .top,
                         endPoint: .bottom
                     )
@@ -243,7 +243,7 @@ struct GlassIconPip: View {
             Circle()
                 .stroke(
                     LinearGradient(
-                        colors: [accentTint.opacity(0.4), DS.Colors.stone200],
+                        colors: [accentTint.opacity(0.4), DS.Colors.borderSubtle],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     ),
@@ -295,5 +295,5 @@ struct GlassStemView: View {
         MiniTaskPin(task: sampleTask)
     }
     .padding()
-    .background(DS.Colors.background)
+    .background(DS.Colors.bgPrimary)
 }

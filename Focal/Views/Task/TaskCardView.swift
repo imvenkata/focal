@@ -47,7 +47,7 @@ struct TaskCardView: View {
                                     .foregroundStyle(secondaryTextColor)
                                     .padding(.horizontal, 6)
                                     .padding(.vertical, 2)
-                                    .background(DS.Colors.divider.opacity(0.4))
+                                    .background(DS.Colors.borderSubtle.opacity(0.5))
                                     .clipShape(RoundedRectangle(cornerRadius: 4))
                             }
                         }
@@ -65,12 +65,12 @@ struct TaskCardView: View {
                                     HStack(spacing: 6) {
                                         Image(systemName: subtask.isCompleted ? "checkmark.circle.fill" : "circle")
                                             .scaledFont(size: 10, relativeTo: .caption2)
-                                            .foregroundStyle(subtask.isCompleted ? DS.Colors.emerald500 : DS.Colors.stone400)
+                                            .foregroundStyle(subtask.isCompleted ? DS.Colors.success : DS.Colors.textTertiary)
 
                                         Text(subtask.title)
                                             .scaledFont(size: 12, weight: .regular, relativeTo: .caption)
-                                            .foregroundStyle(DS.Colors.stone500)
-                                            .strikethrough(subtask.isCompleted, color: DS.Colors.stone400)
+                                            .foregroundStyle(DS.Colors.textSecondary)
+                                            .strikethrough(subtask.isCompleted, color: DS.Colors.textTertiary)
                                             .lineLimit(1)
                                     }
                                 }
@@ -78,7 +78,7 @@ struct TaskCardView: View {
                                 if task.subtasks.count > 3 {
                                     Text("+\(task.subtasks.count - 3) more")
                                         .scaledFont(size: 11, weight: .medium, relativeTo: .caption2)
-                                        .foregroundStyle(DS.Colors.stone400)
+                                        .foregroundStyle(DS.Colors.textTertiary)
                                         .padding(.leading, 16)
                                 }
                             }
@@ -86,7 +86,7 @@ struct TaskCardView: View {
                         } else if let notes = task.notes, !notes.isEmpty {
                             Text(notes)
                                 .scaledFont(size: 12, weight: .regular, relativeTo: .caption)
-                                .foregroundStyle(DS.Colors.stone500)
+                                .foregroundStyle(DS.Colors.textSecondary)
                                 .lineLimit(2)
                                 .padding(.top, 4)
                         }
@@ -116,7 +116,7 @@ struct TaskCardView: View {
 
                     if task.isCompleted {
                         Circle()
-                            .fill(DS.Colors.emerald500)
+                            .fill(DS.Colors.success)
                             .frame(width: 28, height: 28)
 
                         Image(systemName: "checkmark")
@@ -145,7 +145,7 @@ struct TaskCardView: View {
             } label: {
                 Label(task.isCompleted ? "Undo" : "Done", systemImage: task.isCompleted ? "arrow.uturn.backward" : "checkmark")
             }
-            .tint(task.isCompleted ? DS.Colors.slate : DS.Colors.sage)
+            .tint(task.isCompleted ? DS.Colors.textSecondary : DS.Colors.success)
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             if let onDelete {
@@ -159,11 +159,11 @@ struct TaskCardView: View {
     }
 
     private var titleColor: Color {
-        task.isCompleted || task.isPast ? DS.Colors.stone500 : DS.Colors.stone800
+        task.isCompleted || task.isPast ? DS.Colors.textTertiary : DS.Colors.textPrimary
     }
 
     private var secondaryTextColor: Color {
-        DS.Colors.stone400
+        DS.Colors.textSecondary
     }
 
     private var rowOpacity: Double {
@@ -274,7 +274,7 @@ struct CompactTaskCard: View {
             }
             .padding(.horizontal, DS.Spacing.md)
             .padding(.vertical, DS.Spacing.sm)
-            .background(DS.Colors.cardBackground)
+            .background(DS.Colors.surfacePrimary)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
         }
         .buttonStyle(.plain)
@@ -303,5 +303,5 @@ struct CompactTaskCard: View {
         CompactTaskCard(task: sampleTask, onTap: {})
     }
     .padding()
-    .background(DS.Colors.background)
+    .background(DS.Colors.bgPrimary)
 }

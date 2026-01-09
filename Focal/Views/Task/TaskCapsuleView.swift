@@ -77,7 +77,7 @@ struct TaskCapsuleView: View {
                     systemImage: task.isCompleted ? "arrow.uturn.backward" : "checkmark"
                 )
             }
-            .tint(task.isCompleted ? DS.Colors.slate : DS.Colors.success)
+            .tint(task.isCompleted ? DS.Colors.textSecondary : DS.Colors.success)
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             if let onDelete {
@@ -220,7 +220,7 @@ struct TaskCapsuleView: View {
             Text(task.title)
                 .font(size.titleFont)
                 .foregroundStyle(titleColor)
-                .strikethrough(capsuleState.showStrikethrough, color: DS.Colors.textMuted)
+                .strikethrough(capsuleState.showStrikethrough, color: DS.Colors.textTertiary)
                 .lineLimit(2)
 
             // Subtitle (subtasks or notes preview)
@@ -236,7 +236,7 @@ struct TaskCapsuleView: View {
     private var titleColor: Color {
         switch capsuleState {
         case .completed, .dimmed:
-            return DS.Colors.textMuted
+            return DS.Colors.textTertiary
         case .overdue:
             return DS.Colors.textPrimary
         default:
@@ -269,10 +269,10 @@ struct TaskCapsuleView: View {
             if size != .small {
                 Text("(\(task.durationFormatted))")
                     .font(.system(size: size.subtitleSize - 2, weight: .medium))
-                    .foregroundStyle(DS.Colors.textMuted)
+                    .foregroundStyle(DS.Colors.textTertiary)
                     .padding(.horizontal, 6)
                     .padding(.vertical, 2)
-                    .background(DS.Colors.divider.opacity(0.5))
+                    .background(DS.Colors.surfaceSecondary)
                     .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xs))
             }
         }
@@ -281,13 +281,13 @@ struct TaskCapsuleView: View {
         if capsuleState == .overdue {
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 14))
-                .foregroundStyle(DS.Colors.danger)
+                .foregroundStyle(DS.Colors.error)
                 .transition(.scale.combined(with: .opacity))
         }
     }
 
     private var timeBadgeColor: Color {
-        capsuleState == .overdue ? DS.Colors.danger : DS.Colors.textSecondary
+        capsuleState == .overdue ? DS.Colors.error : DS.Colors.textSecondary
     }
 
     // MARK: - Overflow Button
@@ -299,7 +299,7 @@ struct TaskCapsuleView: View {
         } label: {
             Image(systemName: "ellipsis")
                 .font(.system(size: 16, weight: .medium))
-                .foregroundStyle(DS.Colors.textMuted)
+                .foregroundStyle(DS.Colors.textTertiary)
                 .frame(width: DS.Sizes.minTouchTarget, height: DS.Sizes.minTouchTarget)
         }
         .buttonStyle(.plain)
@@ -347,7 +347,7 @@ struct TaskCapsuleView: View {
         case .overdue:
             DS.Colors.dangerLight
         case .disabled:
-            DS.Colors.stone100
+            DS.Colors.surfaceSecondary
         default:
             Color.clear
         }
@@ -363,7 +363,7 @@ struct TaskCapsuleView: View {
                 .stroke(task.color.color, lineWidth: 1.5)
         case .overdue:
             RoundedRectangle(cornerRadius: DS.Radius.md)
-                .stroke(DS.Colors.danger, lineWidth: 1)
+                .stroke(DS.Colors.error, lineWidth: 1)
         default:
             EmptyView()
         }
@@ -501,7 +501,7 @@ extension View {
         TaskCapsuleView(task: task, size: .large)
     }
     .padding()
-    .background(DS.Colors.background)
+    .background(DS.Colors.bgPrimary)
 }
 
 #Preview("States") {
@@ -561,7 +561,7 @@ extension View {
         }
         .padding()
     }
-    .background(DS.Colors.background)
+    .background(DS.Colors.bgPrimary)
 }
 
 #Preview("Without Stripe") {
@@ -575,5 +575,5 @@ extension View {
 
     TaskCapsuleView(task: task, showStripe: false)
         .padding()
-        .background(DS.Colors.background)
+        .background(DS.Colors.bgPrimary)
 }

@@ -46,7 +46,7 @@ struct TaskDetailView: View {
                                     systemName: "calendar",
                                     title: detailDateLabel,
                                     trailingText: dateStatusLabel,
-                                    trailingTint: dateStatusLabel == nil ? DS.Colors.stone500 : task.color.color,
+                                    trailingTint: dateStatusLabel == nil ? DS.Colors.textSecondary : task.color.color,
                                     accentColor: task.color.color,
                                     accessibilityLabel: "Date, \(detailDateLabel)",
                                     accessibilityHint: "Opens date picker",
@@ -61,7 +61,7 @@ struct TaskDetailView: View {
                                     systemName: "clock",
                                     title: timeRangeLabel,
                                     trailingText: task.durationFormatted,
-                                    trailingTint: DS.Colors.stone500,
+                                    trailingTint: DS.Colors.textSecondary,
                                     accentColor: task.color.color,
                                     accessibilityLabel: "Time, \(timeRangeLabel), \(task.durationFormatted)",
                                     accessibilityHint: "Opens time picker",
@@ -76,7 +76,7 @@ struct TaskDetailView: View {
                                     systemName: "bell",
                                     title: alertsTitle,
                                     trailingText: alertsDetail,
-                                    trailingTint: DS.Colors.stone500,
+                                    trailingTint: DS.Colors.textSecondary,
                                     accentColor: task.color.color,
                                     accessibilityLabel: "Alerts, \(alertsTitle)",
                                     accessibilityHint: "Opens alert options",
@@ -85,7 +85,7 @@ struct TaskDetailView: View {
                                     }
                                 )
                             }
-                            .background(DS.Colors.stone50)
+                            .background(DS.Colors.surfaceSecondary)
                             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxl, style: .continuous))
 
                             HStack(spacing: DS.Spacing.md) {
@@ -95,23 +95,23 @@ struct TaskDetailView: View {
                                     HStack(spacing: DS.Spacing.sm) {
                                         Image(systemName: "arrow.clockwise")
                                             .scaledFont(size: 14, weight: .semibold, relativeTo: .callout)
-                                            .foregroundStyle(DS.Colors.stone500)
+                                            .foregroundStyle(DS.Colors.textSecondary)
 
                                         Text("Repeat")
                                             .scaledFont(size: 14, weight: .semibold, relativeTo: .callout)
-                                            .foregroundStyle(DS.Colors.stone700)
+                                            .foregroundStyle(DS.Colors.textPrimary)
 
                                         Text("PRO")
                                             .scaledFont(size: 10, weight: .bold, relativeTo: .caption2)
-                                            .foregroundStyle(DS.Colors.amber600)
+                                            .foregroundStyle(DS.Colors.warning)
                                             .padding(.horizontal, DS.Spacing.xs)
                                             .padding(.vertical, DS.Spacing.xs / 2)
-                                            .background(DS.Colors.amber100)
+                                            .background(DS.Colors.warningLight)
                                             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm, style: .continuous))
                                     }
                                     .frame(maxWidth: .infinity)
                                     .padding(.vertical, DS.Spacing.md)
-                                    .background(DS.Colors.stone100)
+                                    .background(DS.Colors.surfaceSecondary)
                                     .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxl, style: .continuous))
                                 }
                                 .buttonStyle(.plain)
@@ -143,7 +143,7 @@ struct TaskDetailView: View {
                             VStack(alignment: .leading, spacing: DS.Spacing.md) {
                                 Text("Subtasks")
                                     .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                                    .foregroundStyle(DS.Colors.stone500)
+                                    .foregroundStyle(DS.Colors.textSecondary)
                                     .textCase(.uppercase)
 
                                 VStack(spacing: 0) {
@@ -173,7 +173,7 @@ struct TaskDetailView: View {
                                     HStack(spacing: DS.Spacing.md) {
                                         RoundedRectangle(cornerRadius: DS.Radius.sm, style: .continuous)
                                             .stroke(
-                                                DS.Colors.stone300,
+                                                DS.Colors.borderStrong,
                                                 style: StrokeStyle(
                                                     lineWidth: DS.Spacing.xs / 2,
                                                     dash: [DS.Spacing.sm, DS.Spacing.sm]
@@ -183,7 +183,7 @@ struct TaskDetailView: View {
 
                                         TextField("Add Subtask", text: $newSubtaskTitle)
                                             .scaledFont(size: 15, weight: .medium, relativeTo: .subheadline)
-                                            .foregroundStyle(DS.Colors.stone700)
+                                            .foregroundStyle(DS.Colors.textPrimary)
                                             .focused($isSubtaskFieldFocused)
                                             .submitLabel(.done)
                                             .onSubmit {
@@ -212,20 +212,20 @@ struct TaskDetailView: View {
                                     }
                                     .padding(DS.Spacing.lg)
                                 }
-                                .background(DS.Colors.stone50)
+                                .background(DS.Colors.surfaceSecondary)
                                 .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxl, style: .continuous))
                             }
 
                             VStack(alignment: .leading, spacing: DS.Spacing.md) {
                                 Text("Notes")
                                     .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                                    .foregroundStyle(DS.Colors.stone500)
+                                    .foregroundStyle(DS.Colors.textSecondary)
                                     .textCase(.uppercase)
 
                                 TextEditor(text: $notes)
                                     .frame(minHeight: 110)
                                     .padding(DS.Spacing.md)
-                                    .background(DS.Colors.stone50)
+                                    .background(DS.Colors.surfaceSecondary)
                                     .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxl, style: .continuous))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: DS.Radius.xxl, style: .continuous)
@@ -243,7 +243,7 @@ struct TaskDetailView: View {
                                         if notes.isEmpty {
                                             Text("Add notes, meeting links...")
                                                 .scaledFont(size: 14, relativeTo: .callout)
-                                                .foregroundStyle(DS.Colors.stone400)
+                                                .foregroundStyle(DS.Colors.textTertiary)
                                                 .padding(.horizontal, DS.Spacing.md)
                                                 .padding(.vertical, DS.Spacing.md)
                                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -258,7 +258,7 @@ struct TaskDetailView: View {
                         .padding(.horizontal, DS.Spacing.xl)
 
                         Rectangle()
-                            .fill(DS.Colors.stone100)
+                            .fill(DS.Colors.borderSubtle)
                             .frame(height: DS.Spacing.xs / 4)
                             .padding(.top, DS.Spacing.xl)
 
@@ -269,13 +269,13 @@ struct TaskDetailView: View {
                         .padding(.top, DS.Spacing.lg)
                     }
                     .padding(.bottom, DS.Spacing.xxl)
-                    .background(DS.Colors.cardBackground)
+                    .background(DS.Colors.surfacePrimary)
                     .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxxl, style: .continuous))
                     .shadow(color: .black.opacity(0.08), radius: 24, x: 0, y: -DS.Spacing.xs)
                     .padding(.top, -DS.Spacing.lg)
                 }
             }
-            .background(DS.Colors.background)
+            .background(DS.Colors.bgPrimary)
             .toolbar(.hidden, for: .navigationBar)
         }
         .sheet(isPresented: $showDatePicker) {
@@ -480,7 +480,7 @@ private struct TaskDetailHeader: View {
                             Text("🎨")
                                 .scaledFont(size: 16, relativeTo: .callout)
                                 .frame(width: DS.Sizes.taskPillSmall, height: DS.Sizes.taskPillSmall)
-                                .background(DS.Colors.cardBackground)
+                                .background(DS.Colors.surfacePrimary)
                                 .clipShape(Circle())
                                 .overlay(
                                     Circle()
@@ -542,14 +542,14 @@ private struct TaskDetailHeader: View {
                     ZStack {
                         Circle()
                             .stroke(
-                                task.isCompleted ? DS.Colors.emerald500 : task.color.color,
+                                task.isCompleted ? DS.Colors.success : task.color.color,
                                 lineWidth: DS.Spacing.xs / 2
                             )
                             .frame(width: DS.Spacing.xxxl, height: DS.Spacing.xxxl)
 
                         if task.isCompleted {
                             Circle()
-                                .fill(DS.Colors.emerald500)
+                                .fill(DS.Colors.success)
                                 .frame(width: DS.Spacing.xxxl, height: DS.Spacing.xxxl)
 
                             Image(systemName: "checkmark")
@@ -659,7 +659,7 @@ private struct TaskDetailColorPicker: View {
                         .overlay {
                             if selectedColor == color {
                                 Circle()
-                                    .stroke(DS.Colors.cardBackground, lineWidth: DS.Spacing.xs / 2)
+                                    .stroke(DS.Colors.surfacePrimary, lineWidth: DS.Spacing.xs / 2)
                             }
                         }
                         .scaleEffect(selectedColor == color ? 1.1 : 1)
@@ -670,7 +670,7 @@ private struct TaskDetailColorPicker: View {
             }
         }
         .padding(DS.Spacing.md)
-        .background(DS.Colors.cardBackground)
+        .background(DS.Colors.surfacePrimary)
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xl, style: .continuous))
         .shadow(color: .black.opacity(0.12), radius: 12, x: 0, y: 6)
     }
@@ -705,7 +705,7 @@ private struct TaskDetailInfoRow: View {
 
                 Text(title)
                     .scaledFont(size: 16, weight: .medium, relativeTo: .body)
-                    .foregroundStyle(DS.Colors.stone800)
+                    .foregroundStyle(DS.Colors.textPrimary)
 
                 Spacer()
 
@@ -717,7 +717,7 @@ private struct TaskDetailInfoRow: View {
 
                 Image(systemName: "chevron.right")
                     .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                    .foregroundStyle(DS.Colors.stone400)
+                    .foregroundStyle(DS.Colors.textTertiary)
             }
             .padding(DS.Spacing.lg)
         }
@@ -730,7 +730,7 @@ private struct TaskDetailInfoRow: View {
 private struct RowDivider: View {
     var body: some View {
         Rectangle()
-            .fill(DS.Colors.stone200)
+            .fill(DS.Colors.borderSubtle)
             .frame(height: DS.Spacing.xs / 4)
             .padding(.horizontal, DS.Spacing.lg)
     }
@@ -747,14 +747,14 @@ private struct TaskDetailSubtaskRow: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: DS.Radius.sm, style: .continuous)
                         .stroke(
-                            subtask.isCompleted ? DS.Colors.emerald500 : DS.Colors.stone300,
+                            subtask.isCompleted ? DS.Colors.success : DS.Colors.borderStrong,
                             lineWidth: DS.Spacing.xs / 2
                         )
                         .frame(width: DS.Spacing.xxl, height: DS.Spacing.xxl)
 
                     if subtask.isCompleted {
                         RoundedRectangle(cornerRadius: DS.Radius.sm, style: .continuous)
-                            .fill(DS.Colors.emerald500)
+                            .fill(DS.Colors.success)
                             .frame(width: DS.Spacing.xxl, height: DS.Spacing.xxl)
 
                         Image(systemName: "checkmark")
@@ -769,8 +769,8 @@ private struct TaskDetailSubtaskRow: View {
 
             Text(subtask.title)
                 .scaledFont(size: 15, weight: .medium, relativeTo: .subheadline)
-                .foregroundStyle(subtask.isCompleted ? DS.Colors.stone400 : DS.Colors.stone700)
-                .strikethrough(subtask.isCompleted, color: DS.Colors.stone400)
+                .foregroundStyle(subtask.isCompleted ? DS.Colors.textTertiary : DS.Colors.textPrimary)
+                .strikethrough(subtask.isCompleted, color: DS.Colors.textTertiary)
 
             Spacer()
         }

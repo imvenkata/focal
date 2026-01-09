@@ -37,16 +37,16 @@ struct AddTaskSheet: View {
                     } label: {
                         ZStack {
                             Circle()
-                                .fill(DS.Colors.stone100)
+                                .fill(DS.Colors.surfaceSecondary)
                                 .frame(width: 32, height: 32)
 
                             Circle()
-                                .stroke(DS.Colors.stone200, lineWidth: 1)
+                                .stroke(DS.Colors.borderSubtle, lineWidth: 1)
                                 .frame(width: 32, height: 32)
 
                             Image(systemName: "xmark")
                                 .scaledFont(size: 11, weight: .semibold, relativeTo: .caption)
-                                .foregroundStyle(DS.Colors.stone500)
+                                .foregroundStyle(DS.Colors.textSecondary)
                         }
                         .shadow(color: Color.black.opacity(0.06), radius: 4, y: 2)
                     }
@@ -105,7 +105,7 @@ struct AddTaskSheet: View {
                                         .foregroundStyle(DS.Colors.textSecondary)
                                 }
                                 .padding(DS.Spacing.md)
-                                .background(DS.Colors.cardBackground)
+                                .background(DS.Colors.surfacePrimary)
                                 .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
                             }
                             .buttonStyle(.plain)
@@ -150,12 +150,12 @@ struct AddTaskSheet: View {
                             TextEditor(text: $notes)
                                 .frame(minHeight: 80)
                                 .padding(DS.Spacing.md)
-                                .background(DS.Colors.cardBackground)
+                                .background(DS.Colors.surfacePrimary)
                                 .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
                                 .overlay {
                                     if notes.isEmpty {
                                         Text("Add notes...")
-                                            .foregroundStyle(DS.Colors.textSecondary)
+                                            .foregroundStyle(DS.Colors.textTertiary)
                                             .padding(DS.Spacing.lg)
                                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                                             .allowsHitTesting(false)
@@ -180,16 +180,16 @@ struct AddTaskSheet: View {
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)
                             .frame(height: 50)
-                            .background(title.isEmpty ? DS.Colors.slate : DS.Colors.sky)
+                            .background(title.isEmpty ? DS.Colors.borderStrong : DS.Colors.primary)
                             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
                     }
                     .disabled(title.isEmpty)
                     .padding(.horizontal, DS.Spacing.xl)
                     .padding(.vertical, DS.Spacing.lg)
-                    .background(DS.Colors.background)
+                    .background(DS.Colors.bgPrimary)
                 }
             }
-            .background(DS.Colors.background)
+            .background(DS.Colors.bgPrimary)
         }
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
@@ -425,8 +425,8 @@ struct CircularColorPicker: View {
                         .fill(
                             LinearGradient(
                                 colors: [
-                                    DS.Colors.stone50,
-                                    DS.Colors.stone100
+                                    DS.Colors.surfaceSecondary,
+                                    DS.Colors.surfacePrimary
                                 ],
                                 startPoint: .top,
                                 endPoint: .bottom
@@ -435,12 +435,12 @@ struct CircularColorPicker: View {
                         .frame(width: 32, height: 32)
 
                     Circle()
-                        .stroke(DS.Colors.stone200, lineWidth: 1)
+                        .stroke(DS.Colors.borderSubtle, lineWidth: 1)
                         .frame(width: 32, height: 32)
 
                     Image(systemName: "plus")
                         .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                        .foregroundStyle(DS.Colors.stone500)
+                        .foregroundStyle(DS.Colors.textSecondary)
                 }
                 .shadow(color: Color.black.opacity(0.08), radius: 4, y: 2)
             }
@@ -610,12 +610,12 @@ struct CompactColorPicker: View {
             } label: {
                 ZStack {
                     Circle()
-                        .fill(DS.Colors.stone100)
+                        .fill(DS.Colors.surfaceSecondary)
                         .frame(width: 32, height: 32)
 
                     Image(systemName: "plus.circle.fill")
                         .scaledFont(size: 16, weight: .semibold, relativeTo: .body)
-                        .foregroundStyle(DS.Colors.stone500)
+                        .foregroundStyle(DS.Colors.textSecondary)
                 }
                 .frame(width: DS.Sizes.minTouchTarget, height: DS.Sizes.minTouchTarget)
             }
@@ -712,7 +712,7 @@ struct FullColorPickerSheet: View {
 
                 Spacer()
             }
-            .background(DS.Colors.background)
+            .background(DS.Colors.bgPrimary)
             .navigationTitle("Choose Color")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -760,7 +760,7 @@ struct ColorPickerRow: View {
             .padding(.horizontal, DS.Spacing.md)
             .padding(.vertical, DS.Spacing.sm)
         }
-        .background(DS.Colors.cardBackground)
+        .background(DS.Colors.surfacePrimary)
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
     }
 }
@@ -781,7 +781,7 @@ struct DurationPickerRow: View {
                         .foregroundStyle(selectedDuration == preset.duration ? .white : DS.Colors.textPrimary)
                         .padding(.horizontal, DS.Spacing.md)
                         .padding(.vertical, DS.Spacing.sm)
-                        .background(selectedDuration == preset.duration ? DS.Colors.sky : DS.Colors.cardBackground)
+                        .background(selectedDuration == preset.duration ? DS.Colors.primary : DS.Colors.surfacePrimary)
                         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
                 }
                 .buttonStyle(.plain)
@@ -865,7 +865,7 @@ struct RepeatDaysPicker: View {
             }
         }
         .padding(DS.Spacing.md)
-        .background(DS.Colors.cardBackground)
+        .background(DS.Colors.surfacePrimary)
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
     }
 
@@ -894,7 +894,7 @@ struct DayButton: View {
                 .scaledFont(size: 14, weight: .medium, relativeTo: .callout)
                 .foregroundStyle(isSelected ? .white : DS.Colors.textPrimary)
                 .frame(width: 36, height: 36)
-                .background(isSelected ? DS.Colors.sky : DS.Colors.background)
+                .background(isSelected ? DS.Colors.primary : DS.Colors.surfacePrimary)
                 .clipShape(Circle())
                 .frame(width: DS.Sizes.minTouchTarget, height: DS.Sizes.minTouchTarget)
         }
@@ -915,7 +915,7 @@ struct PresetButton: View {
                 .foregroundStyle(isSelected ? .white : DS.Colors.textSecondary)
                 .padding(.horizontal, DS.Spacing.md)
                 .padding(.vertical, DS.Spacing.sm)
-                .background(isSelected ? DS.Colors.sky : DS.Colors.background)
+                .background(isSelected ? DS.Colors.primary : DS.Colors.surfacePrimary)
                 .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
         }
         .buttonStyle(.plain)
@@ -938,7 +938,7 @@ struct ReminderPickerRow: View {
                         .foregroundStyle(selectedReminder == option ? .white : DS.Colors.textPrimary)
                         .padding(.horizontal, DS.Spacing.md)
                         .padding(.vertical, DS.Spacing.sm)
-                        .background(selectedReminder == option ? DS.Colors.sky : DS.Colors.cardBackground)
+                        .background(selectedReminder == option ? DS.Colors.primary : DS.Colors.surfacePrimary)
                         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
                 }
                 .buttonStyle(.plain)

@@ -7,38 +7,86 @@ import SwiftUI
 enum DS {
     // MARK: - Colors
     enum Colors {
-        // Brand Colors - Primary
-        static let coral = Color(hex: "#E8847C")
-        static let coralLight = Color(hex: "#FDF2F1")
+        // Brand palette (assets)
+        static let coral = Color("Coral")
+        static let coralLight = Color("CoralLight")
         static let coralDark = Color(hex: "#D66B63")
 
-        static let sage = Color(hex: "#7BAE7F")
-        static let sageLight = Color(hex: "#F2F7F2")
+        static let sage = Color("Sage")
+        static let sageLight = Color("SageLight")
         static let sageDark = Color(hex: "#5C8D60")
 
-        static let sky = Color(hex: "#6BA3D6")
-        static let skyLight = Color(hex: "#F0F6FB")
+        static let sky = Color("Sky")
+        static let skyLight = Color("SkyLight")
         static let skyDark = Color(hex: "#4A8BC7")
 
-        static let lavender = Color(hex: "#9B8EC2")
-        static let lavenderLight = Color(hex: "#F5F3F9")
+        static let lavender = Color("Lavender")
+        static let lavenderLight = Color("LavenderLight")
         static let lavenderDark = Color(hex: "#7A6BA8")
 
-        static let amber = Color(hex: "#D4A853")
-        static let amberLight = Color(hex: "#FBF7EE")
+        static let amber = Color("Amber")
+        static let amberLight = Color("AmberLight")
         static let amberDark = Color(hex: "#B8923F")
 
-        static let rose = Color(hex: "#C97B8E")
-        static let roseLight = Color(hex: "#FAF1F3")
+        static let rose = Color("Rose")
+        static let roseLight = Color("RoseLight")
         static let roseDark = Color(hex: "#A85D71")
 
-        static let slate = Color(hex: "#64748B")
-        static let slateLight = Color(hex: "#F4F5F7")
+        static let slate = Color("Slate")
+        static let slateLight = Color("SlateLight")
         static let slateDark = Color(hex: "#475569")
 
-        static let night = Color(hex: "#5C6B7A")
-        static let nightLight = Color(hex: "#F3F4F5")
-        static let nightDark = Color(hex: "#3F4D5A")
+        static let night = Color("Night")
+        static let nightLight = Color("NightLight")
+        static let nightDark = Color(hex: "#141C24")
+
+        // Semantic - Background & Surfaces
+        static let background = Color("Background")
+        static let cardBackground = Color("CardBackground")
+        static let bgPrimary = background
+        static let bgSecondary = Color("BackgroundSecondary")
+        static let surfacePrimary = cardBackground
+        static let surfaceSecondary = Color("SurfaceSecondary")
+        static let bgTertiary = surfaceSecondary
+        static let bgElevated = surfacePrimary
+        static let overlay = Color("Overlay")
+
+        // Semantic - Text
+        static let textPrimary = Color("TextPrimary")
+        static let textSecondary = Color("TextSecondary")
+        static let textTertiary = Color("TextTertiary")
+        static let textMuted = textTertiary
+        static let textInverse = Color.white
+
+        // Semantic - Border
+        static let divider = Color("Divider")
+        static let borderSubtle = divider
+        static let borderStrong = Color("BorderStrong")
+        static let border = borderSubtle
+        static let borderFocused = borderStrong
+        static let dividerStrong = borderStrong
+
+        // Semantic - Actions
+        static let primary = sky
+        static let secondary = coral
+        static let accent = sage
+
+        // Status Colors
+        static let success = sage
+        static let successLight = sageLight
+        static let warning = amber
+        static let warningLight = amberLight
+        static let error = rose
+        static let danger = error
+        static let dangerLight = roseLight
+        static let info = sky
+        static let infoLight = skyLight
+
+        // Utility Colors (legacy mappings)
+        static let emerald500 = sage
+        static let teal500 = sky
+        static let amber100 = amberLight
+        static let amber600 = amber
 
         // Neutral Scale (Stone)
         static let stone50 = Color(hex: "#FAFAF9")
@@ -50,42 +98,6 @@ enum DS {
         static let stone700 = Color(hex: "#44403C")
         static let stone800 = Color(hex: "#292524")
         static let stone900 = Color(hex: "#1C1917")
-
-        // Semantic - Background
-        static let background = Color("Background")
-        static let cardBackground = Color("CardBackground")
-        static let bgPrimary = background
-        static let bgSecondary = cardBackground
-        static let bgTertiary = stone100
-        static let bgElevated = Color.white
-
-        // Semantic - Text
-        static let textPrimary = Color.primary
-        static let textSecondary = Color.secondary
-        static let textMuted = stone400
-        static let textInverse = Color.white
-
-        // Semantic - Border
-        static let border = stone200
-        static let borderFocused = stone500
-        static let divider = Color("Divider")
-        static let dividerStrong = stone300
-
-        // Status Colors
-        static let success = Color(hex: "#10B981")
-        static let successLight = Color(hex: "#ECFDF5")
-        static let warning = Color(hex: "#F59E0B")
-        static let warningLight = Color(hex: "#FFFBEB")
-        static let danger = Color(hex: "#EF4444")
-        static let dangerLight = Color(hex: "#FEF2F2")
-        static let info = sky
-        static let infoLight = skyLight
-
-        // Utility Colors
-        static let emerald500 = Color(hex: "#10B981")
-        static let teal500 = Color(hex: "#14B8A6")
-        static let amber100 = Color(hex: "#FEF3C7")
-        static let amber600 = Color(hex: "#D97706")
 
         // Planner (Dark Mode)
         static let plannerBackground = Color(hex: "#0D0D0D")

@@ -44,7 +44,7 @@ struct DayCircle: View {
                 // Weekday label
                 Text(date.shortWeekdayName.uppercased())
                     .scaledFont(size: 9, weight: .medium, relativeTo: .caption2)
-                    .foregroundStyle(DS.Colors.stone400)
+                    .foregroundStyle(DS.Colors.textTertiary)
                     .tracking(0.8)
 
                 // Day number with circle
@@ -52,7 +52,7 @@ struct DayCircle: View {
                     Circle()
                         .fill(circleColor)
                         .frame(width: 28, height: 28)
-                        .shadow(color: isSelected ? DS.Colors.stone800.opacity(0.25) : Color.clear, radius: 8, y: 2)
+                        .shadow(color: isSelected ? DS.Colors.primary.opacity(0.25) : Color.clear, radius: 8, y: 2)
 
                     Text("\(date.dayNumber)")
                         .scaledFont(size: 12, weight: .semibold, relativeTo: .callout)
@@ -81,9 +81,9 @@ struct DayCircle: View {
     
     private var circleColor: Color {
         if isSelected {
-            return DS.Colors.stone800
+            return DS.Colors.primary
         } else if date.isToday {
-            return DS.Colors.amber100
+            return DS.Colors.warningLight
         } else {
             return Color.clear
         }
@@ -93,9 +93,9 @@ struct DayCircle: View {
         if isSelected {
             return .white
         } else if date.isToday {
-            return DS.Colors.amber600
+            return DS.Colors.warning
         } else {
-            return DS.Colors.stone700
+            return DS.Colors.textPrimary
         }
     }
 
@@ -121,5 +121,5 @@ struct DayCircle: View {
         onDateSelected: { _ in }
     )
     .padding()
-    .background(DS.Colors.background)
+    .background(DS.Colors.bgPrimary)
 }

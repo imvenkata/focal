@@ -43,12 +43,12 @@ struct IconPickerView: View {
                                 .frame(width: 56, height: 56)
                                 .background(
                                     RoundedRectangle(cornerRadius: DS.Radius.md)
-                                        .fill(selectedIcon == icon ? DS.Colors.sky.opacity(0.2) : DS.Colors.cardBackground)
+                                        .fill(selectedIcon == icon ? DS.Colors.primary.opacity(0.2) : DS.Colors.surfacePrimary)
                                 )
                                 .overlay {
                                     if selectedIcon == icon {
                                         RoundedRectangle(cornerRadius: DS.Radius.md)
-                                            .strokeBorder(DS.Colors.sky, lineWidth: 2)
+                                            .strokeBorder(DS.Colors.primary, lineWidth: 2)
                                     }
                                 }
                         }
@@ -62,6 +62,7 @@ struct IconPickerView: View {
         }
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
+        .background(DS.Colors.bgPrimary)
     }
 }
 

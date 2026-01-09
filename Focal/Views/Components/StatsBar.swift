@@ -21,7 +21,7 @@ struct StatsBar: View {
                 StatCard(
                     value: "\(completedCount)",
                     label: "Done",
-                    color: DS.Colors.emerald500
+                    color: DS.Colors.success
                 )
             }
         }
@@ -37,13 +37,13 @@ struct EnergyCircularProgress: View {
             ZStack {
                 // Background circle
                 Circle()
-                    .stroke(DS.Colors.divider, lineWidth: 4)
+                    .stroke(DS.Colors.borderSubtle, lineWidth: 4)
                     .frame(width: 40, height: 40)
                 
                 // Progress circle
                 Circle()
                     .trim(from: 0, to: CGFloat(energy) / 100.0)
-                    .stroke(DS.Colors.coral, style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                    .stroke(DS.Colors.secondary, style: StrokeStyle(lineWidth: 4, lineCap: .round))
                     .frame(width: 40, height: 40)
                     .rotationEffect(.degrees(-90))
                 
@@ -71,7 +71,7 @@ struct EnergyCircularProgress: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 10)
-        .background(DS.Colors.stone50)
+        .background(DS.Colors.surfaceSecondary)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
@@ -94,7 +94,7 @@ struct StatCard: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 10)
-        .background(DS.Colors.stone50)
+        .background(DS.Colors.surfaceSecondary)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
@@ -102,5 +102,5 @@ struct StatCard: View {
 #Preview {
     StatsBar(energy: 20, taskCount: 3, completedCount: 1)
         .padding()
-        .background(DS.Colors.background)
+        .background(DS.Colors.bgPrimary)
 }

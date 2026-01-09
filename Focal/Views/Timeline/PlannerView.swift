@@ -61,7 +61,7 @@ struct PlannerView: View {
                 .zIndex(1)
             }
         }
-        .background(DS.Colors.background)
+        .background(DS.Colors.bgPrimary)
         .onAppear {
             if store.tasks.isEmpty {
                 store.loadSampleData()
@@ -105,24 +105,24 @@ struct PlannerHeader: View {
                 Button(action: onPreviousWeek) {
                     Image(systemName: "chevron.left")
                         .scaledFont(size: 14, weight: .semibold, relativeTo: .callout)
-                        .foregroundStyle(DS.Colors.stone400)
+                        .foregroundStyle(DS.Colors.textTertiary)
                 }
                 .frame(width: DS.Sizes.minTouchTarget, height: DS.Sizes.minTouchTarget)
 
                 HStack(spacing: 4) {
                     Text(headerTitle)
                         .scaledFont(size: 16, weight: .semibold, relativeTo: .title3)
-                        .foregroundStyle(DS.Colors.stone800)
+                        .foregroundStyle(DS.Colors.textPrimary)
                     
                     Text(String(selectedDate.yearNumber))
                         .scaledFont(size: 16, weight: .light, relativeTo: .title3)
-                        .foregroundStyle(DS.Colors.amber.opacity(0.8))
+                        .foregroundStyle(DS.Colors.warning.opacity(0.85))
                 }
 
                 Button(action: onNextWeek) {
                     Image(systemName: "chevron.right")
                         .scaledFont(size: 14, weight: .semibold, relativeTo: .callout)
-                        .foregroundStyle(DS.Colors.stone400)
+                        .foregroundStyle(DS.Colors.textTertiary)
                 }
                 .frame(width: DS.Sizes.minTouchTarget, height: DS.Sizes.minTouchTarget)
             }
@@ -159,11 +159,11 @@ struct ViewModeToggle: View {
 
                 Image(systemName: "arrow.left.arrow.right")
                     .scaledFont(size: 10, weight: .semibold, relativeTo: .caption2)
-                    .foregroundStyle(DS.Colors.stone400)
+                    .foregroundStyle(DS.Colors.textTertiary)
             }
             .padding(.horizontal, DS.Spacing.md)
             .padding(.vertical, DS.Spacing.sm)
-            .background(DS.Colors.stone100)
+            .background(DS.Colors.surfaceSecondary)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
         }
         .buttonStyle(.plain)
@@ -201,11 +201,11 @@ private struct TaskPreviewSheet: View {
                 VStack(alignment: .leading, spacing: DS.Spacing.xs) {
                     Text(timeDetail)
                         .scaledFont(size: 12, weight: .medium, relativeTo: .caption)
-                        .foregroundStyle(DS.Colors.stone500)
+                        .foregroundStyle(DS.Colors.textSecondary)
 
                     Text(task.title)
                         .scaledFont(size: 16, weight: .semibold, relativeTo: .body)
-                        .foregroundStyle(DS.Colors.stone800)
+                        .foregroundStyle(DS.Colors.textPrimary)
                 }
 
                 Spacer()
@@ -217,7 +217,7 @@ private struct TaskPreviewSheet: View {
 
                     if task.isCompleted {
                         Circle()
-                            .fill(DS.Colors.emerald500)
+                            .fill(DS.Colors.success)
                             .frame(width: 26, height: 26)
 
                         Image(systemName: "checkmark")
@@ -229,7 +229,7 @@ private struct TaskPreviewSheet: View {
             .padding(.horizontal, DS.Spacing.lg)
             .padding(.bottom, DS.Spacing.lg)
         }
-        .background(DS.Colors.cardBackground)
+        .background(DS.Colors.surfacePrimary)
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxl, style: .continuous))
         .shadow(color: Color.black.opacity(0.12), radius: 20, y: 6)
         .offset(y: dragOffset < 0 ? dragOffset * 0.15 : 0)

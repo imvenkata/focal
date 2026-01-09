@@ -34,6 +34,37 @@ struct FABButton: View {
     }
 }
 
+// MARK: - Compact FAB (Day View)
+struct CompactFABButton: View {
+    let action: () -> Void
+    var size: CGFloat = DS.Sizes.minTouchTarget
+
+    var body: some View {
+        Button {
+            HapticManager.shared.selection()
+            action()
+        } label: {
+            ZStack {
+                Circle()
+                    .fill(.ultraThinMaterial)
+                    .overlay(
+                        Circle()
+                            .stroke(DS.Colors.borderSubtle, lineWidth: 1)
+                    )
+
+                Image(systemName: "plus")
+                    .scaledFont(size: 18, weight: .semibold, relativeTo: .headline)
+                    .foregroundStyle(DS.Colors.primary)
+            }
+            .frame(width: size, height: size)
+            .shadow(color: Color.black.opacity(0.18), radius: 10, y: 4)
+        }
+        .buttonStyle(PressableStyle(scaleAmount: 0.97))
+        .accessibilityLabel("Add new task")
+        .accessibilityHint("Opens task creation sheet")
+    }
+}
+
 // MARK: - FAB Button Style
 struct FABButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {

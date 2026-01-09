@@ -9,16 +9,16 @@ struct CurrentTimeIndicator: View {
             ZStack {
                 // Outer glow
                 Circle()
-                    .fill(DS.Colors.coral.opacity(0.4))
+                    .fill(DS.Colors.secondary.opacity(0.4))
                     .frame(width: 16, height: 16)
                     .blur(radius: 4)
                     .scaleEffect(isPulsing ? 1.3 : 1)
 
                 // Core dot
                 Circle()
-                    .fill(DS.Colors.coral)
+                    .fill(DS.Colors.secondary)
                     .frame(width: 10, height: 10)
-                    .shadow(color: DS.Colors.coral.opacity(0.6), radius: 6, x: 0, y: 0)
+                    .shadow(color: DS.Colors.secondary.opacity(0.6), radius: 6, x: 0, y: 0)
                     .scaleEffect(isPulsing ? 1.15 : 1)
             }
             .animation(
@@ -30,13 +30,13 @@ struct CurrentTimeIndicator: View {
             Rectangle()
                 .fill(
                     LinearGradient(
-                        colors: [DS.Colors.coral, DS.Colors.coral.opacity(0)],
+                        colors: [DS.Colors.secondary, DS.Colors.secondary.opacity(0)],
                         startPoint: .leading,
                         endPoint: .trailing
                     )
                 )
                 .frame(height: 2.5)
-                .shadow(color: DS.Colors.coral.opacity(0.5), radius: 4, x: 0, y: 0)
+                .shadow(color: DS.Colors.secondary.opacity(0.5), radius: 4, x: 0, y: 0)
         }
         .onAppear {
             isPulsing = true
@@ -52,7 +52,7 @@ struct TimeLabel: View {
     var body: some View {
         Text(String(format: "%02d:00", hour))
             .scaledFont(size: 10, weight: .medium, design: .monospaced, relativeTo: .caption2)
-            .foregroundStyle(DS.Colors.stone400)
+            .foregroundStyle(DS.Colors.textTertiary)
             .frame(width: DS.Sizes.timeLabelWidth, alignment: .trailing)
     }
 }
@@ -70,5 +70,5 @@ struct TimeLabel: View {
         }
     }
     .padding()
-    .background(DS.Colors.background)
+    .background(DS.Colors.bgPrimary)
 }

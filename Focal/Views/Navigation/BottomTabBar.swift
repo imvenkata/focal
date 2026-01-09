@@ -3,6 +3,7 @@ import SwiftUI
 struct BottomTabBar: View {
     @Binding var selectedTab: Tab
     let onAddTapped: () -> Void
+    var showsFAB: Bool = true
 
     var body: some View {
         HStack(spacing: 0) {
@@ -37,8 +38,10 @@ struct BottomTabBar: View {
         }
         .overlay(alignment: .top) {
             // FAB
-            FABButton(action: onAddTapped)
-                .offset(y: -DS.Sizes.fabSize / 2)
+            if showsFAB {
+                FABButton(action: onAddTapped)
+                    .offset(y: -DS.Sizes.fabSize / 2)
+            }
         }
     }
 }
@@ -72,9 +75,9 @@ struct TabButton: View {
 #Preview {
     VStack {
         Spacer()
-        BottomTabBar(selectedTab: .constant(.planner)) {
+        BottomTabBar(selectedTab: .constant(.planner), onAddTapped: {
             print("Add tapped")
-        }
+        })
     }
     .background(DS.Colors.background)
 }

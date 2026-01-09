@@ -15,7 +15,7 @@ struct DatePickerSheet: View {
                         selectedDate = Date()
                     }
                     .scaledFont(size: 14, weight: .medium, relativeTo: .callout)
-                    .foregroundStyle(DS.Colors.sky)
+                    .foregroundStyle(DS.Colors.primary)
                 }
                 .padding(.horizontal, DS.Spacing.xl)
 
@@ -26,13 +26,13 @@ struct DatePickerSheet: View {
                     displayedComponents: .date
                 )
                 .datePickerStyle(.graphical)
-                .tint(DS.Colors.sky)
+                .tint(DS.Colors.primary)
                 .padding(.horizontal, DS.Spacing.md)
 
                 Spacer()
             }
             .padding(.top, DS.Spacing.lg)
-            .background(DS.Colors.background)
+            .background(DS.Colors.bgPrimary)
             .navigationTitle("Date")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

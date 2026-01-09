@@ -53,16 +53,16 @@ struct TimePickerSheet: View {
                 } label: {
                     ZStack {
                         Circle()
-                            .fill(DS.Colors.stone100)
+                            .fill(DS.Colors.surfaceSecondary)
                             .frame(width: 32, height: 32)
 
                         Circle()
-                            .stroke(DS.Colors.stone200, lineWidth: 1)
+                            .stroke(DS.Colors.borderSubtle, lineWidth: 1)
                             .frame(width: 32, height: 32)
 
                         Image(systemName: "checkmark")
                             .scaledFont(size: 11, weight: .semibold, relativeTo: .caption)
-                            .foregroundStyle(DS.Colors.emerald500)
+                            .foregroundStyle(DS.Colors.accent)
                     }
                     .shadow(color: Color.black.opacity(0.06), radius: 4, y: 2)
                 }
@@ -88,7 +88,7 @@ struct TimePickerSheet: View {
 
                             Text(":")
                                 .scaledFont(size: 32, weight: .bold, design: .rounded, relativeTo: .largeTitle)
-                                .foregroundStyle(DS.Colors.stone300)
+                                .foregroundStyle(DS.Colors.textTertiary)
                                 .offset(y: -8)
 
                             // Minute wheel
@@ -112,7 +112,7 @@ struct TimePickerSheet: View {
                 .padding(.top, DS.Spacing.lg)
             }
         }
-        .background(DS.Colors.background)
+        .background(DS.Colors.bgPrimary)
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
     }
@@ -152,7 +152,7 @@ struct TimePreviewCard: View {
                     .scaledFont(size: 48, weight: .bold, design: .rounded, relativeTo: .largeTitle)
                     .foregroundStyle(
                         LinearGradient(
-                            colors: [DS.Colors.sky, DS.Colors.sky.opacity(0.8)],
+                            colors: [DS.Colors.primary, DS.Colors.primary.opacity(0.8)],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
@@ -160,7 +160,7 @@ struct TimePreviewCard: View {
 
                 Text(hour < 12 ? "AM" : "PM")
                     .scaledFont(size: 18, weight: .semibold, relativeTo: .title3)
-                    .foregroundStyle(DS.Colors.stone400)
+                    .foregroundStyle(DS.Colors.textTertiary)
                     .offset(y: -4)
             }
 
@@ -176,7 +176,7 @@ struct TimePreviewCard: View {
 
                 Text("·")
                     .scaledFont(size: 14, relativeTo: .callout)
-                    .foregroundStyle(DS.Colors.stone300)
+                .foregroundStyle(DS.Colors.textTertiary)
 
                 Text(duration.formattedDuration)
                     .scaledFont(size: 14, weight: .medium, relativeTo: .callout)
@@ -188,8 +188,8 @@ struct TimePreviewCard: View {
         .background(
             LinearGradient(
                 colors: [
-                    DS.Colors.sky.opacity(0.08),
-                    DS.Colors.sky.opacity(0.04)
+                    DS.Colors.primary.opacity(0.08),
+                    DS.Colors.primary.opacity(0.04)
                 ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
@@ -199,7 +199,7 @@ struct TimePreviewCard: View {
             RoundedRectangle(cornerRadius: DS.Radius.xl)
                 .stroke(
                     LinearGradient(
-                        colors: [DS.Colors.sky.opacity(0.2), DS.Colors.sky.opacity(0.05)],
+                        colors: [DS.Colors.primary.opacity(0.2), DS.Colors.primary.opacity(0.05)],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     ),
@@ -207,7 +207,7 @@ struct TimePreviewCard: View {
                 )
         )
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xl))
-        .shadow(color: DS.Colors.sky.opacity(0.1), radius: 12, y: 4)
+        .shadow(color: DS.Colors.primary.opacity(0.1), radius: 12, y: 4)
     }
 }
 
@@ -222,7 +222,7 @@ struct PremiumWheelPicker: View {
         VStack(spacing: DS.Spacing.xs) {
             Text(label.uppercased())
                 .scaledFont(size: 10, weight: .semibold, relativeTo: .caption2)
-                .foregroundStyle(DS.Colors.sky.opacity(0.8))
+                .foregroundStyle(DS.Colors.primary.opacity(0.8))
 
             ZStack {
                 // Premium gradient background
@@ -230,8 +230,8 @@ struct PremiumWheelPicker: View {
                     .fill(
                         LinearGradient(
                             colors: [
-                                DS.Colors.cardBackground,
-                                DS.Colors.stone50
+                                DS.Colors.surfacePrimary,
+                                DS.Colors.surfaceSecondary
                             ],
                             startPoint: .top,
                             endPoint: .bottom
@@ -246,12 +246,12 @@ struct PremiumWheelPicker: View {
                             .foregroundStyle(
                                 item == selection ?
                                 LinearGradient(
-                                    colors: [DS.Colors.sky, DS.Colors.sky.opacity(0.8)],
+                                    colors: [DS.Colors.primary, DS.Colors.primary.opacity(0.8)],
                                     startPoint: .top,
                                     endPoint: .bottom
                                 ) :
                                 LinearGradient(
-                                    colors: [DS.Colors.stone400, DS.Colors.stone400],
+                                    colors: [DS.Colors.textTertiary, DS.Colors.textTertiary],
                                     startPoint: .top,
                                     endPoint: .bottom
                                 )
@@ -266,13 +266,13 @@ struct PremiumWheelPicker: View {
                 VStack {
                     Spacer()
                     RoundedRectangle(cornerRadius: DS.Radius.md)
-                        .fill(DS.Colors.sky.opacity(0.06))
+                        .fill(DS.Colors.primary.opacity(0.06))
                         .frame(height: 44)
                         .overlay(
                             RoundedRectangle(cornerRadius: DS.Radius.md)
                                 .stroke(
                                     LinearGradient(
-                                        colors: [DS.Colors.sky.opacity(0.3), DS.Colors.sky.opacity(0.1)],
+                                        colors: [DS.Colors.primary.opacity(0.3), DS.Colors.primary.opacity(0.1)],
                                         startPoint: .leading,
                                         endPoint: .trailing
                                     ),
@@ -288,7 +288,7 @@ struct PremiumWheelPicker: View {
                 RoundedRectangle(cornerRadius: DS.Radius.xl)
                     .stroke(
                         LinearGradient(
-                            colors: [DS.Colors.stone200.opacity(0.6), DS.Colors.stone100.opacity(0.3)],
+                            colors: [DS.Colors.borderSubtle.opacity(0.6), DS.Colors.surfaceSecondary.opacity(0.5)],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         ),
@@ -312,7 +312,7 @@ struct PremiumDurationPicker: View {
         VStack(spacing: DS.Spacing.xs) {
             Text("DURATION")
                 .scaledFont(size: 10, weight: .semibold, relativeTo: .caption2)
-                .foregroundStyle(DS.Colors.emerald500.opacity(0.9))
+                .foregroundStyle(DS.Colors.accent.opacity(0.9))
 
             ZStack {
                 // Premium gradient background
@@ -320,8 +320,8 @@ struct PremiumDurationPicker: View {
                     .fill(
                         LinearGradient(
                             colors: [
-                                DS.Colors.emerald500.opacity(0.06),
-                                DS.Colors.emerald500.opacity(0.03)
+                                DS.Colors.accent.opacity(0.06),
+                                DS.Colors.accent.opacity(0.03)
                             ],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
@@ -336,12 +336,12 @@ struct PremiumDurationPicker: View {
                             .foregroundStyle(
                                 duration.minutes == selectedMinutes ?
                                 LinearGradient(
-                                    colors: [DS.Colors.emerald500, DS.Colors.emerald500.opacity(0.8)],
+                                    colors: [DS.Colors.accent, DS.Colors.accent.opacity(0.8)],
                                     startPoint: .top,
                                     endPoint: .bottom
                                 ) :
                                 LinearGradient(
-                                    colors: [DS.Colors.stone400, DS.Colors.stone400],
+                                    colors: [DS.Colors.textTertiary, DS.Colors.textTertiary],
                                     startPoint: .top,
                                     endPoint: .bottom
                                 )
@@ -356,13 +356,13 @@ struct PremiumDurationPicker: View {
                 VStack {
                     Spacer()
                     RoundedRectangle(cornerRadius: DS.Radius.md)
-                        .fill(DS.Colors.emerald500.opacity(0.08))
+                        .fill(DS.Colors.accent.opacity(0.08))
                         .frame(height: 44)
                         .overlay(
                             RoundedRectangle(cornerRadius: DS.Radius.md)
                                 .stroke(
                                     LinearGradient(
-                                        colors: [DS.Colors.emerald500.opacity(0.4), DS.Colors.emerald500.opacity(0.2)],
+                                        colors: [DS.Colors.accent.opacity(0.4), DS.Colors.accent.opacity(0.2)],
                                         startPoint: .leading,
                                         endPoint: .trailing
                                     ),
@@ -378,14 +378,14 @@ struct PremiumDurationPicker: View {
                 RoundedRectangle(cornerRadius: DS.Radius.xl)
                     .stroke(
                         LinearGradient(
-                            colors: [DS.Colors.emerald500.opacity(0.3), DS.Colors.emerald500.opacity(0.1)],
+                            colors: [DS.Colors.accent.opacity(0.3), DS.Colors.accent.opacity(0.1)],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         ),
                         lineWidth: 1
                     )
             )
-            .shadow(color: DS.Colors.emerald500.opacity(0.08), radius: 8, y: 2)
+            .shadow(color: DS.Colors.accent.opacity(0.08), radius: 8, y: 2)
             .onChange(of: selectedMinutes) { _, _ in
                 HapticManager.shared.selection()
             }
@@ -410,13 +410,13 @@ struct DurationChip: View {
                     Group {
                         if isSelected {
                             LinearGradient(
-                                colors: [DS.Colors.sky, DS.Colors.sky.opacity(0.9)],
+                                colors: [DS.Colors.primary, DS.Colors.primary.opacity(0.9)],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )
                         } else {
                             LinearGradient(
-                                colors: [DS.Colors.cardBackground, DS.Colors.cardBackground],
+                                colors: [DS.Colors.surfacePrimary, DS.Colors.surfacePrimary],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )
@@ -426,13 +426,13 @@ struct DurationChip: View {
                 .overlay(
                     RoundedRectangle(cornerRadius: DS.Radius.md)
                         .stroke(
-                            isSelected ? Color.clear : DS.Colors.stone200,
+                            isSelected ? Color.clear : DS.Colors.borderSubtle,
                             lineWidth: 1
                         )
                 )
                 .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
                 .shadow(
-                    color: isSelected ? DS.Colors.sky.opacity(0.3) : Color.clear,
+                    color: isSelected ? DS.Colors.primary.opacity(0.3) : Color.clear,
                     radius: isSelected ? 8 : 0,
                     y: isSelected ? 4 : 0
                 )

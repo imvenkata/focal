@@ -28,7 +28,7 @@ struct PlannerTaskCreationSheet: View {
 
     var body: some View {
         ZStack {
-            DS.Colors.background
+            DS.Colors.bgPrimary
                 .ignoresSafeArea()
 
             ScrollView(showsIndicators: false) {
@@ -89,11 +89,11 @@ struct PlannerTaskCreationSheet: View {
                                 showRepeatPicker = true
                             }
                         }
-                        .background(DS.Colors.cardBackground)
+                        .background(DS.Colors.surfacePrimary)
                         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous))
                         .overlay(
                             RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous)
-                                .stroke(DS.Colors.stone200.opacity(0.6), lineWidth: DS.Sizes.hairline)
+                                .stroke(DS.Colors.borderSubtle.opacity(0.6), lineWidth: DS.Sizes.hairline)
                         )
                         .shadow(color: DS.Colors.glassShadow.opacity(0.12), radius: DS.Spacing.lg, y: DS.Spacing.sm)
                     }
@@ -376,9 +376,9 @@ private struct PlannerTaskHeaderCard: View {
                             .frame(width: completionSize, height: completionSize)
 
                         if isCompleted {
-                            Circle()
-                                .fill(DS.Colors.emerald500)
-                                .frame(width: completionSize, height: completionSize)
+                    Circle()
+                        .fill(DS.Colors.success)
+                        .frame(width: completionSize, height: completionSize)
 
                             Image(systemName: "checkmark")
                                 .scaledFont(size: 11, weight: .bold, relativeTo: .caption2)
@@ -442,7 +442,7 @@ private struct PlannerActionRow: View {
             HStack(spacing: DS.Spacing.md) {
                 ZStack {
                     RoundedRectangle(cornerRadius: DS.Radius.sm)
-                        .fill(DS.Colors.stone100)
+                        .fill(DS.Colors.surfaceSecondary)
                         .frame(width: DS.Spacing.xxxl, height: DS.Spacing.xxxl)
 
                     Image(systemName: icon)
@@ -528,11 +528,11 @@ private struct PlannerSubtasksCard: View {
             .padding(.top, subtasks.isEmpty ? 0 : DS.Spacing.sm)
         }
         .padding(DS.Spacing.lg)
-        .background(DS.Colors.cardBackground)
+        .background(DS.Colors.surfacePrimary)
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous)
-                .stroke(DS.Colors.stone200.opacity(0.6), lineWidth: DS.Sizes.hairline)
+                .stroke(DS.Colors.borderSubtle.opacity(0.6), lineWidth: DS.Sizes.hairline)
         )
         .shadow(color: DS.Colors.glassShadow.opacity(0.1), radius: DS.Spacing.lg, y: DS.Spacing.sm)
     }
@@ -545,7 +545,7 @@ private struct PlannerSubtaskRow: View {
     var body: some View {
         HStack(spacing: DS.Spacing.md) {
             Circle()
-                .stroke(DS.Colors.stone200, lineWidth: DS.Sizes.hairline * 2)
+                .stroke(DS.Colors.borderSubtle, lineWidth: DS.Sizes.hairline * 2)
                 .frame(width: 22, height: 22)
 
             Text(title)
@@ -585,11 +585,11 @@ private struct PlannerNotesEditor: View {
                     .padding(DS.Spacing.lg)
             }
         }
-        .background(DS.Colors.cardBackground)
+        .background(DS.Colors.surfacePrimary)
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous)
-                .stroke(DS.Colors.stone200.opacity(0.6), lineWidth: DS.Sizes.hairline)
+                .stroke(DS.Colors.borderSubtle.opacity(0.6), lineWidth: DS.Sizes.hairline)
         )
         .shadow(color: DS.Colors.glassShadow.opacity(0.1), radius: DS.Spacing.lg, y: DS.Spacing.sm)
     }
@@ -623,7 +623,7 @@ private struct PlannerDatePickerSheet: View {
                 Spacer()
             }
             .padding(.top, DS.Spacing.lg)
-            .background(DS.Colors.background)
+            .background(DS.Colors.bgPrimary)
             .navigationTitle("Date")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -717,8 +717,8 @@ private struct PlannerTimePickerSheet: View {
                                         .foregroundStyle(isSelected ? DS.Colors.glassTextPrimary : DS.Colors.textSecondary)
                                         .frame(maxWidth: .infinity)
                                         .padding(.vertical, DS.Spacing.sm)
-                                        .background(isSelected ? accentColor : DS.Colors.stone100)
-                                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md, style: .continuous))
+                                .background(isSelected ? accentColor : DS.Colors.surfaceSecondary)
+                                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md, style: .continuous))
                                 }
                                 .buttonStyle(.plain)
                                 .accessibilityLabel("Duration \(preset.label)")
@@ -727,17 +727,17 @@ private struct PlannerTimePickerSheet: View {
                         }
                     }
                     .padding(DS.Spacing.lg)
-                    .background(DS.Colors.cardBackground)
+                    .background(DS.Colors.surfacePrimary)
                     .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous))
                     .overlay(
                         RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous)
-                            .stroke(DS.Colors.stone200.opacity(0.6), lineWidth: DS.Sizes.hairline)
+                            .stroke(DS.Colors.borderSubtle.opacity(0.6), lineWidth: DS.Sizes.hairline)
                     )
                 }
                 .padding(.top, DS.Spacing.md)
                 .padding(.bottom, DS.Spacing.xxl)
             }
-            .background(DS.Colors.background)
+                .background(DS.Colors.bgPrimary)
             .navigationTitle("Time & Duration")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -770,7 +770,7 @@ private struct PlannerTimePickerSheet: View {
                 RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous)
                     .fill(
                         LinearGradient(
-                            colors: [DS.Colors.cardBackground, DS.Colors.stone50],
+                            colors: [DS.Colors.surfacePrimary, DS.Colors.surfaceSecondary],
                             startPoint: .top,
                             endPoint: .bottom
                         )
@@ -802,7 +802,7 @@ private struct PlannerTimePickerSheet: View {
             .frame(width: width, height: dialHeight)
             .overlay(
                 RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous)
-                    .stroke(DS.Colors.stone200.opacity(0.7), lineWidth: DS.Sizes.hairline)
+                    .stroke(DS.Colors.borderSubtle.opacity(0.7), lineWidth: DS.Sizes.hairline)
             )
             .shadow(color: DS.Colors.glassShadow.opacity(0.08), radius: DS.Spacing.sm, y: DS.Spacing.xs)
         }
@@ -847,7 +847,7 @@ private struct PlannerRepeatPickerSheet: View {
                 .padding(.top, DS.Spacing.lg)
                 .padding(.bottom, DS.Spacing.xxxl)
             }
-            .background(DS.Colors.background)
+            .background(DS.Colors.bgPrimary)
             .navigationTitle("Repeat")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -878,7 +878,7 @@ private struct PlannerRecurrencePill: View {
                 .foregroundStyle(isSelected ? DS.Colors.glassTextPrimary : DS.Colors.textSecondary)
                 .padding(.horizontal, DS.Spacing.md)
                 .padding(.vertical, DS.Spacing.sm)
-                .background(isSelected ? accentColor : DS.Colors.stone100)
+                .background(isSelected ? accentColor : DS.Colors.surfaceSecondary)
                 .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
         }
         .buttonStyle(.plain)
@@ -927,11 +927,11 @@ private struct PlannerRepeatDaysPicker: View {
             }
         }
         .padding(DS.Spacing.md)
-        .background(DS.Colors.cardBackground)
+        .background(DS.Colors.surfacePrimary)
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
         .overlay(
             RoundedRectangle(cornerRadius: DS.Radius.lg)
-                .stroke(DS.Colors.stone200.opacity(0.6), lineWidth: DS.Sizes.hairline)
+                .stroke(DS.Colors.borderSubtle.opacity(0.6), lineWidth: DS.Sizes.hairline)
         )
     }
 }
@@ -948,7 +948,7 @@ private struct PlannerDayButton: View {
                 .scaledFont(size: 13, weight: .medium, relativeTo: .callout)
                 .foregroundStyle(isSelected ? DS.Colors.glassTextPrimary : DS.Colors.textSecondary)
                 .frame(width: 32, height: 32)
-                .background(isSelected ? accentColor : DS.Colors.stone100)
+                .background(isSelected ? accentColor : DS.Colors.surfaceSecondary)
                 .clipShape(Circle())
         }
         .buttonStyle(.plain)
@@ -968,7 +968,7 @@ private struct PlannerPresetButton: View {
                 .foregroundStyle(isSelected ? DS.Colors.glassTextPrimary : DS.Colors.textSecondary)
                 .padding(.horizontal, DS.Spacing.md)
                 .padding(.vertical, DS.Spacing.xs)
-                .background(isSelected ? accentColor : DS.Colors.stone100)
+                .background(isSelected ? accentColor : DS.Colors.surfaceSecondary)
                 .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
         }
         .buttonStyle(.plain)
