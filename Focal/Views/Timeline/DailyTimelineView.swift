@@ -4,10 +4,13 @@ struct DailyTimelineView: View {
     @Environment(TaskStore.self) private var taskStore
     @State private var selectedTask: TaskItem?
     @State private var showAddTask = false
+    @State private var dragOffset: CGFloat = 0
+    @State private var isDragging = false
     var onClose: (() -> Void)?
 
     private let timelineStartHour = 6
     private let timelineEndHour = 23  // Aligned with weekly view (was 22)
+    private let dismissThreshold: CGFloat = 120
     private let minuteHeight: CGFloat = 0.5
     private var timelineVerticalPadding: CGFloat { DS.Spacing.md }
     private var timelineBottomPadding: CGFloat { DS.Sizes.bottomNavHeight + DS.Spacing.md }
@@ -100,6 +103,39 @@ struct DailyTimelineView: View {
         .background(DS.Colors.surfacePrimary)
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxxl, style: .continuous))
         .shadow(color: DS.Colors.overlay.opacity(0.08), radius: 24, y: -4)
+        .offset(y: max(0, dragOffset))
+        .scaleEffect(dragScaleEffect, anchor: .bottom)
+        .opacity(dragOpacity)
+        .gesture(
+            DragGesture(minimumDistance: 10)
+                .onChanged { value in
+                    // Only allow downward drag
+                    if value.translation.height > 0 {
+                        isDragging = true
+                        dragOffset = value.translation.height
+                    }
+                }
+                .onEnded { value in
+                    isDragging = false
+                    let velocity = value.predictedEndTranslation.height - value.translation.height
+
+                    if value.translation.height > dismissThreshold || velocity > 300 {
+                        // Dismiss with animation
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                            dragOffset = UIScreen.main.bounds.height
+                        }
+                        // Call onClose after animation
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                            onClose?()
+                        }
+                    } else {
+                        // Snap back
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                            dragOffset = 0
+                        }
+                    }
+                }
+        )
         .transition(.move(edge: .bottom).combined(with: .opacity))
         .sheet(isPresented: $showAddTask) {
             PlannerTaskCreationSheet()
@@ -177,24 +213,33 @@ struct DailyTimelineView: View {
         }
     }
 
-    private var handleBar: some View {
-        Group {
-            if let onClose {
-                Button(action: onClose) {
-                    handleCapsule
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel("Close day view")
-                .accessibilityHint("Returns to the week overview")
-            } else {
-                handleCapsule
-            }
-        }
-        .padding(.top, DS.Spacing.md)
-        .padding(.bottom, DS.Spacing.sm)
+    private var dragScaleEffect: CGFloat {
+        let progress = min(dragOffset / 300, 1)
+        return 1 - (progress * 0.05)
     }
 
-    private var handleCapsule: some View {
+    private var dragOpacity: CGFloat {
+        let progress = min(dragOffset / 400, 1)
+        return 1 - (progress * 0.3)
+    }
+
+    private var handleBar: some View {
+        VStack(spacing: 0) {
+            // Drag handle
+            RoundedRectangle(cornerRadius: DS.Radius.pill)
+                .fill(DS.Colors.borderStrong.opacity(isDragging ? 0.7 : 0.4))
+                .frame(width: isDragging ? 50 : DS.Sizes.sheetHandle, height: 5)
+                .animation(.easeOut(duration: 0.15), value: isDragging)
+                .padding(.top, DS.Spacing.md)
+                .padding(.bottom, DS.Spacing.sm)
+        }
+        .frame(maxWidth: .infinity)
+        .contentShape(Rectangle())
+        .accessibilityLabel("Drag down to close")
+        .accessibilityHint("Swipe down to return to week view")
+    }
+
+    private var handleCapsuleLegacy: some View {
         HStack {
             Spacer()
             RoundedRectangle(cornerRadius: DS.Radius.pill)

@@ -52,12 +52,23 @@ struct PlannerView: View {
             }
 
             if store.viewMode == .week, let previewTask {
-                TaskPreviewSheet(task: previewTask, onExpand: {
-                    handleExpandDayView()
-                })
+                TaskPreviewSheet(
+                    task: previewTask,
+                    onExpand: {
+                        handleExpandDayView()
+                    },
+                    onDismiss: {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                            self.previewTask = nil
+                        }
+                    }
+                )
                 .padding(.horizontal, DS.Spacing.lg)
                 .padding(.bottom, DS.Sizes.bottomNavHeight + DS.Spacing.lg)
-                .transition(.move(edge: .bottom).combined(with: .opacity))
+                .transition(.asymmetric(
+                    insertion: .move(edge: .bottom).combined(with: .opacity),
+                    removal: .opacity.combined(with: .scale(scale: 0.9))
+                ))
                 .zIndex(1)
             }
         }
@@ -177,23 +188,22 @@ struct ViewModeToggle: View {
 private struct TaskPreviewSheet: View {
     let task: TaskItem
     let onExpand: () -> Void
+    let onDismiss: () -> Void
 
-    @GestureState private var dragOffset: CGFloat = 0
+    @State private var dragOffset: CGFloat = 0
+    @State private var isDragging = false
 
-    private let dragThreshold: CGFloat = 60
+    private let expandThreshold: CGFloat = -50
+    private let dismissThreshold: CGFloat = 80
 
     var body: some View {
         VStack(spacing: DS.Spacing.sm) {
-            Button(action: onExpand) {
-                RoundedRectangle(cornerRadius: DS.Radius.pill)
-                    .fill(DS.Colors.divider)
-                    .frame(width: DS.Sizes.sheetHandle, height: 4)
-                    .padding(.top, DS.Spacing.sm)
-                    .padding(.bottom, DS.Spacing.xs)
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("Expand day view")
-            .accessibilityHint("Shows the full day timeline")
+            // Drag handle
+            RoundedRectangle(cornerRadius: DS.Radius.pill)
+                .fill(DS.Colors.borderStrong.opacity(0.5))
+                .frame(width: DS.Sizes.sheetHandle, height: 5)
+                .padding(.top, DS.Spacing.md)
+                .padding(.bottom, DS.Spacing.xs)
 
             HStack(spacing: DS.Spacing.lg) {
                 TaskPreviewIcon(task: task)
@@ -210,6 +220,7 @@ private struct TaskPreviewSheet: View {
 
                 Spacer()
 
+                // Completion indicator
                 ZStack {
                     Circle()
                         .stroke(task.isCompleted ? Color.clear : task.color.color, lineWidth: 2)
@@ -232,24 +243,63 @@ private struct TaskPreviewSheet: View {
         .background(DS.Colors.surfacePrimary)
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxl, style: .continuous))
         .shadowLifted()
-        .offset(y: dragOffset < 0 ? dragOffset * 0.15 : 0)
-        .contentShape(Rectangle())
-        .simultaneousGesture(
-            DragGesture(minimumDistance: 12)
-                .updating($dragOffset) { value, state, _ in
+        .scaleEffect(scaleEffect)
+        .offset(y: currentOffset)
+        .opacity(opacity)
+        .gesture(
+            DragGesture(minimumDistance: 5)
+                .onChanged { value in
+                    isDragging = true
+                    // Rubber band effect: resistance when dragging up
                     if value.translation.height < 0 {
-                        state = value.translation.height
+                        dragOffset = value.translation.height * 0.4
+                    } else {
+                        dragOffset = value.translation.height
                     }
                 }
                 .onEnded { value in
-                    if value.translation.height < -dragThreshold {
-                        onExpand()
+                    isDragging = false
+                    let velocity = value.predictedEndTranslation.height - value.translation.height
+
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                        if value.translation.height < expandThreshold || velocity < -200 {
+                            // Swipe up - expand to day view
+                            onExpand()
+                        } else if value.translation.height > dismissThreshold || velocity > 200 {
+                            // Swipe down - dismiss
+                            onDismiss()
+                        }
+                        dragOffset = 0
                     }
                 }
         )
+        .onTapGesture {
+            onExpand()
+        }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(task.title), \(timeDetail)")
-        .accessibilityHint("Swipe up to expand the day view")
+        .accessibilityHint("Swipe up to expand, swipe down to dismiss, or tap to view")
+    }
+
+    private var currentOffset: CGFloat {
+        dragOffset
+    }
+
+    private var scaleEffect: CGFloat {
+        if dragOffset < 0 {
+            // Slightly scale up when dragging up
+            return 1 + (abs(dragOffset) / 500)
+        } else {
+            // Scale down when dragging down
+            return max(0.9, 1 - (dragOffset / 400))
+        }
+    }
+
+    private var opacity: CGFloat {
+        if dragOffset > 0 {
+            return max(0.3, 1 - (dragOffset / 200))
+        }
+        return 1
     }
 
     private var timeDetail: String {
