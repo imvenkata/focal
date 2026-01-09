@@ -207,7 +207,7 @@ struct TaskCapsuleView: View {
             Text(task.icon)
                 .font(.system(size: size.iconSize))
         }
-        .frame(width: size.iconSize + 12, height: size.iconSize + 12)
+        .frame(width: size.iconSize + 16, height: size.iconSize + 16)
         .shadowColored(task.color.color)
     }
 

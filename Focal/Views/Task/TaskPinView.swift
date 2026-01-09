@@ -188,15 +188,15 @@ struct LiquidGlassCapsuleView: View {
     }
 
     private var iconFontSize: CGFloat {
-        14 * sizeScale
+        18 * sizeScale
     }
 }
 
 struct GlassIconPip: View {
     let icon: String
     let accentColor: Color
-    var size: CGFloat = DS.Sizes.glassIconSize
-    var iconSize: CGFloat = 14
+    var size: CGFloat = DS.Sizes.glassIconSize + 4
+    var iconSize: CGFloat = 18
 
     var body: some View {
         ZStack {

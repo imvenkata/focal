@@ -152,10 +152,10 @@ enum DS {
         static let weekTimelineHeight: CGFloat = 480  // Taller for better visibility
         static let weekColumnSpacing: CGFloat = 6
 
-        // Glass components (week view capsules)
-        static let glassCapsuleWidth: CGFloat = 38
-        static let glassCapsuleHeight: CGFloat = 44
-        static let glassIconSize: CGFloat = 18
+        // Glass components (week view capsules) - Tiimo-style larger sizes
+        static let glassCapsuleWidth: CGFloat = 48
+        static let glassCapsuleHeight: CGFloat = 56
+        static let glassIconSize: CGFloat = 26
         static let glassStemWidth: CGFloat = 2
 
         // Misc
@@ -229,9 +229,9 @@ enum DS {
 
         var height: CGFloat {
             switch self {
-            case .small: return 44
-            case .medium: return 56
-            case .large: return 72
+            case .small: return 52
+            case .medium: return 64
+            case .large: return 80
             }
         }
 
@@ -253,9 +253,9 @@ enum DS {
 
         var iconSize: CGFloat {
             switch self {
-            case .small: return 16
-            case .medium: return 20
-            case .large: return 24
+            case .small: return 20
+            case .medium: return 26
+            case .large: return 32
             }
         }
 

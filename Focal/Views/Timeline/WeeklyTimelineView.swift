@@ -325,6 +325,7 @@ struct DayColumn: View {
                         RoundedRectangle(cornerRadius: 1)
                             .fill(DS.Colors.borderStrong.opacity(0.3))
                             .frame(width: 2, height: trackHeight)
+                            .frame(maxWidth: .infinity)
                             .offset(y: firstTaskOffset)
                     }
                 }
