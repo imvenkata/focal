@@ -1,0 +1,23 @@
+{
+  "/Users/venkata/projects/focal/Focal/Views/Task/TaskCardView.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TaskCardView.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TaskCardView.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TaskCardView.dia",
+    "object" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TaskCardView.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TaskCardView.swiftdeps"
+  },
+  "/Users/venkata/projects/focal/Focal/Views/Task/TaskPinView.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TaskPinView.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TaskPinView.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TaskPinView.dia",
+    "object" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TaskPinView.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TaskPinView.swiftdeps"
+  },
+  "/Users/venkata/projects/focal/Focal/Views/Timeline/CurrentTimeIndicator.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/CurrentTimeIndicator.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/CurrentTimeIndicator.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/CurrentTimeIndicator.dia",
+    "object" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/CurrentTimeIndicator.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/CurrentTimeIndicator.swiftdeps"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "/Users/venkata/projects/focal/Focal/ViewModels/Tab.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/Tab.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/Tab.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/Tab.dia",
+    "object" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/Tab.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/Tab.swiftdeps"
+  },
+  "/Users/venkata/projects/focal/Focal/ViewModels/TaskDragState.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TaskDragState.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TaskDragState.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TaskDragState.dia",
+    "object" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TaskDragState.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TaskDragState.swiftdeps"
+  },
+  "/Users/venkata/projects/focal/Focal/Views/Navigation/BottomTabBar.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/BottomTabBar.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/BottomTabBar.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/BottomTabBar.dia",
+    "object" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/BottomTabBar.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/BottomTabBar.swiftdeps"
+  }
+}

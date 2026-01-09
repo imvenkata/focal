@@ -14,8 +14,20 @@ struct PlannerView: View {
                     selectedDate: store.selectedDate,
                     viewMode: store.viewMode,
                     onToggleViewMode: { store.toggleViewMode() },
-                    onPreviousWeek: { store.goToPreviousWeek() },
-                    onNextWeek: { store.goToNextWeek() }
+                    onPreviousWeek: {
+                        if store.viewMode == .week {
+                            store.goToPreviousWeek()
+                        } else {
+                            store.goToPreviousDay()
+                        }
+                    },
+                    onNextWeek: {
+                        if store.viewMode == .week {
+                            store.goToNextWeek()
+                        } else {
+                            store.goToNextDay()
+                        }
+                    }
                 )
 
                 // Week selector

@@ -1,0 +1,24 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Task/TaskPinView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%@, %@",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 57
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@, %@",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 91
+        }
+      }
+    ]
+  },
+  "version": 1
+}

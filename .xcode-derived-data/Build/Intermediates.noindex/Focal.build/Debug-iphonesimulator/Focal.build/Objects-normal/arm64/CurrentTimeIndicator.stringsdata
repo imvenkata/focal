@@ -1,0 +1,16 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Timeline/CurrentTimeIndicator.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Current time",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 44
+        }
+      }
+    ]
+  },
+  "version": 1
+}

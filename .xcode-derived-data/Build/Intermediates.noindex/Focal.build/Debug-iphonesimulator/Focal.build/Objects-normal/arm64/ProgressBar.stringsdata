@@ -1,0 +1,40 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Components/ProgressBar.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%lld of %lld tasks completed",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 38
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld percent",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 39
+        }
+      },
+      {
+        "comment": "",
+        "key": "🔥",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 12
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld/%lld",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 33
+        }
+      }
+    ]
+  },
+  "version": 1
+}

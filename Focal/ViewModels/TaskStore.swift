@@ -5,7 +5,7 @@ import SwiftData
 final class TaskStore {
     var tasks: [TaskItem] = []
     var selectedDate: Date = Date()
-    var viewMode: ViewMode = .week
+    var viewMode: ViewMode = .day
 
     enum ViewMode {
         case week

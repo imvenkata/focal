@@ -1,0 +1,72 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Pickers/WhenPickerSheet.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Done",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 83
+        }
+      },
+      {
+        "comment": "",
+        "key": "Select Date",
+        "location": {
+          "startingColumn": 17,
+          "startingLine": 132
+        }
+      },
+      {
+        "comment": "",
+        "key": "DATE",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 116
+        }
+      },
+      {
+        "comment": "",
+        "key": "Today",
+        "location": {
+          "startingColumn": 24,
+          "startingLine": 122
+        }
+      },
+      {
+        "comment": "",
+        "key": "TIME",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 145
+        }
+      },
+      {
+        "comment": "",
+        "key": ":",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 159
+        }
+      },
+      {
+        "comment": "",
+        "key": "RECURRENCE",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 179
+        }
+      },
+      {
+        "comment": "",
+        "key": "DURATION",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 214
+        }
+      }
+    ]
+  },
+  "version": 1
+}

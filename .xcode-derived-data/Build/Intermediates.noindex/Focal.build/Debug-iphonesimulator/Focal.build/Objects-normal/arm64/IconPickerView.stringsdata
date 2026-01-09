@@ -1,0 +1,24 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Pickers/IconPickerView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Choose Icon",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 23
+        }
+      },
+      {
+        "comment": "",
+        "key": "Icon: %@",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 56
+        }
+      }
+    ]
+  },
+  "version": 1
+}

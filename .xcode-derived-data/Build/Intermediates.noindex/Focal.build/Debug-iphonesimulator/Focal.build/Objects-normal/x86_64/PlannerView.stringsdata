@@ -1,0 +1,72 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Timeline/PlannerView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "View mode",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 193
+        }
+      },
+      {
+        "comment": "",
+        "key": "Week",
+        "location": {
+          "startingColumn": 49,
+          "startingLine": 194
+        }
+      },
+      {
+        "comment": "",
+        "key": "Day",
+        "location": {
+          "startingColumn": 58,
+          "startingLine": 194
+        }
+      },
+      {
+        "comment": "",
+        "key": "Double tap to switch view",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 195
+        }
+      },
+      {
+        "comment": "",
+        "key": "Week",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 179
+        }
+      },
+      {
+        "comment": "",
+        "key": "Day",
+        "location": {
+          "startingColumn": 51,
+          "startingLine": 179
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@, %@",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 292
+        }
+      },
+      {
+        "comment": "",
+        "key": "Swipe up to expand, swipe down to dismiss, or tap to view",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 293
+        }
+      }
+    ]
+  },
+  "version": 1
+}

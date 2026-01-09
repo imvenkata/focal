@@ -1,0 +1,23 @@
+{
+  "/Users/venkata/projects/focal/Focal/Utilities/DateExtensions.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/DateExtensions.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/DateExtensions.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/DateExtensions.dia",
+    "object" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/DateExtensions.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/DateExtensions.swiftdeps"
+  },
+  "/Users/venkata/projects/focal/Focal/Utilities/ScaledFont.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ScaledFont.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ScaledFont.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ScaledFont.dia",
+    "object" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ScaledFont.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ScaledFont.swiftdeps"
+  },
+  "/Users/venkata/projects/focal/Focal/ViewModels/TaskStore.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TaskStore.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TaskStore.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TaskStore.dia",
+    "object" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TaskStore.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcode-derived-data/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TaskStore.swiftdeps"
+  }
+}

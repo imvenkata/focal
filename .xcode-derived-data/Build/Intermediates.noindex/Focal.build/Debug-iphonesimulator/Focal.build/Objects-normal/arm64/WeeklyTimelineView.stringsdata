@@ -1,0 +1,64 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Timeline/WeeklyTimelineView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Release to schedule",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 106
+        }
+      },
+      {
+        "comment": "",
+        "key": "Routine marker",
+        "location": {
+          "startingColumn": 50,
+          "startingLine": 397
+        }
+      },
+      {
+        "comment": "",
+        "key": "Hold to drag, tap to preview",
+        "location": {
+          "startingColumn": 69,
+          "startingLine": 397
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld of %lld tasks completed this week",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 530
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld percent",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 531
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld/%lld",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 523
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 503
+        }
+      }
+    ]
+  },
+  "version": 1
+}

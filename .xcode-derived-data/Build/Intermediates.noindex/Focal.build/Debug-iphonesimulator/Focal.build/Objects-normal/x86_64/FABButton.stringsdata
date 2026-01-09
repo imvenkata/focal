@@ -1,0 +1,40 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Navigation/FABButton.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Add new task",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 32
+        }
+      },
+      {
+        "comment": "",
+        "key": "Opens task creation sheet",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 33
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add new task",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 63
+        }
+      },
+      {
+        "comment": "",
+        "key": "Opens task creation sheet",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 64
+        }
+      }
+    ]
+  },
+  "version": 1
+}
