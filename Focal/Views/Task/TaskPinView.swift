@@ -66,15 +66,23 @@ struct MiniTaskPin: View {
     var overrideTime: String? = nil
 
     var body: some View {
-        VStack(spacing: DS.Spacing.xs) {
+        VStack(spacing: 2) {
             LiquidGlassCapsuleView(
                 title: task.title,
-                time: overrideTime ?? task.startTimeFormatted,
+                time: overrideTime ?? compactTime,
                 icon: task.icon,
                 accentColor: task.color.color,
                 sizeScale: capsuleScale
             )
-            .opacity(task.isCompleted ? 0.75 : 1)
+            .opacity(task.isCompleted ? 0.6 : 1)
+            .overlay {
+                if task.isCompleted {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundStyle(.white)
+                        .offset(y: -4)
+                }
+            }
 
             if task.duration > 1800 { // > 0.5 hours
                 GlassStemView(height: durationStemHeight, accentColor: task.color.color)
@@ -107,113 +115,80 @@ struct MiniTaskPin: View {
             lowerTitle.contains("sunrise") ||
             lowerTitle.contains("sunset")
     }
+
+    private var compactTime: String {
+        let hour = task.startTime.hour
+        let minute = task.startTime.minute
+        let hourDisplay = hour == 0 ? 12 : (hour > 12 ? hour - 12 : hour)
+        let ampm = hour < 12 ? "a" : "p"
+        if minute == 0 {
+            return "\(hourDisplay)\(ampm)"
+        } else {
+            return "\(hourDisplay):\(String(format: "%02d", minute))"
+        }
+    }
 }
 
-// MARK: - Liquid Glass Capsule
+// MARK: - Premium Task Capsule (Structured-style)
 struct LiquidGlassCapsuleView: View {
     let title: String
     let time: String
     let icon: String
     let accentColor: Color
     var sizeScale: CGFloat = 1
-    
+
     var body: some View {
-        ZStack {
-            Capsule()
-                .fill(DS.Colors.surfacePrimary)
+        VStack(spacing: 0) {
+            // Icon circle at top
+            ZStack {
+                Circle()
+                    .fill(accentColor)
 
-            Capsule()
-                .fill(
-                    LinearGradient(
-                        colors: [
-                            accentTint.opacity(0.26),
-                            accentTint.opacity(0.08)
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
+                Circle()
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color.white.opacity(0.25),
+                                Color.clear
+                            ],
+                            startPoint: .top,
+                            endPoint: .center
+                        )
                     )
-                )
 
-            Capsule()
-                .fill(
-                    LinearGradient(
-                        colors: [
-                            DS.Colors.glassHighlight,
-                            Color.clear
-                        ],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                )
+                Text(icon)
+                    .font(.system(size: iconFontSize))
+            }
+            .frame(width: iconSize, height: iconSize)
+            .shadow(color: accentColor.opacity(0.4), radius: 4, y: 2)
 
-            Capsule()
-                .stroke(
-                    LinearGradient(
-                        colors: [
-                            DS.Colors.glassHighlight.opacity(0.8),
-                            accentTint.opacity(0.2)
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    ),
-                    lineWidth: DS.Sizes.hairline
-                )
-
-            Capsule()
-                .stroke(accentTint.opacity(0.28), lineWidth: DS.Sizes.hairline)
+            // Time label below
+            Text(time)
+                .font(.system(size: timeFontSize, weight: .semibold, design: .rounded))
+                .foregroundStyle(DS.Colors.textSecondary)
+                .padding(.top, 3)
         }
         .frame(width: capsuleWidth, height: capsuleHeight)
-        .shadowResting()
-        .overlay(content)
     }
-    
-    private var content: some View {
-        VStack(spacing: DS.Spacing.xs * 0.6) {
-            GlassIconPip(
-                icon: icon,
-                accentColor: accentColor,
-                size: iconSize,
-                iconSize: iconFontSize
-            )
 
-            Text(time)
-                .scaledFont(size: timeFontSize, weight: .semibold, relativeTo: .caption2)
-                .foregroundStyle(DS.Colors.textPrimary.opacity(0.8))
-        }
-        .padding(.vertical, contentVerticalPadding)
-        .padding(.horizontal, contentHorizontalPadding)
-    }
-    
     private var capsuleWidth: CGFloat {
         DS.Sizes.glassCapsuleWidth * sizeScale
     }
-    
+
     private var capsuleHeight: CGFloat {
         DS.Sizes.glassCapsuleHeight * sizeScale
     }
-    
+
     private var iconSize: CGFloat {
-        DS.Sizes.glassIconSize * sizeScale
+        (DS.Sizes.glassIconSize + 8) * sizeScale
     }
-    
+
     private var timeFontSize: CGFloat {
-        9 * sizeScale
+        10 * sizeScale
     }
 
     private var iconFontSize: CGFloat {
-        12 * sizeScale
-    }
-    
-    private var contentVerticalPadding: CGFloat {
-        DS.Spacing.xs * 0.5 * sizeScale
-    }
-    
-    private var contentHorizontalPadding: CGFloat {
-        DS.Spacing.xs * 0.6 * sizeScale
-    }
-
-    private var accentTint: Color {
-        accentColor.saturated(by: 0.65)
+        14 * sizeScale
     }
 }
 
@@ -221,41 +196,27 @@ struct GlassIconPip: View {
     let icon: String
     let accentColor: Color
     var size: CGFloat = DS.Sizes.glassIconSize
-    var iconSize: CGFloat = 13
+    var iconSize: CGFloat = 14
 
     var body: some View {
         ZStack {
             Circle()
-                .fill(DS.Colors.surfacePrimary)
+                .fill(accentColor)
 
             Circle()
                 .fill(
                     LinearGradient(
-                        colors: [DS.Colors.surfaceSecondary, DS.Colors.surfacePrimary],
+                        colors: [Color.white.opacity(0.3), Color.clear],
                         startPoint: .top,
-                        endPoint: .bottom
+                        endPoint: .center
                     )
                 )
 
-            Circle()
-                .stroke(
-                    LinearGradient(
-                        colors: [accentTint.opacity(0.4), DS.Colors.borderSubtle],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    ),
-                    lineWidth: DS.Sizes.hairline
-                )
-
             Text(icon)
-                .scaledFont(size: iconSize, weight: .semibold, relativeTo: .caption)
+                .font(.system(size: iconSize))
         }
         .frame(width: size, height: size)
-        .shadowResting()
-    }
-
-    private var accentTint: Color {
-        accentColor.saturated(by: 0.7)
+        .shadow(color: accentColor.opacity(0.35), radius: 3, y: 2)
     }
 }
 
@@ -265,16 +226,21 @@ struct GlassStemView: View {
 
     var body: some View {
         RoundedRectangle(cornerRadius: DS.Radius.pill, style: .continuous)
-            .fill(stemColor)
+            .fill(stemGradient)
             .frame(width: DS.Sizes.glassStemWidth, height: height)
     }
 
-    private var stemColor: Color {
+    private var stemGradient: some ShapeStyle {
         if let accentColor {
-            return accentColor.opacity(0.2)
+            return AnyShapeStyle(
+                LinearGradient(
+                    colors: [accentColor.opacity(0.5), accentColor.opacity(0.2)],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
         }
-
-        return DS.Colors.glassLineStart.opacity(0.2)
+        return AnyShapeStyle(DS.Colors.borderSubtle.opacity(0.4))
     }
 }
 

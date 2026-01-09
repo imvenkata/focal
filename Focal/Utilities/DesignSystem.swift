@@ -148,14 +148,15 @@ enum DS {
         static let taskPillLarge: CGFloat = 80
 
         // Timeline
-        static let timeLabelWidth: CGFloat = 40
-        static let weekTimelineHeight: CGFloat = 320
+        static let timeLabelWidth: CGFloat = 32
+        static let weekTimelineHeight: CGFloat = 480  // Taller for better visibility
+        static let weekColumnSpacing: CGFloat = 6
 
-        // Glass components
-        static let glassCapsuleWidth: CGFloat = 34
-        static let glassCapsuleHeight: CGFloat = 48
-        static let glassIconSize: CGFloat = 16
-        static let glassStemWidth: CGFloat = 1.2
+        // Glass components (week view capsules)
+        static let glassCapsuleWidth: CGFloat = 38
+        static let glassCapsuleHeight: CGFloat = 44
+        static let glassIconSize: CGFloat = 18
+        static let glassStemWidth: CGFloat = 2
 
         // Misc
         static let hairline: CGFloat = 1
