@@ -66,7 +66,6 @@ struct EnergyCircularProgress: View {
                 Text("ENERGY")
                     .scaledFont(size: 10, weight: .medium, relativeTo: .caption2)
                     .foregroundStyle(DS.Colors.textSecondary)
-                    .tracking(1)
             }
         }
         .padding(.horizontal, 16)

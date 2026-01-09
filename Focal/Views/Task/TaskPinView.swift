@@ -181,7 +181,6 @@ struct LiquidGlassCapsuleView: View {
             Text(time)
                 .scaledFont(size: timeFontSize, weight: .semibold, relativeTo: .caption2)
                 .foregroundStyle(DS.Colors.textPrimary.opacity(0.8))
-                .tracking(0.3 * sizeScale)
         }
         .padding(.vertical, contentVerticalPadding)
         .padding(.horizontal, contentHorizontalPadding)

@@ -45,7 +45,6 @@ struct DayCircle: View {
                 Text(date.shortWeekdayName.uppercased())
                     .scaledFont(size: 9, weight: .medium, relativeTo: .caption2)
                     .foregroundStyle(DS.Colors.textTertiary)
-                    .tracking(0.8)
 
                 // Day number with circle
                 ZStack {

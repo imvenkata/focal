@@ -34,19 +34,21 @@ Use **SF Pro** as the primary font for most UI elements. Use **SF Pro Rounded** 
 
 ### Type Scale
 
-| Token | Size | Weight | Line Height | Letter Spacing | Use Case |
-|-------|------|--------|-------------|----------------|----------|
-| `largeTitle` | 34pt | Bold | 41pt (1.2×) | -0.4pt | Screen titles, empty states |
-| `title` | 28pt | Bold | 34pt (1.2×) | 0.36pt | Section headers |
-| `title2` | 22pt | Bold | 28pt (1.27×) | 0.35pt | Card titles, modal headers |
-| `title3` | 20pt | Semibold | 25pt (1.25×) | 0.38pt | Subsection headers |
-| `headline` | 17pt | Semibold | 22pt (1.29×) | -0.4pt | Emphasized body, task titles |
-| `body` | 17pt | Regular | 22pt (1.29×) | -0.4pt | Primary content |
-| `callout` | 16pt | Regular | 21pt (1.31×) | -0.3pt | Secondary content, descriptions |
-| `subheadline` | 15pt | Regular | 20pt (1.33×) | -0.2pt | Supporting text |
-| `footnote` | 13pt | Regular | 18pt (1.38×) | -0.1pt | Timestamps, metadata |
-| `caption` | 12pt | Regular | 16pt (1.33×) | 0pt | Labels, hints |
-| `caption2` | 11pt | Regular | 13pt (1.18×) | 0.1pt | Tertiary info, badges |
+| Token | Size | Weight | Line Height | Use Case |
+|-------|------|--------|-------------|----------|
+| `largeTitle` | 34pt | Bold | 41pt (1.2×) | Screen titles, empty states |
+| `title` | 28pt | Bold | 34pt (1.2×) | Section headers |
+| `title2` | 22pt | Bold | 28pt (1.27×) | Card titles, modal headers |
+| `title3` | 20pt | Semibold | 25pt (1.25×) | Subsection headers |
+| `headline` | 17pt | Semibold | 22pt (1.29×) | Emphasized body, task titles |
+| `body` | 17pt | Regular | 22pt (1.29×) | Primary content |
+| `callout` | 16pt | Regular | 21pt (1.31×) | Secondary content, descriptions |
+| `subheadline` | 15pt | Regular | 20pt (1.33×) | Supporting text |
+| `footnote` | 13pt | Regular | 18pt (1.38×) | Timestamps, metadata |
+| `caption` | 12pt | Regular | 16pt (1.33×) | Labels, hints |
+| `caption2` | 11pt | Regular | 13pt (1.18×) | Tertiary info, badges |
+
+**Tracking:** Use system default tracking for all styles. Only override for large display sizes after visual QA.
 
 ### Dynamic Type Support
 All typography MUST scale with Dynamic Type using `@ScaledMetric` or `.relativeTo()`:
