@@ -25,10 +25,7 @@ final class TaskDragState {
         targetColumnIndex = columnIndex
         targetHour = task.startTime.hour
         targetMinute = task.startTime.minute
-        // Slight delay for haptic to sync with visual scale animation
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) {
-            HapticManager.shared.dragActivated()
-        }
+        HapticManager.shared.dragActivated()
     }
 
     func updateDrag(location: CGPoint, in coordinateSpace: CoordinateSpace = .global) {
@@ -42,9 +39,9 @@ final class TaskDragState {
         var newHour: Int? = nil
         var newMinute: Int = 0
 
-        let horizontalTolerance: CGFloat = DS.Spacing.xxl
+        let horizontalTolerance: CGFloat = DS.Spacing.lg  // Reduced tolerance for precision
 
-        for (index, frame) in columnFrames {
+        for (index, frame) in columnFrames.sorted(by: { $0.key < $1.key }) {
             let minX = frame.minX - horizontalTolerance
             let maxX = frame.maxX + horizontalTolerance
 
@@ -56,33 +53,30 @@ final class TaskDragState {
                 let totalHours = CGFloat(timelineEndHour - timelineStartHour)
                 let hourHeight = frame.height / totalHours
 
-                let hoursFromTop = relativeY / hourHeight
-                // Use floor explicitly for correct hour calculation
+                let hoursFromTop = max(0, relativeY / hourHeight)
                 let calculatedHour = timelineStartHour + Int(floor(hoursFromTop))
 
                 // Clamp to valid range
                 newHour = max(timelineStartHour, min(timelineEndHour - 1, calculatedHour))
 
-                // Calculate minutes with 5-minute snapping for smoother UX
+                // Calculate minutes - snap to 15-minute intervals for cleaner times
                 let fractionalHour = hoursFromTop - floor(hoursFromTop)
                 let rawMinutes = Int(fractionalHour * 60)
-                // Snap to 5-minute intervals: 0, 5, 10, 15, ... 55
-                newMinute = min((rawMinutes / 5) * 5, 55)
+                // Snap to 15-minute intervals: 0, 15, 30, 45
+                newMinute = (rawMinutes / 15) * 15
 
                 break
             }
         }
 
-        // Detect snap events for haptic feedback
+        // Only haptic on column or hour change (not every minute)
         let columnChanged = newTarget != targetColumnIndex && newTarget != nil
         let hourChanged = newHour != targetHour && newHour != nil
-        let minuteChanged = newMinute != targetMinute && newTarget != nil
 
-        // Strong haptic for column or hour change, light for minute change
-        if columnChanged || hourChanged {
+        if columnChanged {
+            HapticManager.shared.impact(.medium)
+        } else if hourChanged {
             HapticManager.shared.selection()
-        } else if minuteChanged {
-            HapticManager.shared.impact(.light)
         }
 
         targetColumnIndex = newTarget

@@ -299,7 +299,7 @@ struct DayColumn: View {
             }
 
             // Drop zone preview - shows where task will land
-            if isDropTarget, let task = dragState.draggedTask, let targetHour = dragState.targetHour {
+            if isDropTarget, dragState.draggedTask != nil, let targetHour = dragState.targetHour {
                 let targetMinute = dragState.targetMinute
                 let hoursSinceStart = CGFloat(targetHour - startHour) + CGFloat(targetMinute) / 60.0
                 let previewYOffset = hoursSinceStart * hourHeight
@@ -356,7 +356,6 @@ struct DayColumn: View {
 
             // Task pins
             ForEach(tasks) { task in
-                let isBeingDragged = dragState.isDraggedTask(task)
                 TaskPinPosition(
                     task: task,
                     hourHeight: hourHeight,
@@ -364,15 +363,10 @@ struct DayColumn: View {
                     columnIndex: columnIndex,
                     onTap: { onTaskTap(task) },
                     onDrop: { droppedTask, targetIndex, hour, minute in
-                        withAnimation(DS.Animation.spring) {
-                            taskStore.moveTaskToWeekDay(droppedTask, dayIndex: targetIndex, hour: hour, minute: minute)
-                        }
+                        // Immediate update - no animation lag
+                        taskStore.moveTaskToWeekDay(droppedTask, dayIndex: targetIndex, hour: hour, minute: minute)
                     }
                 )
-                // Ghost effect for source pill when dragging
-                .opacity(isBeingDragged ? 0.15 : 1)
-                .blur(radius: isBeingDragged ? 2 : 0)
-                .animation(DS.Animation.quick, value: isBeingDragged)
             }
 
         }
@@ -399,20 +393,15 @@ struct DayColumn: View {
 // MARK: - Task Pin Position
 struct TaskPinPosition: View {
     @Environment(TaskDragState.self) private var dragState
-    @State private var dragStartTime: Date? = nil
-    @State private var hasActivatedDrag = false
-    @State private var initialLocation: CGPoint = .zero
+    @State private var isPressed = false
+    @GestureState private var dragOffset: CGSize = .zero
 
     let task: TaskItem
     let hourHeight: CGFloat
     let startHour: Int
     let columnIndex: Int
     let onTap: () -> Void
-    var onDrop: ((TaskItem, Int, Int, Int) -> Void)? = nil  // task, dayIndex, hour, minute
-
-    // Unified thresholds for consistent gesture feel across daily/weekly views
-    private let longPressThreshold: TimeInterval = 0.25
-    private let dragDistanceThreshold: CGFloat = DS.Spacing.sm  // Slightly larger for less accidental activation
+    var onDrop: ((TaskItem, Int, Int, Int) -> Void)? = nil
 
     private var isDragging: Bool {
         dragState.isDraggedTask(task)
@@ -423,75 +412,47 @@ struct TaskPinPosition: View {
     }
 
     var body: some View {
-        let base = MiniTaskPin(task: task, hourHeight: hourHeight)
-            .scaleEffect(hasActivatedDrag || isDragging ? 1.05 : 1.0)
+        MiniTaskPin(task: task, hourHeight: hourHeight)
+            .scaleEffect(isDragging ? 1.08 : (isPressed ? 1.03 : 1.0))
+            .opacity(isDragging ? 0.4 : 1.0)
             .offset(y: yOffset)
-            .animation(DS.Animation.gentle, value: isDragging)
-            .animation(DS.Animation.gentle, value: hasActivatedDrag)
+            .animation(.easeOut(duration: 0.15), value: isDragging)
+            .animation(.easeOut(duration: 0.1), value: isPressed)
+            .gesture(isRoutineMarker ? nil : dragGesture)
+            .simultaneousGesture(isRoutineMarker ? nil : tapGesture)
+            .accessibilityHint(isRoutineMarker ? "Routine marker" : "Hold to drag, tap to preview")
+    }
 
-        Group {
-            if isDragging {
-                base.shadowLifted()
-            } else {
-                base
+    private var tapGesture: some Gesture {
+        TapGesture()
+            .onEnded {
+                if !dragState.isDragging {
+                    onTap()
+                }
             }
-        }
-        .gesture(isRoutineMarker ? nil : dragGesture)
-        .accessibilityHint(isRoutineMarker ? "Routine marker" : "Hold to drag, tap to preview")
     }
 
     private var dragGesture: some Gesture {
-        DragGesture(minimumDistance: 0, coordinateSpace: .global)
-            .onChanged { value in
-                // First touch - record start time and location
-                if dragStartTime == nil {
-                    dragStartTime = Date()
-                    initialLocation = value.startLocation
-                }
-
-                guard let startTime = dragStartTime else { return }
-                let elapsed = Date().timeIntervalSince(startTime)
-                let distance = hypot(
-                    value.location.x - initialLocation.x,
-                    value.location.y - initialLocation.y
-                )
-
-                // Activate drag mode after holding for threshold time
-                if !hasActivatedDrag && (elapsed >= longPressThreshold || distance >= dragDistanceThreshold) {
-                    hasActivatedDrag = true
-                    dragState.startDrag(task: task, columnIndex: columnIndex, location: value.location)
-                    dragState.updateDrag(location: value.location)
-                }
-
-                // Update drag location if in drag mode
-                if hasActivatedDrag {
-                    dragState.updateDrag(location: value.location)
-                }
+        LongPressGesture(minimumDuration: 0.15)
+            .onChanged { _ in
+                isPressed = true
             }
-            .onEnded { value in
-                let startTime = dragStartTime
-                let wasActivated = hasActivatedDrag
-
-                // Reset local state
-                dragStartTime = nil
-                hasActivatedDrag = false
-
-                // If drag was activated, try to complete the drop
-                if wasActivated {
+            .onEnded { _ in
+                isPressed = false
+                // Start drag mode
+                dragState.startDrag(task: task, columnIndex: columnIndex, location: .zero)
+            }
+            .sequenced(before: DragGesture(minimumDistance: 0, coordinateSpace: .global)
+                .onChanged { value in
+                    dragState.updateDrag(location: value.location)
+                }
+                .onEnded { _ in
+                    // Complete the drop
                     if let result = dragState.endDrag() {
                         onDrop?(result.task, result.toIndex, result.toHour, result.toMinute)
                     }
-                } else if let startTime = startTime {
-                    // Short tap - trigger onTap
-                    let elapsed = Date().timeIntervalSince(startTime)
-                    if elapsed < longPressThreshold {
-                        onTap()
-                    } else {
-                        // Long press but no movement - cancel
-                        dragState.cancelDrag()
-                    }
                 }
-            }
+            )
     }
 
     private var yOffset: CGFloat {
