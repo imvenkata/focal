@@ -85,11 +85,6 @@ struct PlannerView: View {
             }
         }
         .background(DS.Colors.bgPrimary)
-        .onAppear {
-            if store.tasks.isEmpty {
-                store.loadSampleData()
-            }
-        }
     }
 
     private func handlePreview(for task: TaskItem) {

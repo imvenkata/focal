@@ -139,7 +139,7 @@ struct PlannerTaskCreationSheet: View {
             )
         }
         .sheet(isPresented: $showRepeatPicker) {
-            PlannerRepeatPickerSheet(
+            RepeatPickerSheet(
                 recurrence: $recurrence,
                 selectedDays: $selectedRecurrenceDays,
                 accentColor: accentColor
@@ -809,7 +809,7 @@ private struct PlannerTimePickerSheet: View {
     }
 }
 
-private struct PlannerRepeatPickerSheet: View {
+struct RepeatPickerSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var recurrence: RecurrenceOption
     @Binding var selectedDays: Set<Int>
@@ -826,7 +826,7 @@ private struct PlannerRepeatPickerSheet: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: DS.Spacing.sm) {
                             ForEach(RecurrenceOption.allCases) { option in
-                                PlannerRecurrencePill(
+                                RecurrencePillButton(
                                     title: option.rawValue,
                                     isSelected: recurrence == option,
                                     accentColor: accentColor
@@ -839,7 +839,7 @@ private struct PlannerRepeatPickerSheet: View {
                     }
 
                     if recurrence == .custom {
-                        PlannerRepeatDaysPicker(selectedDays: $selectedDays, accentColor: accentColor)
+                        RepeatDaysPicker(selectedDays: $selectedDays, accentColor: accentColor)
                             .transition(.opacity)
                     }
                 }
@@ -865,7 +865,7 @@ private struct PlannerRepeatPickerSheet: View {
     }
 }
 
-private struct PlannerRecurrencePill: View {
+struct RecurrencePillButton: View {
     let title: String
     let isSelected: Bool
     let accentColor: Color
@@ -886,7 +886,7 @@ private struct PlannerRecurrencePill: View {
     }
 }
 
-private struct PlannerRepeatDaysPicker: View {
+struct RepeatDaysPicker: View {
     @Binding var selectedDays: Set<Int>
     let accentColor: Color
 
@@ -894,7 +894,7 @@ private struct PlannerRepeatDaysPicker: View {
         VStack(spacing: DS.Spacing.md) {
             HStack(spacing: DS.Spacing.sm) {
                 ForEach(Weekday.allCases) { day in
-                    PlannerDayButton(
+                    DaySelectionButton(
                         label: day.shortName,
                         isSelected: selectedDays.contains(day.rawValue),
                         accentColor: accentColor
@@ -910,17 +910,17 @@ private struct PlannerRepeatDaysPicker: View {
             }
 
             HStack(spacing: DS.Spacing.sm) {
-                PlannerPresetButton(title: "Weekdays", isSelected: selectedDays == Set([1, 2, 3, 4, 5]), accentColor: accentColor) {
+                PresetButton(title: "Weekdays", isSelected: selectedDays == Set([1, 2, 3, 4, 5]), accentColor: accentColor) {
                     selectedDays = Set([1, 2, 3, 4, 5])
                     HapticManager.shared.selection()
                 }
 
-                PlannerPresetButton(title: "Weekends", isSelected: selectedDays == Set([0, 6]), accentColor: accentColor) {
+                PresetButton(title: "Weekends", isSelected: selectedDays == Set([0, 6]), accentColor: accentColor) {
                     selectedDays = Set([0, 6])
                     HapticManager.shared.selection()
                 }
 
-                PlannerPresetButton(title: "Every day", isSelected: selectedDays.count == 7, accentColor: accentColor) {
+                PresetButton(title: "Every day", isSelected: selectedDays.count == 7, accentColor: accentColor) {
                     selectedDays = Set(0...6)
                     HapticManager.shared.selection()
                 }
@@ -936,7 +936,7 @@ private struct PlannerRepeatDaysPicker: View {
     }
 }
 
-private struct PlannerDayButton: View {
+struct DaySelectionButton: View {
     let label: String
     let isSelected: Bool
     let accentColor: Color
@@ -955,7 +955,7 @@ private struct PlannerDayButton: View {
     }
 }
 
-private struct PlannerPresetButton: View {
+struct PresetButton: View {
     let title: String
     let isSelected: Bool
     let accentColor: Color

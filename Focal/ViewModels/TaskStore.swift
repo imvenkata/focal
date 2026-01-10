@@ -3,6 +3,7 @@ import SwiftData
 
 @Observable
 final class TaskStore {
+    private var modelContext: ModelContext?
     var tasks: [TaskItem] = []
     var selectedDate: Date = Date()
     var viewMode: ViewMode = .day
@@ -10,6 +11,30 @@ final class TaskStore {
     enum ViewMode {
         case week
         case day
+    }
+
+    // MARK: - Initialization
+
+    init(modelContext: ModelContext? = nil) {
+        self.modelContext = modelContext
+        if modelContext != nil {
+            fetchTasks()
+        }
+    }
+
+    func setModelContext(_ context: ModelContext) {
+        self.modelContext = context
+        fetchTasks()
+    }
+
+    private func fetchTasks() {
+        guard let modelContext else { return }
+        let descriptor = FetchDescriptor<TaskItem>(sortBy: [SortDescriptor(\.startTime)])
+        tasks = (try? modelContext.fetch(descriptor)) ?? []
+    }
+
+    func save() {
+        try? modelContext?.save()
     }
 
     // MARK: - Computed Properties
@@ -43,12 +68,7 @@ final class TaskStore {
 
         return (0..<7).map { dayOffset in
             let date = calendar.date(byAdding: .day, value: dayOffset, to: weekStart)!
-            var dayTasks = tasks.filter { $0.startTime.isSameDay(as: date) }
-
-            // Add day markers (Rise & Shine at 6 AM, Wind Down at 10 PM)
-            // TODO: Re-enable when user selects routines feature
-            // dayTasks.append(contentsOf: dayMarkers(for: date))
-
+            let dayTasks = tasks.filter { $0.startTime.isSameDay(as: date) }
             return dayTasks.sorted { $0.startTime < $1.startTime }
         }
     }
@@ -98,15 +118,20 @@ final class TaskStore {
 
     func toggleCompletion(for task: TaskItem) {
         task.toggleCompletion()
+        try? modelContext?.save()
         HapticManager.shared.taskCompleted()
     }
 
     func deleteTask(_ task: TaskItem) {
         HapticManager.shared.deleted()
+        modelContext?.delete(task)
+        try? modelContext?.save()
         tasks.removeAll { $0.id == task.id }
     }
 
     func addTask(_ task: TaskItem) {
+        modelContext?.insert(task)
+        try? modelContext?.save()
         tasks.append(task)
     }
 
@@ -123,6 +148,7 @@ final class TaskStore {
 
         if let newStartTime = calendar.date(from: newComponents) {
             tasks[index].startTime = newStartTime
+            try? modelContext?.save()
         }
     }
 
@@ -137,6 +163,7 @@ final class TaskStore {
 
         if let newStartTime = calendar.date(from: newComponents) {
             tasks[index].startTime = newStartTime
+            try? modelContext?.save()
         }
     }
 

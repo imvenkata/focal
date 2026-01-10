@@ -14,6 +14,7 @@ struct TaskDetailView: View {
     @State private var showReminderPicker = false
     @State private var showColorPicker = false
     @State private var showDeleteConfirmation = false
+    @State private var showRepeatPicker = false
     @State private var newSubtaskTitle = ""
 
     @FocusState private var isSubtaskFieldFocused: Bool
@@ -34,6 +35,7 @@ struct TaskDetailView: View {
                         title: $title,
                         timeRange: timeRangeLabel,
                         showColorPicker: $showColorPicker,
+                        showDeleteConfirmation: $showDeleteConfirmation,
                         onClose: {
                             dismiss()
                         }
@@ -90,6 +92,7 @@ struct TaskDetailView: View {
 
                             HStack(spacing: DS.Spacing.md) {
                                 Button {
+                                    showRepeatPicker = true
                                     HapticManager.shared.selection()
                                 } label: {
                                     HStack(spacing: DS.Spacing.sm) {
@@ -101,22 +104,25 @@ struct TaskDetailView: View {
                                             .scaledFont(size: 14, weight: .semibold, relativeTo: .callout)
                                             .foregroundStyle(DS.Colors.textPrimary)
 
-                                        Text("PRO")
-                                            .scaledFont(size: 10, weight: .bold, relativeTo: .caption2)
-                                            .foregroundStyle(DS.Colors.warning)
-                                            .padding(.horizontal, DS.Spacing.xs)
-                                            .padding(.vertical, DS.Spacing.xs / 2)
-                                            .background(DS.Colors.warningLight)
-                                            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm, style: .continuous))
+                                        Spacer()
+
+                                        Text(task.recurrenceFormatted.isEmpty ? "None" : task.recurrenceFormatted)
+                                            .scaledFont(size: 12, weight: .medium, relativeTo: .caption)
+                                            .foregroundStyle(DS.Colors.textSecondary)
+
+                                        Image(systemName: "chevron.right")
+                                            .scaledFont(size: 12, weight: .semibold, relativeTo: .caption2)
+                                            .foregroundStyle(DS.Colors.textTertiary)
                                     }
                                     .frame(maxWidth: .infinity)
                                     .padding(.vertical, DS.Spacing.md)
+                                    .padding(.horizontal, DS.Spacing.lg)
                                     .background(DS.Colors.surfaceSecondary)
                                     .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxl, style: .continuous))
                                 }
                                 .buttonStyle(.plain)
                                 .accessibilityLabel("Repeat options")
-                                .accessibilityHint("Not available yet")
+                                .accessibilityValue(task.recurrenceFormatted.isEmpty ? "None" : task.recurrenceFormatted)
 
                                 Button {
                                     showEnergyPicker = true
@@ -332,6 +338,25 @@ struct TaskDetailView: View {
                 )
             )
         }
+        .sheet(isPresented: $showRepeatPicker) {
+            RepeatPickerSheet(
+                recurrence: .init(
+                    get: { RecurrenceOption(rawValue: task.recurrenceOption ?? "None") ?? .none },
+                    set: { newValue in
+                        task.recurrenceOption = newValue == .none ? nil : newValue.rawValue
+                        task.updatedAt = Date()
+                    }
+                ),
+                selectedDays: .init(
+                    get: { Set(task.repeatDays) },
+                    set: { newDays in
+                        task.repeatDays = Array(newDays)
+                        task.updatedAt = Date()
+                    }
+                ),
+                accentColor: task.color.color
+            )
+        }
         .confirmationDialog("Alerts", isPresented: $showReminderPicker) {
             ForEach(ReminderOption.allCases) { option in
                 Button(option.rawValue) {
@@ -404,6 +429,7 @@ private struct TaskDetailHeader: View {
     @Binding var title: String
     let timeRange: String
     @Binding var showColorPicker: Bool
+    @Binding var showDeleteConfirmation: Bool
     let onClose: () -> Void
 
     @FocusState private var isTitleFocused: Bool
@@ -428,39 +454,53 @@ private struct TaskDetailHeader: View {
 
                 Menu {
                     Button {
-                        HapticManager.shared.selection()
+                        // Coming soon
                     } label: {
                         Label("Duplicate", systemImage: "doc.on.doc")
                     }
+                    .disabled(true)
 
                     Button {
-                        HapticManager.shared.selection()
+                        // Coming soon
                     } label: {
                         Label("Share", systemImage: "square.and.arrow.up")
                     }
+                    .disabled(true)
 
                     Button {
-                        HapticManager.shared.selection()
+                        // Coming soon
                     } label: {
                         Label("Pin to Top", systemImage: "pin")
                     }
+                    .disabled(true)
 
                     Button {
-                        HapticManager.shared.selection()
+                        // Coming soon
                     } label: {
                         Label("Move to...", systemImage: "folder")
                     }
+                    .disabled(true)
 
                     Button {
-                        HapticManager.shared.selection()
+                        // Coming soon
                     } label: {
                         Label("Skip Once", systemImage: "pause.circle")
                     }
+                    .disabled(true)
 
                     Button {
-                        HapticManager.shared.selection()
+                        // Coming soon
                     } label: {
                         Label("Copy Link", systemImage: "link")
+                    }
+                    .disabled(true)
+
+                    Divider()
+
+                    Button(role: .destructive) {
+                        showDeleteConfirmation = true
+                    } label: {
+                        Label("Delete", systemImage: "trash")
                     }
                 } label: {
                     HeaderActionButton(systemName: "ellipsis", backgroundColor: task.color.color)

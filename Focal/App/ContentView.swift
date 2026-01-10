@@ -1,6 +1,8 @@
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
+    @Environment(\.modelContext) private var modelContext
     @State private var taskStore = TaskStore()
     @State private var dragState = TaskDragState()
     @State private var selectedTab: Tab = .planner
@@ -36,6 +38,9 @@ struct ContentView: View {
         .sheet(isPresented: $showAddTask) {
             PlannerTaskCreationSheet()
                 .environment(taskStore)
+        }
+        .onAppear {
+            taskStore.setModelContext(modelContext)
         }
     }
 }

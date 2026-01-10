@@ -239,16 +239,6 @@ struct DailyTimelineView: View {
         .accessibilityHint("Swipe down to return to week view")
     }
 
-    private var handleCapsuleLegacy: some View {
-        HStack {
-            Spacer()
-            RoundedRectangle(cornerRadius: DS.Radius.pill)
-                .fill(DS.Colors.divider)
-                .frame(width: DS.Sizes.sheetHandle, height: DS.Spacing.xs)
-            Spacer()
-        }
-    }
-
     private var shouldShowCurrentTimeIndicator: Bool {
         let now = Date()
         let hour = now.hour

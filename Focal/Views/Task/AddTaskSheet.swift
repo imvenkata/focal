@@ -821,8 +821,8 @@ struct SettingRow: View {
     }
 }
 
-// MARK: - Repeat Days Picker
-struct RepeatDaysPicker: View {
+// MARK: - Repeat Days Picker (AddTaskSheet)
+private struct AddTaskRepeatDaysPicker: View {
     @Binding var selectedDays: Set<Int>
 
     var body: some View {
@@ -848,15 +848,15 @@ struct RepeatDaysPicker: View {
 
             // Preset buttons
             HStack(spacing: DS.Spacing.sm) {
-                PresetButton(title: "Weekdays", isSelected: isWeekdays) {
+                AddTaskPresetButton(title: "Weekdays", isSelected: isWeekdays) {
                     selectedDays = Set([1, 2, 3, 4, 5])
                 }
 
-                PresetButton(title: "Weekends", isSelected: isWeekends) {
+                AddTaskPresetButton(title: "Weekends", isSelected: isWeekends) {
                     selectedDays = Set([0, 6])
                 }
 
-                PresetButton(title: "Every day", isSelected: isEveryDay) {
+                AddTaskPresetButton(title: "Every day", isSelected: isEveryDay) {
                     selectedDays = Set(0...6)
                 }
             }
@@ -899,8 +899,8 @@ struct DayButton: View {
     }
 }
 
-// MARK: - Preset Button
-struct PresetButton: View {
+// MARK: - Preset Button (AddTaskSheet)
+private struct AddTaskPresetButton: View {
     let title: String
     let isSelected: Bool
     let action: () -> Void

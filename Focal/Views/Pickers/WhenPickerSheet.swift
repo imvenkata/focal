@@ -199,7 +199,7 @@ struct WhenPickerSheet: View {
 
             // Custom day picker (conditionally shown)
             if recurrence == .custom {
-                RepeatDaysPicker(selectedDays: $selectedRecurrenceDays)
+                RepeatDaysPicker(selectedDays: $selectedRecurrenceDays, accentColor: DS.Colors.primary)
                     .padding(.horizontal, DS.Spacing.xl)
                     .padding(.top, DS.Spacing.sm)
                     .transition(.opacity.combined(with: .move(edge: .top)))
