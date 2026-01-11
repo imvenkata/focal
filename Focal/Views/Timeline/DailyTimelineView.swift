@@ -15,8 +15,8 @@ struct DailyTimelineView: View {
     private var timelineVerticalPadding: CGFloat { DS.Spacing.md }
     private var timelineBottomPadding: CGFloat { DS.Sizes.bottomNavHeight + DS.Spacing.md }
     private var timelineLineOffset: CGFloat {
-        // Aligned with weekly view: time label width + spacing to content
-        DS.Sizes.timeLabelWidth + DS.Spacing.sm
+        // Offset line further right to avoid overlapping time labels
+        DS.Sizes.timeLabelWidth + DS.Spacing.md + DS.Spacing.xs
     }
 
     var body: some View {

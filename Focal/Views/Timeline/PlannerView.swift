@@ -169,25 +169,40 @@ struct ViewModeToggle: View {
     let onToggle: () -> Void
     
     var body: some View {
-        Button(action: onToggle) {
-            HStack(spacing: DS.Spacing.xs) {
-                Text(viewMode == .week ? "Week" : "Day")
-                    .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
-                    .foregroundStyle(DS.Colors.textPrimary)
-
-                Image(systemName: "arrow.left.arrow.right")
-                    .scaledFont(size: 10, weight: .semibold, relativeTo: .caption2)
-                    .foregroundStyle(DS.Colors.textTertiary)
+        HStack(spacing: 2) {
+            ForEach([TaskStore.ViewMode.week, TaskStore.ViewMode.day], id: \.self) { mode in
+                Button {
+                    if viewMode != mode {
+                        HapticManager.shared.selection()
+                        onToggle()
+                    }
+                } label: {
+                    Text(mode == .week ? "Week" : "Day")
+                        .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
+                        .foregroundStyle(viewMode == mode ? DS.Colors.textPrimary : DS.Colors.textTertiary)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 7)
+                        .background(
+                            Group {
+                                if viewMode == mode {
+                                    RoundedRectangle(cornerRadius: DS.Radius.sm)
+                                        .fill(DS.Colors.surfacePrimary)
+                                        .shadow(color: DS.Colors.overlay.opacity(0.08), radius: 2, y: 1)
+                                }
+                            }
+                        )
+                }
+                .buttonStyle(.plain)
             }
-            .padding(.horizontal, DS.Spacing.md)
-            .padding(.vertical, DS.Spacing.sm)
-            .background(DS.Colors.surfaceSecondary)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
         }
-        .buttonStyle(.plain)
+        .padding(3)
+        .background(DS.Colors.surfaceSecondary)
+        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+        .animation(DS.Animation.quick, value: viewMode)
+        .accessibilityElement(children: .combine)
         .accessibilityLabel("View mode")
         .accessibilityValue(viewMode == .week ? "Week" : "Day")
-        .accessibilityHint("Double tap to switch view")
+        .accessibilityHint("Double tap to switch between week and day view")
     }
 }
 
