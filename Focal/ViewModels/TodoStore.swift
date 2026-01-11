@@ -160,7 +160,9 @@ final class TodoStore {
     func updatePriority(for todo: TodoItem, to priority: TodoPriority) {
         todo.setPriority(priority)
         save()
-        HapticManager.shared.selection()
+        // Trigger array refresh to update computed properties
+        fetchTodos()
+        HapticManager.shared.notification(.success)
     }
 
     // MARK: - Reordering
