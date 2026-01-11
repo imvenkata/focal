@@ -73,6 +73,11 @@ final class TodoStore {
             .sorted { $0.orderIndex < $1.orderIndex }
     }
 
+    var unprioritizedTodos: [TodoItem] {
+        todos.filter { $0.priorityEnum == .none && !$0.isCompleted }
+            .sorted { $0.orderIndex < $1.orderIndex }
+    }
+
     var completedTodos: [TodoItem] {
         todos.filter { $0.isCompleted }
     }

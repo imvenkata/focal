@@ -7,34 +7,32 @@ struct TodoView: View {
 
     @State private var quickAddText = ""
     @FocusState private var isQuickAddFocused: Bool
-    @State private var showingAddSheet = false
+    @State private var dragTargetPriority: TodoPriority?
+    @State private var draggedTodoId: UUID?
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            // Main content
-            ScrollView {
-                VStack(spacing: DS.Spacing.xl) {
-                    // Tiimo-style Header
-                    headerSection
+        ScrollView {
+            VStack(spacing: DS.Spacing.xl) {
+                // Tiimo-style Header
+                headerSection
 
-                    // Title
-                    Text("To-do")
-                        .font(.system(size: 34, weight: .bold))
-                        .foregroundStyle(DS.Colors.textPrimary)
-                        .tracking(-0.5)
+                // Title
+                Text("To-do")
+                    .font(.system(size: 34, weight: .bold))
+                    .foregroundStyle(DS.Colors.textPrimary)
+                    .tracking(-0.5)
 
-                    // Priority sections
-                    prioritySections
+                // Priority sections (4 categories)
+                prioritySections
 
-                    // Quick add bar
-                    quickAddSection
-                }
-                .padding(.horizontal, DS.Spacing.lg)
-                .padding(.top, DS.Spacing.xl)
-                .padding(.bottom, 120) // Space for tab bar
+                // Quick add bar at bottom
+                quickAddSection
             }
-            .background(DS.Colors.background)
+            .padding(.horizontal, DS.Spacing.lg)
+            .padding(.top, DS.Spacing.xl)
+            .padding(.bottom, 120) // Space for tab bar
         }
+        .background(DS.Colors.background)
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 
@@ -58,18 +56,6 @@ struct TodoView: View {
             .shadowResting()
 
             Spacer()
-
-            // Add button
-            Button(action: { showingAddSheet = true }) {
-                Image(systemName: "plus")
-                    .font(.system(size: 18, weight: .medium))
-                    .foregroundStyle(DS.Colors.textPrimary)
-                    .frame(width: 48, height: 48)
-                    .background(DS.Colors.surfacePrimary)
-                    .clipShape(Circle())
-                    .shadowResting()
-            }
-            .buttonStyle(.plain)
         }
     }
 
@@ -78,7 +64,7 @@ struct TodoView: View {
     private var quickAddSection: some View {
         TodoQuickAddBar(
             text: $quickAddText,
-            onAdd: addQuickTodo,
+            onAdd: { addTodo(with: .none) },
             isFocused: $isQuickAddFocused
         )
     }
@@ -88,55 +74,73 @@ struct TodoView: View {
     private var prioritySections: some View {
         VStack(spacing: DS.Spacing.xl) {
             // High priority
-            TodoPrioritySection(
-                priority: .high,
-                todos: todoStore.highPriorityTodos,
-                isCollapsed: todoStore.isSectionCollapsed(.high),
-                onToggleCollapse: { todoStore.toggleSectionCollapse(.high) },
-                onToggleCompletion: { todoStore.toggleCompletion(for: $0) },
-                onAddTapped: { showingAddSheet = true }
-            )
+            prioritySection(for: .high, todos: todoStore.highPriorityTodos)
 
             // Medium priority
-            TodoPrioritySection(
-                priority: .medium,
-                todos: todoStore.mediumPriorityTodos,
-                isCollapsed: todoStore.isSectionCollapsed(.medium),
-                onToggleCollapse: { todoStore.toggleSectionCollapse(.medium) },
-                onToggleCompletion: { todoStore.toggleCompletion(for: $0) },
-                onAddTapped: { showingAddSheet = true }
-            )
+            prioritySection(for: .medium, todos: todoStore.mediumPriorityTodos)
 
             // Low priority
-            TodoPrioritySection(
-                priority: .low,
-                todos: todoStore.lowPriorityTodos,
-                isCollapsed: todoStore.isSectionCollapsed(.low),
-                onToggleCollapse: { todoStore.toggleSectionCollapse(.low) },
-                onToggleCompletion: { todoStore.toggleCompletion(for: $0) },
-                onAddTapped: { showingAddSheet = true }
-            )
+            prioritySection(for: .low, todos: todoStore.lowPriorityTodos)
+
+            // Unprioritized "To-do" section
+            prioritySection(for: .none, todos: todoStore.unprioritizedTodos)
+        }
+    }
+
+    private func prioritySection(for priority: TodoPriority, todos: [TodoItem]) -> some View {
+        TodoPrioritySection(
+            priority: priority,
+            todos: todos,
+            isCollapsed: todoStore.isSectionCollapsed(priority),
+            isDropTarget: dragTargetPriority == priority,
+            onToggleCollapse: { todoStore.toggleSectionCollapse(priority) },
+            onToggleCompletion: { todoStore.toggleCompletion(for: $0) },
+            onAddItem: { addTodo(title: $0, priority: priority) },
+            onDropItem: { moveTodo($0, to: priority) }
+        )
+        .dropDestination(for: String.self) { items, _ in
+            guard let idString = items.first,
+                  let uuid = UUID(uuidString: idString),
+                  let todo = todoStore.todos.first(where: { $0.id == uuid }) else {
+                return false
+            }
+
+            withAnimation(DS.Animation.spring) {
+                moveTodo(todo, to: priority)
+            }
+            return true
+        } isTargeted: { isTargeted in
+            withAnimation(DS.Animation.quick) {
+                dragTargetPriority = isTargeted ? priority : nil
+            }
         }
     }
 
     // MARK: - Actions
 
-    private func addQuickTodo() {
+    private func addTodo(with priority: TodoPriority) {
         guard !quickAddText.trimmingCharacters(in: .whitespaces).isEmpty else { return }
+        addTodo(title: quickAddText, priority: priority)
+        quickAddText = ""
+        isQuickAddFocused = false
+    }
 
+    private func addTodo(title: String, priority: TodoPriority) {
         let newTodo = TodoItem(
-            title: quickAddText,
+            title: title,
             icon: "📝",
-            colorName: "sky",
-            priority: .medium
+            colorName: priority == .none ? "slate" : "sky",
+            priority: priority
         )
 
         withAnimation(DS.Animation.spring) {
             todoStore.addTodo(newTodo)
         }
+    }
 
-        quickAddText = ""
-        isQuickAddFocused = false
+    private func moveTodo(_ todo: TodoItem, to priority: TodoPriority) {
+        todoStore.updatePriority(for: todo, to: priority)
+        HapticManager.shared.notification(.success)
     }
 }
 
