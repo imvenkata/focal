@@ -8,6 +8,25 @@ final class TodoStore {
     var expandedTodoIds: Set<UUID> = []
     var collapsedSections: Set<TodoPriority> = []
 
+    // MARK: - Search & Filter
+    var searchText: String = ""
+    var selectedFilter: TodoFilter = .all
+    var showCompletedSection: Bool = true
+    var isCompletedSectionCollapsed: Bool = true
+
+    // MARK: - Undo Support
+    private var recentlyDeletedTodo: TodoItem?
+    private var undoTimer: Timer?
+    var canUndo: Bool { recentlyDeletedTodo != nil }
+    var undoMessage: String? {
+        guard let todo = recentlyDeletedTodo else { return nil }
+        return "Deleted \"\(todo.title)\""
+    }
+
+    // MARK: - Selection for Bulk Operations
+    var selectedTodoIds: Set<UUID> = []
+    var isSelectionMode: Bool = false
+
     // MARK: - Section Collapse
 
     func toggleSectionCollapse(_ priority: TodoPriority) {
@@ -79,16 +98,114 @@ final class TodoStore {
     }
 
     var completedTodos: [TodoItem] {
-        todos.filter { $0.isCompleted }
+        todos.filter { $0.isCompleted && !$0.isArchived }
+            .sorted { ($0.completedAt ?? Date()) > ($1.completedAt ?? Date()) }
     }
 
     var activeTodos: [TodoItem] {
-        todos.filter { !$0.isCompleted }
+        todos.filter { !$0.isCompleted && !$0.isArchived }
+    }
+
+    var archivedTodos: [TodoItem] {
+        todos.filter { $0.isArchived }
     }
 
     var completionProgress: Double {
-        guard !todos.isEmpty else { return 0 }
-        return Double(completedTodos.count) / Double(todos.count)
+        let active = todos.filter { !$0.isArchived }
+        guard !active.isEmpty else { return 0 }
+        return Double(active.filter { $0.isCompleted }.count) / Double(active.count)
+    }
+
+    // MARK: - Filtered & Searched Results
+
+    var filteredTodos: [TodoItem] {
+        var result = todos.filter { !$0.isArchived }
+
+        // Apply filter
+        switch selectedFilter {
+        case .all:
+            break
+        case .today:
+            result = result.filter { $0.isDueToday || ($0.dueDate == nil && Calendar.current.isDateInToday($0.createdAt)) }
+        case .upcoming:
+            result = result.filter { todo in
+                guard let dueDate = todo.dueDate else { return false }
+                return dueDate > Date() && !todo.isDueToday
+            }
+        case .overdue:
+            result = result.filter { $0.isOverdue }
+        case .noDueDate:
+            result = result.filter { $0.dueDate == nil }
+        }
+
+        // Apply search
+        if !searchText.isEmpty {
+            let query = searchText.lowercased()
+            result = result.filter { todo in
+                todo.title.lowercased().contains(query) ||
+                todo.notes?.lowercased().contains(query) == true ||
+                todo.subtasks.contains { $0.title.lowercased().contains(query) }
+            }
+        }
+
+        return result
+    }
+
+    var filteredHighPriorityTodos: [TodoItem] {
+        filteredTodos.filter { $0.priorityEnum == .high && !$0.isCompleted }
+            .sorted { $0.orderIndex < $1.orderIndex }
+    }
+
+    var filteredMediumPriorityTodos: [TodoItem] {
+        filteredTodos.filter { $0.priorityEnum == .medium && !$0.isCompleted }
+            .sorted { $0.orderIndex < $1.orderIndex }
+    }
+
+    var filteredLowPriorityTodos: [TodoItem] {
+        filteredTodos.filter { $0.priorityEnum == .low && !$0.isCompleted }
+            .sorted { $0.orderIndex < $1.orderIndex }
+    }
+
+    var filteredUnprioritizedTodos: [TodoItem] {
+        filteredTodos.filter { $0.priorityEnum == .none && !$0.isCompleted }
+            .sorted { $0.orderIndex < $1.orderIndex }
+    }
+
+    var filteredCompletedTodos: [TodoItem] {
+        filteredTodos.filter { $0.isCompleted }
+            .sorted { ($0.completedAt ?? Date()) > ($1.completedAt ?? Date()) }
+    }
+
+    // MARK: - Statistics
+
+    var todayCompletedCount: Int {
+        todos.filter { todo in
+            guard let completedAt = todo.completedAt else { return false }
+            return Calendar.current.isDateInToday(completedAt)
+        }.count
+    }
+
+    var weekCompletedCount: Int {
+        todos.filter { todo in
+            guard let completedAt = todo.completedAt else { return false }
+            return Calendar.current.isDate(completedAt, equalTo: Date(), toGranularity: .weekOfYear)
+        }.count
+    }
+
+    var overdueCount: Int {
+        activeTodos.filter { $0.isOverdue }.count
+    }
+
+    var dueTodayCount: Int {
+        activeTodos.filter { $0.isDueToday }.count
+    }
+
+    var totalActiveCount: Int {
+        activeTodos.count
+    }
+
+    var hasAnyTodos: Bool {
+        !todos.filter { !$0.isArchived }.isEmpty
     }
 
     // MARK: - Expand/Collapse
@@ -122,20 +239,152 @@ final class TodoStore {
         HapticManager.shared.notification(.success)
     }
 
-    func deleteTodo(_ todo: TodoItem) {
-        modelContext?.delete(todo)
-        save()
-        todos.removeAll { $0.id == todo.id }
-        expandedTodoIds.remove(todo.id)
-        // Reindex
+    func deleteTodo(_ todo: TodoItem, withUndo: Bool = true) {
+        if withUndo {
+            // Store for undo
+            recentlyDeletedTodo = todo
+            todos.removeAll { $0.id == todo.id }
+            expandedTodoIds.remove(todo.id)
+
+            // Start undo timer (5 seconds to undo)
+            undoTimer?.invalidate()
+            undoTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { [weak self] _ in
+                self?.commitDelete()
+            }
+        } else {
+            modelContext?.delete(todo)
+            save()
+            todos.removeAll { $0.id == todo.id }
+            expandedTodoIds.remove(todo.id)
+        }
+
         reindexTodos()
         HapticManager.shared.deleted()
+    }
+
+    func undoDelete() {
+        guard let todo = recentlyDeletedTodo else { return }
+        undoTimer?.invalidate()
+        undoTimer = nil
+
+        // Re-add the todo
+        todos.append(todo)
+        reindexTodos()
+        recentlyDeletedTodo = nil
+        HapticManager.shared.notification(.success)
+    }
+
+    private func commitDelete() {
+        guard let todo = recentlyDeletedTodo else { return }
+        modelContext?.delete(todo)
+        save()
+        recentlyDeletedTodo = nil
+        undoTimer = nil
     }
 
     func toggleCompletion(for todo: TodoItem) {
         todo.toggleCompletion()
         save()
         HapticManager.shared.taskCompleted()
+    }
+
+    // MARK: - Archive Operations
+
+    func archiveTodo(_ todo: TodoItem) {
+        todo.archive()
+        save()
+        HapticManager.shared.notification(.success)
+    }
+
+    func unarchiveTodo(_ todo: TodoItem) {
+        todo.unarchive()
+        save()
+        fetchTodos()
+        HapticManager.shared.notification(.success)
+    }
+
+    func archiveAllCompleted() {
+        for todo in completedTodos {
+            todo.archive()
+        }
+        save()
+        HapticManager.shared.notification(.success)
+    }
+
+    func deleteAllArchived() {
+        for todo in archivedTodos {
+            modelContext?.delete(todo)
+        }
+        save()
+        fetchTodos()
+        HapticManager.shared.deleted()
+    }
+
+    // MARK: - Bulk Operations
+
+    func toggleSelection(_ todoId: UUID) {
+        if selectedTodoIds.contains(todoId) {
+            selectedTodoIds.remove(todoId)
+        } else {
+            selectedTodoIds.insert(todoId)
+        }
+        HapticManager.shared.selection()
+    }
+
+    func selectAll() {
+        selectedTodoIds = Set(filteredTodos.map { $0.id })
+        HapticManager.shared.selection()
+    }
+
+    func deselectAll() {
+        selectedTodoIds.removeAll()
+        isSelectionMode = false
+        HapticManager.shared.selection()
+    }
+
+    func deleteSelected() {
+        for id in selectedTodoIds {
+            if let todo = todos.first(where: { $0.id == id }) {
+                deleteTodo(todo, withUndo: false)
+            }
+        }
+        selectedTodoIds.removeAll()
+        isSelectionMode = false
+    }
+
+    func completeSelected() {
+        for id in selectedTodoIds {
+            if let todo = todos.first(where: { $0.id == id }), !todo.isCompleted {
+                todo.toggleCompletion()
+            }
+        }
+        save()
+        selectedTodoIds.removeAll()
+        isSelectionMode = false
+        HapticManager.shared.taskCompleted()
+    }
+
+    func archiveSelected() {
+        for id in selectedTodoIds {
+            if let todo = todos.first(where: { $0.id == id }) {
+                todo.archive()
+            }
+        }
+        save()
+        selectedTodoIds.removeAll()
+        isSelectionMode = false
+        HapticManager.shared.notification(.success)
+    }
+
+    func setPriorityForSelected(_ priority: TodoPriority) {
+        for id in selectedTodoIds {
+            if let todo = todos.first(where: { $0.id == id }) {
+                todo.setPriority(priority)
+            }
+        }
+        save()
+        fetchTodos()
+        HapticManager.shared.notification(.success)
     }
 
     func addSubtask(to todo: TodoItem, title: String) {
@@ -251,5 +500,37 @@ final class TodoStore {
         todo5.addSubtask("Practice problems")
 
         [todo1, todo2, todo3, todo4, todo5].forEach { addTodo($0) }
+    }
+}
+
+// MARK: - Todo Filter
+
+enum TodoFilter: String, CaseIterable, Identifiable {
+    case all = "All"
+    case today = "Today"
+    case upcoming = "Upcoming"
+    case overdue = "Overdue"
+    case noDueDate = "No Date"
+
+    var id: String { rawValue }
+
+    var icon: String {
+        switch self {
+        case .all: return "tray.full"
+        case .today: return "sun.max"
+        case .upcoming: return "calendar"
+        case .overdue: return "exclamationmark.circle"
+        case .noDueDate: return "questionmark.circle"
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .all: return DS.Colors.primary
+        case .today: return DS.Colors.amber
+        case .upcoming: return DS.Colors.sky
+        case .overdue: return DS.Colors.danger
+        case .noDueDate: return DS.Colors.slate
+        }
     }
 }

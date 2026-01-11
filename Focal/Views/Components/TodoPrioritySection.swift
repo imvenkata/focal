@@ -7,6 +7,8 @@ struct TodoPrioritySection: View {
     let isDropTarget: Bool
     let onToggleCollapse: () -> Void
     let onToggleCompletion: (TodoItem) -> Void
+    let onTap: (TodoItem) -> Void
+    let onDelete: (TodoItem) -> Void
     let onAddItem: (String) -> Void
     let onDropItem: (TodoItem) -> Void
 
@@ -122,7 +124,9 @@ struct TodoPrioritySection: View {
                     ForEach(todos, id: \.id) { todo in
                         DraggableTodoCard(
                             todo: todo,
-                            onToggleCompletion: { onToggleCompletion(todo) }
+                            onToggleCompletion: { onToggleCompletion(todo) },
+                            onTap: { onTap(todo) },
+                            onDelete: { onDelete(todo) }
                         )
                     }
                 }
@@ -167,19 +171,37 @@ struct TodoPrioritySection: View {
 struct DraggableTodoCard: View {
     let todo: TodoItem
     let onToggleCompletion: () -> Void
+    let onTap: () -> Void
+    let onDelete: () -> Void
 
     @State private var isDragging = false
 
     var body: some View {
-        TiimoTodoCard(todo: todo, onToggleCompletion: onToggleCompletion)
-            .draggable(todo.id.uuidString) {
-                // Drag preview
-                TiimoTodoCard(todo: todo, onToggleCompletion: {})
-                    .frame(width: 300)
-                    .opacity(0.9)
-                    .scaleEffect(0.95)
+        TiimoTodoCard(
+            todo: todo,
+            onToggleCompletion: onToggleCompletion,
+            onTap: onTap
+        )
+        .draggable(todo.id.uuidString) {
+            // Drag preview
+            TiimoTodoCard(todo: todo, onToggleCompletion: {}, onTap: {})
+                .frame(width: 300)
+                .opacity(0.9)
+                .scaleEffect(0.95)
+        }
+        .opacity(isDragging ? 0.5 : 1)
+        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            Button(role: .destructive, action: onDelete) {
+                Label("Delete", systemImage: "trash")
             }
-            .opacity(isDragging ? 0.5 : 1)
+            .tint(DS.Colors.danger)
+        }
+        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+            Button(action: onToggleCompletion) {
+                Label("Complete", systemImage: "checkmark.circle.fill")
+            }
+            .tint(DS.Colors.success)
+        }
     }
 }
 
@@ -188,48 +210,85 @@ struct DraggableTodoCard: View {
 struct TiimoTodoCard: View {
     let todo: TodoItem
     let onToggleCompletion: () -> Void
+    let onTap: () -> Void
 
     var body: some View {
-        HStack(spacing: DS.Spacing.md) {
-            // Emoji badge
-            Text(todo.icon)
-                .font(.system(size: 22))
-                .frame(width: 44, height: 44)
-                .background(todo.color.lightColor.opacity(0.6))
-                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+        Button(action: onTap) {
+            HStack(spacing: DS.Spacing.md) {
+                // Emoji badge
+                Text(todo.icon)
+                    .font(.system(size: 22))
+                    .frame(width: 44, height: 44)
+                    .background(todo.color.lightColor.opacity(0.6))
+                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
 
-            // Title
-            Text(todo.title)
-                .scaledFont(size: 15, weight: .medium, relativeTo: .body)
-                .foregroundStyle(todo.isCompleted ? DS.Colors.textSecondary : DS.Colors.textPrimary)
-                .strikethrough(todo.isCompleted)
-                .lineLimit(2)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                // Title and metadata
+                VStack(alignment: .leading, spacing: DS.Spacing.xs) {
+                    Text(todo.title)
+                        .scaledFont(size: 15, weight: .medium, relativeTo: .body)
+                        .foregroundStyle(todo.isCompleted ? DS.Colors.textSecondary : DS.Colors.textPrimary)
+                        .strikethrough(todo.isCompleted)
+                        .lineLimit(2)
+                        .frame(maxWidth: .infinity, alignment: .leading)
 
-            // Circular checkbox
-            Button(action: onToggleCompletion) {
-                ZStack {
-                    Circle()
-                        .stroke(todo.isCompleted ? Color.clear : DS.Colors.divider, lineWidth: 2)
-                        .frame(width: 28, height: 28)
+                    // Due date and subtasks info
+                    HStack(spacing: DS.Spacing.sm) {
+                        if let dueText = todo.dueDateFormatted {
+                            HStack(spacing: DS.Spacing.xs) {
+                                Image(systemName: todo.isOverdue ? "exclamationmark.circle.fill" : "calendar")
+                                    .font(.system(size: 10, weight: .semibold))
+                                Text(dueText)
+                                    .scaledFont(size: 11, weight: .medium, relativeTo: .caption2)
+                            }
+                            .foregroundStyle(todo.isOverdue ? DS.Colors.danger : DS.Colors.textTertiary)
+                        }
 
-                    if todo.isCompleted {
-                        Circle()
-                            .fill(DS.Colors.sage)
-                            .frame(width: 28, height: 28)
+                        if todo.hasSubtasks {
+                            HStack(spacing: DS.Spacing.xs) {
+                                Image(systemName: "checklist")
+                                    .font(.system(size: 10, weight: .semibold))
+                                Text("\(todo.completedSubtasksCount)/\(todo.totalSubtasks)")
+                                    .scaledFont(size: 11, weight: .medium, design: .monospaced, relativeTo: .caption2)
+                            }
+                            .foregroundStyle(DS.Colors.textTertiary)
+                        }
 
-                        Image(systemName: "checkmark")
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundStyle(.white)
+                        if todo.reminderOption != nil {
+                            Image(systemName: "bell.fill")
+                                .font(.system(size: 10, weight: .semibold))
+                                .foregroundStyle(DS.Colors.textTertiary)
+                        }
                     }
                 }
+
+                // Circular checkbox
+                Button(action: onToggleCompletion) {
+                    ZStack {
+                        Circle()
+                            .stroke(todo.isCompleted ? Color.clear : DS.Colors.divider, lineWidth: 2)
+                            .frame(width: 28, height: 28)
+
+                        if todo.isCompleted {
+                            Circle()
+                                .fill(DS.Colors.sage)
+                                .frame(width: 28, height: 28)
+
+                            Image(systemName: "checkmark")
+                                .font(.system(size: 14, weight: .bold))
+                                .foregroundStyle(.white)
+                        }
+                    }
+                }
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
+            .padding(DS.Spacing.md)
+            .background(DS.Colors.surfacePrimary)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+            .shadowResting()
+            .opacity(todo.isCompleted ? 0.6 : 1)
         }
-        .padding(DS.Spacing.md)
-        .background(DS.Colors.surfacePrimary)
-        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
-        .shadowResting()
-        .opacity(todo.isCompleted ? 0.6 : 1)
+        .buttonStyle(.plain)
+        .accessibilityLabel("\(todo.title), priority \(todo.priorityEnum.displayName)")
+        .accessibilityHint("Tap to view details")
     }
 }

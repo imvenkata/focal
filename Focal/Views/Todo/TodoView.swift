@@ -8,44 +8,98 @@ struct TodoView: View {
     @State private var quickAddText = ""
     @FocusState private var isQuickAddFocused: Bool
     @State private var dragTargetPriority: TodoPriority?
-    @State private var draggedTodoId: UUID?
+    @State private var selectedTodo: TodoItem?
+    @State private var showingSearch = false
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: DS.Spacing.xl) {
-                // Tiimo-style Header
-                headerSection
+        ZStack(alignment: .bottom) {
+            ScrollView {
+                VStack(spacing: DS.Spacing.xl) {
+                    // Header with stats
+                    headerSection
 
-                // Title
-                Text("To-do")
-                    .font(.system(size: 34, weight: .bold))
-                    .foregroundStyle(DS.Colors.textPrimary)
-                    .tracking(-0.5)
+                    // Search bar (when active)
+                    if showingSearch {
+                        searchBar
+                            .transition(.move(edge: .top).combined(with: .opacity))
+                    }
 
-                // Priority sections (4 categories)
-                prioritySections
+                    // Filter chips
+                    filterChips
 
-                // Quick add bar at bottom
-                quickAddSection
+                    // Title
+                    HStack {
+                        Text("To-do")
+                            .font(.system(size: 34, weight: .bold))
+                            .foregroundStyle(DS.Colors.textPrimary)
+                            .tracking(-0.5)
+
+                        Spacer()
+
+                        // Search button
+                        Button {
+                            withAnimation(DS.Animation.spring) {
+                                showingSearch.toggle()
+                            }
+                        } label: {
+                            Image(systemName: showingSearch ? "xmark" : "magnifyingglass")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundStyle(DS.Colors.textSecondary)
+                                .frame(width: 36, height: 36)
+                                .background(DS.Colors.surfaceSecondary)
+                                .clipShape(Circle())
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(showingSearch ? "Close search" : "Search todos")
+                    }
+
+                    // Empty state or content
+                    if !todoStore.hasAnyTodos {
+                        emptyState
+                    } else if todoStore.filteredTodos.isEmpty && !todoStore.searchText.isEmpty {
+                        noResultsState
+                    } else {
+                        // Priority sections
+                        prioritySections
+
+                        // Completed section
+                        if !todoStore.filteredCompletedTodos.isEmpty {
+                            completedSection
+                        }
+                    }
+
+                    // Quick add bar
+                    quickAddSection
+                }
+                .padding(.horizontal, DS.Spacing.lg)
+                .padding(.top, DS.Spacing.xl)
+                .padding(.bottom, 140)
             }
-            .padding(.horizontal, DS.Spacing.lg)
-            .padding(.top, DS.Spacing.xl)
-            .padding(.bottom, 120) // Space for tab bar
+            .background(DS.Colors.background)
+
+            // Undo toast
+            if todoStore.canUndo {
+                undoToast
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
         }
-        .background(DS.Colors.background)
+        .animation(DS.Animation.spring, value: todoStore.canUndo)
         .ignoresSafeArea(.keyboard, edges: .bottom)
+        .sheet(item: $selectedTodo) { todo in
+            TodoDetailView(todo: todo)
+        }
     }
 
     // MARK: - Header
 
     private var headerSection: some View {
-        HStack {
+        HStack(spacing: DS.Spacing.md) {
             // Progress badge
             HStack(spacing: DS.Spacing.xs) {
                 Text("🌿")
                     .font(.system(size: 16))
 
-                Text("\(todoStore.completedTodos.count) / \(todoStore.todos.count)")
+                Text("\(todoStore.completedTodos.count) / \(todoStore.activeTodos.count + todoStore.completedTodos.count)")
                     .scaledFont(size: 14, weight: .semibold, relativeTo: .subheadline)
                     .foregroundStyle(DS.Colors.textPrimary)
             }
@@ -55,8 +109,136 @@ struct TodoView: View {
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.pill))
             .shadowResting()
 
+            // Stats badges
+            if todoStore.overdueCount > 0 {
+                StatBadge(
+                    icon: "exclamationmark.circle.fill",
+                    count: todoStore.overdueCount,
+                    color: DS.Colors.danger,
+                    label: "Overdue"
+                )
+            }
+
+            if todoStore.dueTodayCount > 0 {
+                StatBadge(
+                    icon: "sun.max.fill",
+                    count: todoStore.dueTodayCount,
+                    color: DS.Colors.amber,
+                    label: "Due today"
+                )
+            }
+
             Spacer()
         }
+    }
+
+    // MARK: - Search Bar
+
+    private var searchBar: some View {
+        HStack(spacing: DS.Spacing.md) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(DS.Colors.textTertiary)
+
+            TextField("Search todos...", text: Binding(
+                get: { todoStore.searchText },
+                set: { todoStore.searchText = $0 }
+            ))
+            .scaledFont(size: 16, relativeTo: .body)
+            .foregroundStyle(DS.Colors.textPrimary)
+            .submitLabel(.search)
+
+            if !todoStore.searchText.isEmpty {
+                Button {
+                    todoStore.searchText = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 18))
+                        .foregroundStyle(DS.Colors.textTertiary)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(DS.Spacing.md)
+        .background(DS.Colors.surfaceSecondary)
+        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+    }
+
+    // MARK: - Filter Chips
+
+    private var filterChips: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: DS.Spacing.sm) {
+                ForEach(TodoFilter.allCases) { filter in
+                    FilterChip(
+                        filter: filter,
+                        isSelected: todoStore.selectedFilter == filter,
+                        count: countForFilter(filter)
+                    ) {
+                        withAnimation(DS.Animation.spring) {
+                            todoStore.selectedFilter = filter
+                        }
+                        HapticManager.shared.selection()
+                    }
+                }
+            }
+        }
+    }
+
+    private func countForFilter(_ filter: TodoFilter) -> Int {
+        switch filter {
+        case .all: return todoStore.activeTodos.count
+        case .today: return todoStore.dueTodayCount
+        case .upcoming:
+            return todoStore.activeTodos.filter { todo in
+                guard let dueDate = todo.dueDate else { return false }
+                return dueDate > Date() && !todo.isDueToday
+            }.count
+        case .overdue: return todoStore.overdueCount
+        case .noDueDate: return todoStore.activeTodos.filter { $0.dueDate == nil }.count
+        }
+    }
+
+    // MARK: - Empty State
+
+    private var emptyState: some View {
+        VStack(spacing: DS.Spacing.xl) {
+            Text("📝")
+                .font(.system(size: 64))
+
+            VStack(spacing: DS.Spacing.sm) {
+                Text("No todos yet")
+                    .scaledFont(size: 20, weight: .semibold, relativeTo: .title3)
+                    .foregroundStyle(DS.Colors.textPrimary)
+
+                Text("Add your first todo to get started.\nOrganize by priority, set due dates, and more.")
+                    .scaledFont(size: 15, relativeTo: .body)
+                    .foregroundStyle(DS.Colors.textSecondary)
+                    .multilineTextAlignment(.center)
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, DS.Spacing.xxxl)
+    }
+
+    private var noResultsState: some View {
+        VStack(spacing: DS.Spacing.lg) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 48, weight: .light))
+                .foregroundStyle(DS.Colors.textTertiary)
+
+            VStack(spacing: DS.Spacing.sm) {
+                Text("No results found")
+                    .scaledFont(size: 18, weight: .semibold, relativeTo: .headline)
+                    .foregroundStyle(DS.Colors.textPrimary)
+
+                Text("Try a different search term")
+                    .scaledFont(size: 14, relativeTo: .callout)
+                    .foregroundStyle(DS.Colors.textSecondary)
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, DS.Spacing.xxxl)
     }
 
     // MARK: - Quick Add Section
@@ -73,17 +255,21 @@ struct TodoView: View {
 
     private var prioritySections: some View {
         VStack(spacing: DS.Spacing.xl) {
-            // High priority
-            prioritySection(for: .high, todos: todoStore.highPriorityTodos)
+            if !todoStore.filteredHighPriorityTodos.isEmpty || todoStore.selectedFilter == .all {
+                prioritySection(for: .high, todos: todoStore.filteredHighPriorityTodos)
+            }
 
-            // Medium priority
-            prioritySection(for: .medium, todos: todoStore.mediumPriorityTodos)
+            if !todoStore.filteredMediumPriorityTodos.isEmpty || todoStore.selectedFilter == .all {
+                prioritySection(for: .medium, todos: todoStore.filteredMediumPriorityTodos)
+            }
 
-            // Low priority
-            prioritySection(for: .low, todos: todoStore.lowPriorityTodos)
+            if !todoStore.filteredLowPriorityTodos.isEmpty || todoStore.selectedFilter == .all {
+                prioritySection(for: .low, todos: todoStore.filteredLowPriorityTodos)
+            }
 
-            // Unprioritized "To-do" section
-            prioritySection(for: .none, todos: todoStore.unprioritizedTodos)
+            if !todoStore.filteredUnprioritizedTodos.isEmpty || todoStore.selectedFilter == .all {
+                prioritySection(for: .none, todos: todoStore.filteredUnprioritizedTodos)
+            }
         }
     }
 
@@ -95,6 +281,8 @@ struct TodoView: View {
             isDropTarget: dragTargetPriority == priority,
             onToggleCollapse: { todoStore.toggleSectionCollapse(priority) },
             onToggleCompletion: { todoStore.toggleCompletion(for: $0) },
+            onTap: { selectedTodo = $0 },
+            onDelete: { todoStore.deleteTodo($0) },
             onAddItem: { addTodo(title: $0, priority: priority) },
             onDropItem: { moveTodo($0, to: priority) }
         )
@@ -114,6 +302,113 @@ struct TodoView: View {
                 dragTargetPriority = isTargeted ? priority : nil
             }
         }
+    }
+
+    // MARK: - Completed Section
+
+    private var completedSection: some View {
+        VStack(alignment: .leading, spacing: DS.Spacing.sm) {
+            // Header
+            Button {
+                withAnimation(DS.Animation.spring) {
+                    todoStore.isCompletedSectionCollapsed.toggle()
+                }
+                HapticManager.shared.selection()
+            } label: {
+                HStack(spacing: DS.Spacing.sm) {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(DS.Colors.success)
+
+                    Text("COMPLETED")
+                        .scaledFont(size: 11, weight: .bold, relativeTo: .caption2)
+                        .foregroundStyle(DS.Colors.success)
+                        .tracking(0.8)
+
+                    Text("(\(todoStore.filteredCompletedTodos.count))")
+                        .scaledFont(size: 11, weight: .semibold, relativeTo: .caption2)
+                        .foregroundStyle(DS.Colors.success.opacity(0.7))
+
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 9, weight: .bold))
+                        .foregroundStyle(DS.Colors.success.opacity(0.6))
+                        .rotationEffect(.degrees(todoStore.isCompletedSectionCollapsed ? -90 : 0))
+
+                    Spacer()
+
+                    // Archive all button
+                    if !todoStore.isCompletedSectionCollapsed {
+                        Button {
+                            todoStore.archiveAllCompleted()
+                        } label: {
+                            HStack(spacing: DS.Spacing.xs) {
+                                Image(systemName: "archivebox")
+                                    .font(.system(size: 11, weight: .semibold))
+                                Text("Archive all")
+                                    .scaledFont(size: 11, weight: .medium, relativeTo: .caption2)
+                            }
+                            .foregroundStyle(DS.Colors.textSecondary)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(.horizontal, DS.Spacing.md)
+                .padding(.vertical, DS.Spacing.sm)
+                .background(DS.Colors.success.opacity(0.1))
+                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+            }
+            .buttonStyle(.plain)
+
+            // Completed items
+            if !todoStore.isCompletedSectionCollapsed {
+                VStack(spacing: DS.Spacing.sm) {
+                    ForEach(todoStore.filteredCompletedTodos.prefix(5)) { todo in
+                        CompletedTodoCard(
+                            todo: todo,
+                            onTap: { selectedTodo = todo },
+                            onUncomplete: { todoStore.toggleCompletion(for: todo) },
+                            onDelete: { todoStore.deleteTodo(todo) }
+                        )
+                    }
+
+                    if todoStore.filteredCompletedTodos.count > 5 {
+                        Text("+\(todoStore.filteredCompletedTodos.count - 5) more")
+                            .scaledFont(size: 13, weight: .medium, relativeTo: .caption)
+                            .foregroundStyle(DS.Colors.textTertiary)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, DS.Spacing.sm)
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Undo Toast
+
+    private var undoToast: some View {
+        HStack(spacing: DS.Spacing.md) {
+            Text(todoStore.undoMessage ?? "Deleted")
+                .scaledFont(size: 14, weight: .medium, relativeTo: .callout)
+                .foregroundStyle(.white)
+
+            Spacer()
+
+            Button {
+                todoStore.undoDelete()
+            } label: {
+                Text("Undo")
+                    .scaledFont(size: 14, weight: .bold, relativeTo: .callout)
+                    .foregroundStyle(DS.Colors.amber)
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(.horizontal, DS.Spacing.lg)
+        .padding(.vertical, DS.Spacing.md)
+        .background(DS.Colors.night)
+        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+        .shadowLifted()
+        .padding(.horizontal, DS.Spacing.xl)
+        .padding(.bottom, 100)
     }
 
     // MARK: - Actions
@@ -144,7 +439,135 @@ struct TodoView: View {
     }
 }
 
-/*
+// MARK: - Supporting Views
+
+private struct StatBadge: View {
+    let icon: String
+    let count: Int
+    let color: Color
+    let label: String
+
+    var body: some View {
+        HStack(spacing: DS.Spacing.xs) {
+            Image(systemName: icon)
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundStyle(color)
+
+            Text("\(count)")
+                .scaledFont(size: 13, weight: .bold, design: .rounded, relativeTo: .caption)
+                .foregroundStyle(color)
+        }
+        .padding(.horizontal, DS.Spacing.sm)
+        .padding(.vertical, DS.Spacing.xs)
+        .background(color.opacity(0.15))
+        .clipShape(Capsule())
+        .accessibilityLabel("\(count) \(label)")
+    }
+}
+
+private struct FilterChip: View {
+    let filter: TodoFilter
+    let isSelected: Bool
+    let count: Int
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: DS.Spacing.xs) {
+                Image(systemName: filter.icon)
+                    .font(.system(size: 12, weight: .semibold))
+
+                Text(filter.rawValue)
+                    .scaledFont(size: 13, weight: .semibold, relativeTo: .callout)
+
+                if count > 0 {
+                    Text("\(count)")
+                        .scaledFont(size: 11, weight: .bold, design: .rounded, relativeTo: .caption2)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(isSelected ? .white.opacity(0.3) : filter.color.opacity(0.2))
+                        .clipShape(Capsule())
+                }
+            }
+            .foregroundStyle(isSelected ? .white : filter.color)
+            .padding(.horizontal, DS.Spacing.md)
+            .padding(.vertical, DS.Spacing.sm)
+            .background(isSelected ? filter.color : filter.color.opacity(0.1))
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("\(filter.rawValue) filter, \(count) items")
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+}
+
+private struct CompletedTodoCard: View {
+    let todo: TodoItem
+    let onTap: () -> Void
+    let onUncomplete: () -> Void
+    let onDelete: () -> Void
+
+    var body: some View {
+        HStack(spacing: DS.Spacing.md) {
+            // Checkmark
+            Button(action: onUncomplete) {
+                ZStack {
+                    Circle()
+                        .fill(DS.Colors.success)
+                        .frame(width: 24, height: 24)
+
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundStyle(.white)
+                }
+            }
+            .buttonStyle(.plain)
+
+            // Content
+            Button(action: onTap) {
+                HStack(spacing: DS.Spacing.sm) {
+                    Text(todo.icon)
+                        .font(.system(size: 18))
+
+                    Text(todo.title)
+                        .scaledFont(size: 14, weight: .medium, relativeTo: .body)
+                        .foregroundStyle(DS.Colors.textTertiary)
+                        .strikethrough()
+                        .lineLimit(1)
+
+                    Spacer()
+
+                    if let completedAt = todo.completedAt {
+                        Text(completedAt.timeAgoShort)
+                            .scaledFont(size: 11, weight: .medium, relativeTo: .caption2)
+                            .foregroundStyle(DS.Colors.textTertiary)
+                    }
+                }
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(DS.Spacing.md)
+        .background(DS.Colors.surfacePrimary.opacity(0.5))
+        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            Button(role: .destructive, action: onDelete) {
+                Label("Delete", systemImage: "trash")
+            }
+            .tint(DS.Colors.danger)
+        }
+    }
+}
+
+// MARK: - Date Extension
+
+extension Date {
+    var timeAgoShort: String {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .abbreviated
+        return formatter.localizedString(for: self, relativeTo: Date())
+    }
+}
+
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(
@@ -155,8 +578,7 @@ struct TodoView: View {
     let store = TodoStore(modelContext: container.mainContext)
     store.loadSampleData()
 
-    TodoView()
+    return TodoView()
         .environment(store)
         .modelContainer(container)
 }
-*/
