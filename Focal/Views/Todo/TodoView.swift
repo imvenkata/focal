@@ -75,6 +75,7 @@ struct TodoView: View {
                 .padding(.top, DS.Spacing.xl)
                 .padding(.bottom, 140)
             }
+            .scrollDismissesKeyboard(.interactively)
             .background(DS.Colors.background)
 
             // Undo toast
@@ -246,7 +247,7 @@ struct TodoView: View {
     private var quickAddSection: some View {
         TodoQuickAddBar(
             text: $quickAddText,
-            onAdd: { addTodo(with: .none) },
+            onAdd: { addTodo(with: .none) },  // Default to "To-do" category
             isFocused: $isQuickAddFocused
         )
     }
@@ -423,14 +424,100 @@ struct TodoView: View {
     private func addTodo(title: String, priority: TodoPriority) {
         let newTodo = TodoItem(
             title: title,
-            icon: "📝",
-            colorName: priority == .none ? "slate" : "sky",
+            icon: suggestIcon(for: title),
+            colorName: nextColor().rawValue,
             priority: priority
         )
 
         withAnimation(DS.Animation.spring) {
             todoStore.addTodo(newTodo)
         }
+    }
+    
+    // MARK: - Smart Icon Suggestion
+    
+    private func suggestIcon(for title: String) -> String {
+        let lower = title.lowercased()
+        
+        // Shopping & Errands
+        if lower.contains("shop") || lower.contains("buy") || lower.contains("grocery") || lower.contains("store") {
+            return "🛒"
+        }
+        if lower.contains("cook") || lower.contains("meal") || lower.contains("dinner") || lower.contains("lunch") || lower.contains("breakfast") || lower.contains("food") {
+            return "🍳"
+        }
+        
+        // Work & Productivity
+        if lower.contains("meeting") || lower.contains("call") || lower.contains("zoom") {
+            return "📞"
+        }
+        if lower.contains("email") || lower.contains("mail") || lower.contains("send") {
+            return "📧"
+        }
+        if lower.contains("work") || lower.contains("project") || lower.contains("task") {
+            return "💼"
+        }
+        if lower.contains("code") || lower.contains("develop") || lower.contains("program") || lower.contains("app") {
+            return "💻"
+        }
+        if lower.contains("write") || lower.contains("doc") || lower.contains("report") || lower.contains("note") {
+            return "📝"
+        }
+        
+        // Health & Fitness
+        if lower.contains("gym") || lower.contains("workout") || lower.contains("exercise") || lower.contains("run") || lower.contains("fitness") {
+            return "🏋️"
+        }
+        if lower.contains("doctor") || lower.contains("dentist") || lower.contains("appointment") || lower.contains("health") {
+            return "🏥"
+        }
+        if lower.contains("medicine") || lower.contains("pill") || lower.contains("vitamin") {
+            return "💊"
+        }
+        
+        // Learning & Education
+        if lower.contains("read") || lower.contains("book") || lower.contains("study") || lower.contains("learn") {
+            return "📚"
+        }
+        if lower.contains("class") || lower.contains("course") || lower.contains("lecture") {
+            return "🎓"
+        }
+        
+        // Home & Personal
+        if lower.contains("clean") || lower.contains("laundry") || lower.contains("wash") {
+            return "🧹"
+        }
+        if lower.contains("fix") || lower.contains("repair") {
+            return "🔧"
+        }
+        if lower.contains("pay") || lower.contains("bill") || lower.contains("bank") || lower.contains("money") {
+            return "💳"
+        }
+        
+        // Social & Events
+        if lower.contains("party") || lower.contains("celebrate") || lower.contains("birthday") {
+            return "🎉"
+        }
+        if lower.contains("gift") || lower.contains("present") {
+            return "🎁"
+        }
+        if lower.contains("travel") || lower.contains("trip") || lower.contains("vacation") || lower.contains("flight") {
+            return "✈️"
+        }
+        
+        // Default
+        return "📋"
+    }
+    
+    // MARK: - Color Cycling for Visual Variety
+    
+    @State private var colorIndex = 0
+    
+    private func nextColor() -> TaskColor {
+        let colors: [TaskColor] = [.sky, .sage, .rose, .amber, .lavender, .coral]
+        let color = colors[colorIndex % colors.count]
+        colorIndex += 1
+        return color
     }
 
     private func moveTodo(_ todo: TodoItem, to priority: TodoPriority) {
@@ -506,55 +593,93 @@ private struct CompletedTodoCard: View {
     let onTap: () -> Void
     let onUncomplete: () -> Void
     let onDelete: () -> Void
+    
+    @State private var offset: CGFloat = 0
+    private let deleteThreshold: CGFloat = 100
 
     var body: some View {
-        HStack(spacing: DS.Spacing.md) {
-            // Checkmark
-            Button(action: onUncomplete) {
-                ZStack {
-                    Circle()
-                        .fill(DS.Colors.success)
-                        .frame(width: 24, height: 24)
-
-                    Image(systemName: "checkmark")
-                        .font(.system(size: 12, weight: .bold))
+        ZStack(alignment: .trailing) {
+            // Delete action background
+            HStack {
+                Spacer()
+                Button(action: {
+                    withAnimation(DS.Animation.spring) { offset = 0 }
+                    onDelete()
+                }) {
+                    Image(systemName: "trash.fill")
+                        .font(.system(size: 18, weight: .semibold))
                         .foregroundStyle(.white)
+                        .frame(width: max(offset, 0))
                 }
+                .background(DS.Colors.danger)
             }
-            .buttonStyle(.plain)
+            .frame(maxHeight: .infinity)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+            .opacity(offset > 0 ? 1 : 0)
+            
+            // Main content
+            HStack(spacing: DS.Spacing.md) {
+                // Checkmark
+                Button(action: onUncomplete) {
+                    ZStack {
+                        Circle()
+                            .fill(DS.Colors.success)
+                            .frame(width: 24, height: 24)
 
-            // Content
-            Button(action: onTap) {
-                HStack(spacing: DS.Spacing.sm) {
-                    Text(todo.icon)
-                        .font(.system(size: 18))
-
-                    Text(todo.title)
-                        .scaledFont(size: 14, weight: .medium, relativeTo: .body)
-                        .foregroundStyle(DS.Colors.textTertiary)
-                        .strikethrough()
-                        .lineLimit(1)
-
-                    Spacer()
-
-                    if let completedAt = todo.completedAt {
-                        Text(completedAt.timeAgoShort)
-                            .scaledFont(size: 11, weight: .medium, relativeTo: .caption2)
-                            .foregroundStyle(DS.Colors.textTertiary)
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundStyle(.white)
                     }
                 }
+                .buttonStyle(.plain)
+
+                // Content
+                Button(action: onTap) {
+                    HStack(spacing: DS.Spacing.sm) {
+                        Text(todo.icon)
+                            .font(.system(size: 18))
+
+                        Text(todo.title)
+                            .scaledFont(size: 14, weight: .medium, relativeTo: .body)
+                            .foregroundStyle(DS.Colors.textTertiary)
+                            .strikethrough()
+                            .lineLimit(1)
+
+                        Spacer()
+
+                        if let completedAt = todo.completedAt {
+                            Text(completedAt.timeAgoShort)
+                                .scaledFont(size: 11, weight: .medium, relativeTo: .caption2)
+                                .foregroundStyle(DS.Colors.textTertiary)
+                        }
+                    }
+                }
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
+            .padding(DS.Spacing.md)
+            .background(DS.Colors.surfacePrimary.opacity(0.5))
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+            .offset(x: -offset)
+            .gesture(
+                DragGesture(minimumDistance: 20)
+                    .onChanged { value in
+                        if value.translation.width < 0 {
+                            offset = -value.translation.width
+                        }
+                    }
+                    .onEnded { value in
+                        withAnimation(DS.Animation.spring) {
+                            if offset > deleteThreshold {
+                                offset = 0
+                                onDelete()
+                            } else {
+                                offset = 0
+                            }
+                        }
+                    }
+            )
         }
-        .padding(DS.Spacing.md)
-        .background(DS.Colors.surfacePrimary.opacity(0.5))
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
-        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-            Button(role: .destructive, action: onDelete) {
-                Label("Delete", systemImage: "trash")
-            }
-            .tint(DS.Colors.danger)
-        }
     }
 }
 

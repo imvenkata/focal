@@ -174,34 +174,104 @@ struct DraggableTodoCard: View {
     let onTap: () -> Void
     let onDelete: () -> Void
 
-    @State private var isDragging = false
+    @State private var offset: CGFloat = 0
+    @State private var isSwiping = false
+    
+    private let swipeThreshold: CGFloat = 80
+    private let deleteThreshold: CGFloat = 120
 
     var body: some View {
-        TiimoTodoCard(
-            todo: todo,
-            onToggleCompletion: onToggleCompletion,
-            onTap: onTap
-        )
-        .draggable(todo.id.uuidString) {
-            // Drag preview
-            TiimoTodoCard(todo: todo, onToggleCompletion: {}, onTap: {})
-                .frame(width: 300)
-                .opacity(0.9)
-                .scaleEffect(0.95)
-        }
-        .opacity(isDragging ? 0.5 : 1)
-        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-            Button(role: .destructive, action: onDelete) {
-                Label("Delete", systemImage: "trash")
+        ZStack(alignment: .trailing) {
+            // Background actions (revealed on swipe)
+            HStack(spacing: 0) {
+                // Left side - Complete action
+                Button(action: {
+                    withAnimation(DS.Animation.spring) {
+                        offset = 0
+                    }
+                    onToggleCompletion()
+                }) {
+                    ZStack {
+                        DS.Colors.success
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 24, weight: .semibold))
+                            .foregroundStyle(.white)
+                    }
+                    .frame(width: abs(min(offset, 0)))
+                }
+                .buttonStyle(.plain)
+                .opacity(offset < 0 ? 1 : 0)
+                
+                Spacer()
+                
+                // Right side - Delete action
+                Button(action: {
+                    withAnimation(DS.Animation.spring) {
+                        offset = 0
+                    }
+                    onDelete()
+                }) {
+                    ZStack {
+                        DS.Colors.danger
+                        Image(systemName: "trash.fill")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundStyle(.white)
+                    }
+                    .frame(width: max(offset, 0))
+                }
+                .buttonStyle(.plain)
+                .opacity(offset > 0 ? 1 : 0)
             }
-            .tint(DS.Colors.danger)
-        }
-        .swipeActions(edge: .leading, allowsFullSwipe: true) {
-            Button(action: onToggleCompletion) {
-                Label("Complete", systemImage: "checkmark.circle.fill")
+            .frame(maxHeight: .infinity)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+            
+            // Main card content
+            TiimoTodoCard(
+                todo: todo,
+                onToggleCompletion: onToggleCompletion,
+                onTap: onTap
+            )
+            .offset(x: -offset)
+            .draggable(todo.id.uuidString) {
+                // Drag preview for priority reordering
+                TiimoTodoCard(todo: todo, onToggleCompletion: {}, onTap: {})
+                    .frame(width: 300)
+                    .opacity(0.9)
+                    .scaleEffect(0.95)
             }
-            .tint(DS.Colors.success)
+            .gesture(
+                DragGesture(minimumDistance: 20)
+                    .onChanged { value in
+                        // Only horizontal swipes
+                        if abs(value.translation.width) > abs(value.translation.height) {
+                            isSwiping = true
+                            offset = -value.translation.width
+                        }
+                    }
+                    .onEnded { value in
+                        isSwiping = false
+                        let velocity = value.predictedEndTranslation.width - value.translation.width
+                        
+                        withAnimation(DS.Animation.spring) {
+                            // Swipe left (delete)
+                            if offset > deleteThreshold || velocity < -300 {
+                                offset = 0
+                                onDelete()
+                            }
+                            // Swipe right (complete)
+                            else if offset < -swipeThreshold || velocity > 300 {
+                                offset = 0
+                                onToggleCompletion()
+                            }
+                            // Snap back
+                            else {
+                                offset = 0
+                            }
+                        }
+                    }
+            )
         }
+        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
     }
 }
 

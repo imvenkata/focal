@@ -17,27 +17,18 @@ struct TodoQuickAddBar: View {
                     onAdd()
                 }
 
-            // AI sparkle button
-            Button(action: {
-                // AI magic action - placeholder for now
-                onAdd()
-            }) {
-                Text("✨")
-                    .font(.system(size: 18))
+            // Add button
+            Button(action: onAdd) {
+                Image(systemName: "plus.circle.fill")
+                    .font(.system(size: 28, weight: .medium))
+                    .foregroundStyle(DS.Colors.primary)
                     .frame(width: 44, height: 44)
-                    .background(
-                        LinearGradient(
-                            colors: [
-                                Color(hex: "#E8E4FF"),
-                                Color(hex: "#F0E8FF")
-                            ],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
+                    .background(DS.Colors.primary.opacity(0.1))
                     .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
             }
             .buttonStyle(.plain)
+            .disabled(text.trimmingCharacters(in: .whitespaces).isEmpty)
+            .accessibilityLabel("Quick Add")
         }
         .padding(.leading, DS.Spacing.lg)
         .padding(.trailing, DS.Spacing.xs)

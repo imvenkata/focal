@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -51,18 +51,31 @@
 		A18439BC0ACADDAA14905961A /* FABButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26DBE8B1DE2506AE8AD00664 /* FABButton.swift */; };
 		A19189BDABAEBD93AC997668 /* TodoCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594D1A4023CD27521A246ADE /* TodoCard.swift */; };
 		B60FF51FD103B36DBC575E77 /* TodoPriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14BBD715903C5565B74A49D /* TodoPriority.swift */; };
+		BF7A0F3000AFA57DC12F7005 /* TodoE2ETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C21FF334FA26EBC35FA426 /* TodoE2ETests.swift */; };
 		C17E56E8BCCCAE6516B0DFC4 /* TodoQuickAddBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146B21794815476C9E265BFB /* TodoQuickAddBar.swift */; };
 		C4AEE34C3593BBA1327E4925 /* TodoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB89FFC207F3D80D51FB4919 /* TodoView.swift */; };
 		F9E8D7C6B5A432109876 /* WhenPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F678901234 /* WhenPickerSheet.swift */; };
 		FAE04556D68AB0186327675B /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D094A98D3D70EB376B8DBFF0 /* TodoItem.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		82B249EE2F144B6500EE5FD8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A80000001000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A50000001000000000000001;
+			remoteInfo = Focal;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		146B21794815476C9E265BFB /* TodoQuickAddBar.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoQuickAddBar.swift; sourceTree = "<group>"; };
+		14C21FF334FA26EBC35FA426 /* TodoE2ETests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TodoE2ETests.swift; path = Focal/FocalUITests/TodoE2ETests.swift; sourceTree = "<group>"; };
 		594D1A4023CD27521A246ADE /* TodoCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoCard.swift; sourceTree = "<group>"; };
 		5F7ADFDB2671609E24766606 /* TodoNotificationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Services/TodoNotificationService.swift; sourceTree = "<group>"; };
 		6B64140C22C9E28B0BC63EBE /* TodoDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoDetailView.swift; sourceTree = "<group>"; };
 		6C21B3B125B31641B121F22E /* TodoSubtaskRow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoSubtaskRow.swift; sourceTree = "<group>"; };
+		82B249E82F144B6500EE5FD8 /* FocalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocalUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		95C708910AF989C606B6222A /* TodoSubtask.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoSubtask.swift; sourceTree = "<group>"; };
 		9E4473A9CBF971B857051263 /* TodoPrioritySection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoPrioritySection.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F678901234 /* WhenPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhenPickerSheet.swift; sourceTree = "<group>"; };
@@ -109,7 +122,28 @@
 		E14BBD715903C5565B74A49D /* TodoPriority.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoPriority.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		82B249E92F144B6500EE5FD8 /* FocalUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = FocalUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
+		82B249E52F144B6500EE5FD8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A30000001000000000000001 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -126,7 +160,6 @@
 				DB89FFC207F3D80D51FB4919 /* TodoView.swift */,
 				6B64140C22C9E28B0BC63EBE /* TodoDetailView.swift */,
 			);
-			name = Todo;
 			path = Todo;
 			sourceTree = "<group>";
 		};
@@ -134,7 +167,9 @@
 			isa = PBXGroup;
 			children = (
 				A40000001000000000000002 /* Focal */,
+				82B249E92F144B6500EE5FD8 /* FocalUITests */,
 				A40000001000000000000003 /* Products */,
+				14C21FF334FA26EBC35FA426 /* TodoE2ETests.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -156,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				A20000001000000000000000 /* Focal.app */,
+				82B249E82F144B6500EE5FD8 /* FocalUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -299,6 +335,27 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		82B249E72F144B6500EE5FD8 /* FocalUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 82B249F22F144B6500EE5FD8 /* Build configuration list for PBXNativeTarget "FocalUITests" */;
+			buildPhases = (
+				82B249E42F144B6500EE5FD8 /* Sources */,
+				82B249E52F144B6500EE5FD8 /* Frameworks */,
+				82B249E62F144B6500EE5FD8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				82B249EF2F144B6500EE5FD8 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				82B249E92F144B6500EE5FD8 /* FocalUITests */,
+			);
+			name = FocalUITests;
+			productName = FocalUITests;
+			productReference = 82B249E82F144B6500EE5FD8 /* FocalUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		A50000001000000000000001 /* Focal */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A70000001000000000000001 /* Build configuration list for PBXNativeTarget "Focal" */;
@@ -323,9 +380,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1500;
+				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
+					82B249E72F144B6500EE5FD8 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = A50000001000000000000001;
+					};
 					A50000001000000000000001 = {
 						CreatedOnToolsVersion = 15.0;
 					};
@@ -345,11 +406,19 @@
 			projectRoot = "";
 			targets = (
 				A50000001000000000000001 /* Focal */,
+				82B249E72F144B6500EE5FD8 /* FocalUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		82B249E62F144B6500EE5FD8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A60000001000000000000002 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -361,6 +430,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		82B249E42F144B6500EE5FD8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF7A0F3000AFA57DC12F7005 /* TodoE2ETests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A60000001000000000000001 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -417,7 +494,57 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		82B249EF2F144B6500EE5FD8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A50000001000000000000001 /* Focal */;
+			targetProxy = 82B249EE2F144B6500EE5FD8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		82B249F02F144B6500EE5FD8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N5VACR3WF8;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = venkata.FocalUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Focal;
+			};
+			name = Debug;
+		};
+		82B249F12F144B6500EE5FD8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N5VACR3WF8;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = venkata.FocalUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Focal;
+			};
+			name = Release;
+		};
 		A90000001000000000000001 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -600,6 +727,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		82B249F22F144B6500EE5FD8 /* Build configuration list for PBXNativeTarget "FocalUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				82B249F02F144B6500EE5FD8 /* Debug */,
+				82B249F12F144B6500EE5FD8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A70000001000000000000001 /* Build configuration list for PBXNativeTarget "Focal" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

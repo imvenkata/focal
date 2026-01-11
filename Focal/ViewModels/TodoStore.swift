@@ -126,7 +126,7 @@ final class TodoStore {
         case .all:
             break
         case .today:
-            result = result.filter { $0.isDueToday || ($0.dueDate == nil && Calendar.current.isDateInToday($0.createdAt)) }
+            result = result.filter { $0.isDueToday }
         case .upcoming:
             result = result.filter { todo in
                 guard let dueDate = todo.dueDate else { return false }
@@ -267,8 +267,10 @@ final class TodoStore {
         undoTimer?.invalidate()
         undoTimer = nil
 
-        // Re-add the todo
+        // Re-insert into SwiftData and local array
+        modelContext?.insert(todo)
         todos.append(todo)
+        save()
         reindexTodos()
         recentlyDeletedTodo = nil
         HapticManager.shared.notification(.success)

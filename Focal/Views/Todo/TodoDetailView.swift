@@ -80,8 +80,13 @@ struct TodoDetailView: View {
                     .padding(.top, -DS.Spacing.lg)
                 }
             }
+            .scrollDismissesKeyboard(.interactively)
             .background(DS.Colors.bgPrimary)
             .toolbar(.hidden, for: .navigationBar)
+            .onDisappear {
+                // Ensure all changes are persisted
+                todoStore.save()
+            }
         }
         .sheet(isPresented: $showDatePicker) {
             TodoDatePickerSheet(
