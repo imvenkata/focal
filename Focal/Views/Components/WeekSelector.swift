@@ -7,23 +7,49 @@ struct WeekSelector: View {
     let tasksForWeek: [[TaskItem]]
     let onDateSelected: (Date) -> Void
 
+    // Layout constants matching WeeklyTimelineView
+    private var timeLabelsWidth: CGFloat {
+        DS.Sizes.timeLabelWidth + DS.Spacing.sm // 32 + 8 = 40pt
+    }
+
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: DS.Spacing.xs * 0.75) {
-                ForEach(Array(weekDates.enumerated()), id: \.offset) { index, date in
-                    DayCircle(
-                        date: date,
-                        isSelected: date.isSameDay(as: selectedDate),
-                        viewMode: viewMode,
-                        taskCount: tasksForWeek[index].count,
-                        hasCompletedTasks: tasksForWeek[index].contains { $0.isCompleted }
-                    ) {
-                        onDateSelected(date)
+        GeometryReader { geometry in
+            let totalWidth = geometry.size.width
+            let horizontalPadding = DS.Spacing.md * 2 // 12 * 2 = 24pt (matches WeeklyTimelineView)
+            let availableWidth = totalWidth - horizontalPadding
+            let columnsWidth = availableWidth - timeLabelsWidth
+            let totalSpacing = DS.Sizes.weekColumnSpacing * 6 // 6pt * 6 gaps = 36pt
+            let columnWidth = (columnsWidth - totalSpacing) / 7
+
+            HStack(spacing: 0) {
+                // Spacer matching time labels width
+                if viewMode == .week {
+                    Spacer()
+                        .frame(width: timeLabelsWidth)
+                }
+
+                HStack(spacing: viewMode == .week ? DS.Sizes.weekColumnSpacing : DS.Spacing.xs * 0.75) {
+                    ForEach(Array(weekDates.enumerated()), id: \.offset) { index, date in
+                        DayCircle(
+                            date: date,
+                            isSelected: date.isSameDay(as: selectedDate),
+                            viewMode: viewMode,
+                            taskCount: tasksForWeek[index].count,
+                            hasCompletedTasks: tasksForWeek[index].contains { $0.isCompleted }
+                        ) {
+                            onDateSelected(date)
+                        }
+                        .frame(width: viewMode == .week ? columnWidth : nil)
                     }
                 }
+
+                if viewMode != .week {
+                    Spacer()
+                }
             }
-            .padding(.horizontal, DS.Spacing.xl)
+            .padding(.horizontal, DS.Spacing.md)
         }
+        .frame(height: 70) // Fixed height for day circles
     }
 }
 

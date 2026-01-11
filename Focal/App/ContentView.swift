@@ -4,6 +4,7 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var taskStore = TaskStore()
+    @State private var todoStore = TodoStore()
     @State private var dragState = TaskDragState()
     @State private var selectedTab: Tab = .planner
     @State private var showAddTask = false
@@ -21,6 +22,9 @@ struct ContentView: View {
                     PlannerView()
                         .environment(taskStore)
                         .environment(dragState)
+                case .todos:
+                    TodoView()
+                        .environment(todoStore)
                 case .insights:
                     InsightsView()
                 case .settings:
@@ -41,6 +45,7 @@ struct ContentView: View {
         }
         .onAppear {
             taskStore.setModelContext(modelContext)
+            todoStore.setModelContext(modelContext)
         }
     }
 }

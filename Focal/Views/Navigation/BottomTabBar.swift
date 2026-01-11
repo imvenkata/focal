@@ -8,7 +8,7 @@ struct BottomTabBar: View {
     var body: some View {
         HStack(spacing: 0) {
             // Left tabs
-            ForEach([Tab.inbox, Tab.planner], id: \.self) { tab in
+            ForEach([Tab.inbox, Tab.planner, Tab.todos], id: \.self) { tab in
                 TabButton(tab: tab, isSelected: selectedTab == tab) {
                     HapticManager.shared.selection()
                     selectedTab = tab

@@ -1,0 +1,8 @@
+{
+    "name": "code-simplifier",
+    "description": "A plugin to simplify and refactor code for better readability",
+    "version": "1.0.0",
+    "author": {
+        "name": "Venkata"
+    }
+}

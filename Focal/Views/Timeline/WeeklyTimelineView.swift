@@ -32,6 +32,11 @@ struct WeeklyTimelineView: View {
     private let autoScrollEdgeThreshold: CGFloat = DS.Spacing.xxxxl
     private let autoScrollMaxSpeed: CGFloat = DS.Sizes.weekTimelineHeight
 
+    // Layout constants matching WeekSelector
+    private var timeLabelsWidth: CGFloat {
+        DS.Sizes.timeLabelWidth + DS.Spacing.sm // 32 + 8 = 40pt
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             WeeklyMiniStatsBar(
@@ -43,97 +48,107 @@ struct WeeklyTimelineView: View {
             .padding(.horizontal, DS.Spacing.md)
             .padding(.bottom, DS.Spacing.md)
 
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 0) {
-                    // Time grid with tasks
-                    HStack(alignment: .top, spacing: 0) {
-                        // Time labels
-                        ZStack(alignment: .topTrailing) {
-                            ForEach(majorHours, id: \.self) { hour in
-                                WeekTimeLabel(hour: hour)
-                                    .offset(y: CGFloat(hour - timelineStartHour) * hourHeight)
-                            }
-                        }
-                        .frame(width: DS.Sizes.timeLabelWidth, height: totalTimelineHeight, alignment: .topTrailing)
-                        .padding(.trailing, DS.Spacing.sm)
+            GeometryReader { geometry in
+                let totalWidth = geometry.size.width
+                let horizontalPadding = DS.Spacing.md * 2 // 12 * 2 = 24pt
+                let availableWidth = totalWidth - horizontalPadding
+                let columnsWidth = availableWidth - timeLabelsWidth
+                let totalSpacing = DS.Sizes.weekColumnSpacing * 6 // 6pt * 6 gaps = 36pt
+                let columnWidth = (columnsWidth - totalSpacing) / 7
 
-                        // Day columns
-                        HStack(spacing: DS.Sizes.weekColumnSpacing) {
-                            ForEach(Array(taskStore.weekDates.enumerated()), id: \.offset) { index, date in
-                                DayColumn(
-                                    date: date,
-                                    tasks: taskStore.tasksForWeek[index],
-                                    isSelected: date.isSameDay(as: taskStore.selectedDate),
-                                    hourHeight: hourHeight,
-                                    startHour: timelineStartHour,
-                                    endHour: timelineEndHour,
-                                    gridStride: gridStride,
-                                    columnIndex: index,
-                                    onTaskTap: onTaskTap
-                                )
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(spacing: 0) {
+                        // Time grid with tasks
+                        HStack(alignment: .top, spacing: 0) {
+                            // Time labels
+                            ZStack(alignment: .topTrailing) {
+                                ForEach(majorHours, id: \.self) { hour in
+                                    WeekTimeLabel(hour: hour)
+                                        .offset(y: CGFloat(hour - timelineStartHour) * hourHeight)
+                                }
+                            }
+                            .frame(width: DS.Sizes.timeLabelWidth, height: totalTimelineHeight, alignment: .topTrailing)
+                            .padding(.trailing, DS.Spacing.sm)
+
+                            // Day columns
+                            HStack(spacing: DS.Sizes.weekColumnSpacing) {
+                                ForEach(Array(taskStore.weekDates.enumerated()), id: \.offset) { index, date in
+                                    DayColumn(
+                                        date: date,
+                                        tasks: taskStore.tasksForWeek[index],
+                                        isSelected: date.isSameDay(as: taskStore.selectedDate),
+                                        hourHeight: hourHeight,
+                                        startHour: timelineStartHour,
+                                        endHour: timelineEndHour,
+                                        gridStride: gridStride,
+                                        columnIndex: index,
+                                        columnWidth: columnWidth,
+                                        onTaskTap: onTaskTap
+                                    )
+                                }
+                            }
+                            .coordinateSpace(name: "weekColumns")
+                            .onPreferenceChange(ColumnFramePreferenceKey.self) { frames in
+                                for (index, frame) in frames {
+                                    dragState.registerColumnFrame(index: index, frame: frame)
+                                }
                             }
                         }
-                        .coordinateSpace(name: "weekColumns")
-                        .onPreferenceChange(ColumnFramePreferenceKey.self) { frames in
-                            for (index, frame) in frames {
-                                dragState.registerColumnFrame(index: index, frame: frame)
+                        .padding(.horizontal, DS.Spacing.md)
+
+                        // Current time indicator overlay
+                        .overlay(alignment: .topLeading) {
+                            if shouldShowCurrentTimeIndicator {
+                                CurrentTimeIndicator()
+                                    .padding(.leading, DS.Sizes.timeLabelWidth + DS.Spacing.sm)
+                                    .offset(y: currentTimeOffset)
+                                    .allowsHitTesting(false)
+                            }
+                        }
+
+                        // Dragged capsule overlay
+                        .overlay {
+                            if dragState.isDragging, let task = dragState.draggedTask {
+                                DraggedCapsuleOverlay(task: task, hourHeight: hourHeight)
                             }
                         }
                     }
-                    .padding(.horizontal, DS.Spacing.md)
+                    .padding(.vertical, DS.Spacing.md)
 
-                    // Current time indicator overlay
-                    .overlay(alignment: .topLeading) {
-                        if shouldShowCurrentTimeIndicator {
-                            CurrentTimeIndicator()
-                                .padding(.leading, DS.Sizes.timeLabelWidth + DS.Spacing.sm)
-                                .offset(y: currentTimeOffset)
-                                .allowsHitTesting(false)
-                        }
-                    }
-
-                    // Dragged capsule overlay
-                    .overlay {
-                        if dragState.isDragging, let task = dragState.draggedTask {
-                            DraggedCapsuleOverlay(task: task, hourHeight: hourHeight)
-                        }
+                    // Only show hint when dragging
+                    if dragState.isDragging {
+                        Text("Release to schedule")
+                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                            .foregroundStyle(DS.Colors.accent)
+                            .padding(.top, DS.Spacing.sm)
+                            .padding(.bottom, DS.Spacing.md)
+                            .transition(.opacity)
+                    } else {
+                        Spacer()
+                            .frame(height: DS.Spacing.lg)
                     }
                 }
-                .padding(.vertical, DS.Spacing.md)
-
-                // Only show hint when dragging
-                if dragState.isDragging {
-                    Text("Release to schedule")
-                        .font(.system(size: 12, weight: .medium, design: .rounded))
-                        .foregroundStyle(DS.Colors.accent)
-                        .padding(.top, DS.Spacing.sm)
-                        .padding(.bottom, DS.Spacing.md)
-                        .transition(.opacity)
-                } else {
-                    Spacer()
-                        .frame(height: DS.Spacing.lg)
-                }
-            }
-            .scrollDisabled(dragState.isDragging)
-            .background(ScrollViewIntrospector { scrollView in
-                self.scrollView = scrollView
-            })
-            .onChange(of: dragState.isDragging) { _, isDragging in
-                if isDragging {
-                    // Start auto-scroll timer only when dragging
-                    autoScrollTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / 60.0, repeats: true) { _ in
-                        handleAutoScrollTick()
+                .scrollDisabled(dragState.isDragging)
+                .background(ScrollViewIntrospector { scrollView in
+                    self.scrollView = scrollView
+                })
+                .onChange(of: dragState.isDragging) { _, isDragging in
+                    if isDragging {
+                        // Start auto-scroll timer only when dragging
+                        autoScrollTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / 60.0, repeats: true) { _ in
+                            handleAutoScrollTick()
+                        }
+                    } else {
+                        // Stop timer when not dragging to save CPU
+                        autoScrollTimer?.invalidate()
+                        autoScrollTimer = nil
                     }
-                } else {
-                    // Stop timer when not dragging to save CPU
+                }
+                .onDisappear {
                     autoScrollTimer?.invalidate()
                     autoScrollTimer = nil
                 }
-            }
-            .onDisappear {
-                autoScrollTimer?.invalidate()
-                autoScrollTimer = nil
-            }
+            } // Close GeometryReader
         }
         .transition(.opacity)
     }
@@ -249,6 +264,7 @@ struct DayColumn: View {
     let endHour: Int
     let gridStride: Int
     let columnIndex: Int
+    let columnWidth: CGFloat
     let onTaskTap: (TaskItem) -> Void
 
     private var isDropTarget: Bool {
@@ -345,7 +361,7 @@ struct DayColumn: View {
                 )
             }
         }
-        .frame(maxWidth: .infinity)
+        .frame(width: columnWidth)
         .frame(height: totalTimelineHeight, alignment: .top)
         .background(
             GeometryReader { geo in
