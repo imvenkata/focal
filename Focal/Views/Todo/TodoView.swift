@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct TodoView: View {
     @Environment(\.modelContext) private var modelContext
@@ -13,23 +14,26 @@ struct TodoView: View {
             // Main content
             ScrollView {
                 VStack(spacing: DS.Spacing.xl) {
-                    // Header
+                    // Tiimo-style Header
                     headerSection
 
-                    // Quick add bar
-                    quickAddSection
+                    // Title
+                    Text("To-do")
+                        .font(.system(size: 34, weight: .bold))
+                        .foregroundStyle(DS.Colors.textPrimary)
+                        .tracking(-0.5)
 
                     // Priority sections
                     prioritySections
+
+                    // Quick add bar
+                    quickAddSection
                 }
                 .padding(.horizontal, DS.Spacing.lg)
                 .padding(.top, DS.Spacing.xl)
                 .padding(.bottom, 120) // Space for tab bar
             }
             .background(DS.Colors.background)
-
-            // Bottom quick add (sticky)
-            bottomQuickAdd
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }
@@ -37,43 +41,39 @@ struct TodoView: View {
     // MARK: - Header
 
     private var headerSection: some View {
-        VStack(alignment: .leading, spacing: DS.Spacing.sm) {
-            // Title
-            Text("Todos")
-                .font(.system(size: 32, weight: .bold))
-                .foregroundStyle(DS.Colors.textPrimary)
+        HStack {
+            // Progress badge
+            HStack(spacing: DS.Spacing.xs) {
+                Text("🌿")
+                    .font(.system(size: 16))
 
-            // Progress stats
-            if !todoStore.todos.isEmpty {
-                HStack(spacing: DS.Spacing.md) {
-                    Text("\(todoStore.completedTodos.count) of \(todoStore.todos.count) completed")
-                        .scaledFont(size: 14, weight: .medium, relativeTo: .subheadline)
-                        .foregroundStyle(DS.Colors.textSecondary)
-
-                    Spacer()
-
-                    // Collapse all button
-                    if !todoStore.expandedTodoIds.isEmpty {
-                        Button(action: {
-                            withAnimation(DS.Animation.spring) {
-                                todoStore.collapseAll()
-                            }
-                        }) {
-                            HStack(spacing: DS.Spacing.xs) {
-                                Image(systemName: "chevron.up.circle.fill")
-                                Text("Collapse All")
-                            }
-                            .scaledFont(size: 13, weight: .medium, relativeTo: .caption)
-                            .foregroundStyle(DS.Colors.sky)
-                        }
-                    }
-                }
+                Text("\(todoStore.completedTodos.count) / \(todoStore.todos.count)")
+                    .scaledFont(size: 14, weight: .semibold, relativeTo: .subheadline)
+                    .foregroundStyle(DS.Colors.textPrimary)
             }
+            .padding(.horizontal, DS.Spacing.md)
+            .padding(.vertical, DS.Spacing.sm)
+            .background(DS.Colors.surfacePrimary)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.pill))
+            .shadowResting()
+
+            Spacer()
+
+            // Add button
+            Button(action: { showingAddSheet = true }) {
+                Image(systemName: "plus")
+                    .font(.system(size: 18, weight: .medium))
+                    .foregroundStyle(DS.Colors.textPrimary)
+                    .frame(width: 48, height: 48)
+                    .background(DS.Colors.surfacePrimary)
+                    .clipShape(Circle())
+                    .shadowResting()
+            }
+            .buttonStyle(.plain)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    // MARK: - Quick Add Section (Top)
+    // MARK: - Quick Add Section
 
     private var quickAddSection: some View {
         TodoQuickAddBar(
@@ -86,78 +86,36 @@ struct TodoView: View {
     // MARK: - Priority Sections
 
     private var prioritySections: some View {
-        VStack(spacing: DS.Spacing.xxl) {
+        VStack(spacing: DS.Spacing.xl) {
             // High priority
             TodoPrioritySection(
                 priority: .high,
                 todos: todoStore.highPriorityTodos,
-                expandedIds: todoStore.expandedTodoIds,
+                isCollapsed: todoStore.isSectionCollapsed(.high),
+                onToggleCollapse: { todoStore.toggleSectionCollapse(.high) },
                 onToggleCompletion: { todoStore.toggleCompletion(for: $0) },
-                onToggleExpand: {
-                    withAnimation(DS.Animation.spring) {
-                        todoStore.toggleExpanded($0.id)
-                    }
-                },
-                onToggleSubtask: { todoStore.toggleSubtask($0, in: $1) },
-                onDeleteSubtask: { todoStore.deleteSubtask($0, from: $1) },
-                onAddSubtask: { todoStore.addSubtask(to: $1, title: $0) }
+                onAddTapped: { showingAddSheet = true }
             )
 
             // Medium priority
             TodoPrioritySection(
                 priority: .medium,
                 todos: todoStore.mediumPriorityTodos,
-                expandedIds: todoStore.expandedTodoIds,
+                isCollapsed: todoStore.isSectionCollapsed(.medium),
+                onToggleCollapse: { todoStore.toggleSectionCollapse(.medium) },
                 onToggleCompletion: { todoStore.toggleCompletion(for: $0) },
-                onToggleExpand: {
-                    withAnimation(DS.Animation.spring) {
-                        todoStore.toggleExpanded($0.id)
-                    }
-                },
-                onToggleSubtask: { todoStore.toggleSubtask($0, in: $1) },
-                onDeleteSubtask: { todoStore.deleteSubtask($0, from: $1) },
-                onAddSubtask: { todoStore.addSubtask(to: $1, title: $0) }
+                onAddTapped: { showingAddSheet = true }
             )
 
             // Low priority
             TodoPrioritySection(
                 priority: .low,
                 todos: todoStore.lowPriorityTodos,
-                expandedIds: todoStore.expandedTodoIds,
+                isCollapsed: todoStore.isSectionCollapsed(.low),
+                onToggleCollapse: { todoStore.toggleSectionCollapse(.low) },
                 onToggleCompletion: { todoStore.toggleCompletion(for: $0) },
-                onToggleExpand: {
-                    withAnimation(DS.Animation.spring) {
-                        todoStore.toggleExpanded($0.id)
-                    }
-                },
-                onToggleSubtask: { todoStore.toggleSubtask($0, in: $1) },
-                onDeleteSubtask: { todoStore.deleteSubtask($0, from: $1) },
-                onAddSubtask: { todoStore.addSubtask(to: $1, title: $0) }
+                onAddTapped: { showingAddSheet = true }
             )
-        }
-    }
-
-    // MARK: - Bottom Quick Add (Sticky)
-
-    private var bottomQuickAdd: some View {
-        VStack(spacing: 0) {
-            // Gradient fade
-            LinearGradient(
-                colors: [DS.Colors.background.opacity(0), DS.Colors.background],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .frame(height: 40)
-
-            // Quick add bar
-            TodoQuickAddBar(
-                text: $quickAddText,
-                onAdd: addQuickTodo,
-                isFocused: $isQuickAddFocused
-            )
-            .padding(.horizontal, DS.Spacing.lg)
-            .padding(.bottom, 100) // Space for tab bar
-            .background(DS.Colors.background)
         }
     }
 
@@ -182,6 +140,7 @@ struct TodoView: View {
     }
 }
 
+/*
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(
@@ -192,7 +151,8 @@ struct TodoView: View {
     let store = TodoStore(modelContext: container.mainContext)
     store.loadSampleData()
 
-    return TodoView()
+    TodoView()
         .environment(store)
         .modelContainer(container)
 }
+*/

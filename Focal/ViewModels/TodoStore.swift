@@ -6,6 +6,22 @@ final class TodoStore {
     private var modelContext: ModelContext?
     var todos: [TodoItem] = []
     var expandedTodoIds: Set<UUID> = []
+    var collapsedSections: Set<TodoPriority> = []
+
+    // MARK: - Section Collapse
+
+    func toggleSectionCollapse(_ priority: TodoPriority) {
+        if collapsedSections.contains(priority) {
+            collapsedSections.remove(priority)
+        } else {
+            collapsedSections.insert(priority)
+        }
+        HapticManager.shared.selection()
+    }
+
+    func isSectionCollapsed(_ priority: TodoPriority) -> Bool {
+        collapsedSections.contains(priority)
+    }
 
     // MARK: - Initialization
 
@@ -98,7 +114,7 @@ final class TodoStore {
         modelContext?.insert(todo)
         save()
         todos.append(todo)
-        HapticManager.shared.success()
+        HapticManager.shared.notification(.success)
     }
 
     func deleteTodo(_ todo: TodoItem) {
@@ -120,7 +136,7 @@ final class TodoStore {
     func addSubtask(to todo: TodoItem, title: String) {
         todo.addSubtask(title)
         save()
-        HapticManager.shared.success()
+        HapticManager.shared.notification(.success)
     }
 
     func toggleSubtask(_ subtask: TodoSubtask, in todo: TodoItem) {

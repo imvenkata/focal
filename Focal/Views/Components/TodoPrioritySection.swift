@@ -3,55 +3,127 @@ import SwiftUI
 struct TodoPrioritySection: View {
     let priority: TodoPriority
     let todos: [TodoItem]
-    let expandedIds: Set<UUID>
+    let isCollapsed: Bool
+    let onToggleCollapse: () -> Void
     let onToggleCompletion: (TodoItem) -> Void
-    let onToggleExpand: (TodoItem) -> Void
-    let onToggleSubtask: (TodoSubtask, TodoItem) -> Void
-    let onDeleteSubtask: (TodoSubtask, TodoItem) -> Void
-    let onAddSubtask: (String, TodoItem) -> Void
+    let onAddTapped: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: DS.Spacing.md) {
-            // Priority header
-            HStack(spacing: DS.Spacing.sm) {
-                Text(priority.icon)
-                    .font(.system(size: 16))
+        VStack(alignment: .leading, spacing: DS.Spacing.sm) {
+            // Section Header - Tiimo-style pill badge
+            HStack {
+                Button(action: {
+                    withAnimation(DS.Animation.spring) {
+                        onToggleCollapse()
+                    }
+                }) {
+                    HStack(spacing: DS.Spacing.xs) {
+                        // Priority icon
+                        Text(priority.icon)
+                            .font(.system(size: 10))
+                            .foregroundStyle(priority.iconColor)
 
-                Text(priority.displayName)
-                    .scaledFont(size: 14, weight: .semibold, relativeTo: .subheadline)
-                    .foregroundStyle(DS.Colors.textSecondary)
-                    .textCase(.uppercase)
+                        // Label
+                        Text(priority.displayName.uppercased())
+                            .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
+                            .foregroundStyle(DS.Colors.textPrimary)
+                            .tracking(0.5)
 
-                Text("(\(todos.count))")
-                    .scaledFont(size: 14, weight: .medium, relativeTo: .subheadline)
-                    .foregroundStyle(DS.Colors.textTertiary)
+                        // Count
+                        Text("(\(todos.count))")
+                            .scaledFont(size: 12, weight: .medium, relativeTo: .caption)
+                            .foregroundStyle(DS.Colors.textSecondary)
+
+                        // Chevron
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 10, weight: .semibold))
+                            .foregroundStyle(DS.Colors.textTertiary)
+                            .rotationEffect(.degrees(isCollapsed ? -90 : 0))
+                    }
+                    .padding(.horizontal, DS.Spacing.md)
+                    .padding(.vertical, DS.Spacing.sm)
+                    .background(priority.badgeBackground)
+                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
+                }
+                .buttonStyle(.plain)
+
+                Spacer()
+
+                // Add button
+                Button(action: onAddTapped) {
+                    Image(systemName: "plus")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(DS.Colors.textTertiary)
+                        .frame(width: 28, height: 28)
+                }
+                .buttonStyle(.plain)
+                .opacity(0.6)
             }
-            .padding(.horizontal, DS.Spacing.lg)
+            .padding(.horizontal, DS.Spacing.xs)
 
-            // Todo cards
-            if !todos.isEmpty {
+            // Tasks list (when expanded)
+            if !isCollapsed {
                 VStack(spacing: DS.Spacing.sm) {
                     ForEach(todos, id: \.id) { todo in
-                        TodoCard(
+                        TiimoTodoCard(
                             todo: todo,
-                            isExpanded: expandedIds.contains(todo.id),
-                            onToggleCompletion: { onToggleCompletion(todo) },
-                            onToggleExpand: { onToggleExpand(todo) },
-                            onToggleSubtask: { subtask in onToggleSubtask(subtask, todo) },
-                            onDeleteSubtask: { subtask in onDeleteSubtask(subtask, todo) },
-                            onAddSubtask: { title in onAddSubtask(title, todo) }
+                            onToggleCompletion: { onToggleCompletion(todo) }
                         )
                     }
                 }
-            } else {
-                // Empty state for this priority
-                Text("No \(priority.displayName.lowercased()) priority todos")
-                    .scaledFont(size: 14, relativeTo: .subheadline)
-                    .foregroundStyle(DS.Colors.textTertiary)
-                    .italic()
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.vertical, DS.Spacing.md)
+                .transition(.opacity.combined(with: .move(edge: .top)))
             }
         }
+    }
+}
+
+// MARK: - Tiimo-Style Todo Card
+
+struct TiimoTodoCard: View {
+    let todo: TodoItem
+    let onToggleCompletion: () -> Void
+
+    var body: some View {
+        HStack(spacing: DS.Spacing.md) {
+            // Emoji badge
+            Text(todo.icon)
+                .font(.system(size: 22))
+                .frame(width: 44, height: 44)
+                .background(todo.color.lightColor.opacity(0.6))
+                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+
+            // Title
+            Text(todo.title)
+                .scaledFont(size: 15, weight: .medium, relativeTo: .body)
+                .foregroundStyle(todo.isCompleted ? DS.Colors.textSecondary : DS.Colors.textPrimary)
+                .strikethrough(todo.isCompleted)
+                .lineLimit(2)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            // Circular checkbox
+            Button(action: onToggleCompletion) {
+                ZStack {
+                    Circle()
+                        .stroke(todo.isCompleted ? Color.clear : DS.Colors.divider, lineWidth: 2)
+                        .frame(width: 28, height: 28)
+
+                    if todo.isCompleted {
+                        Circle()
+                            .fill(DS.Colors.sage)
+                            .frame(width: 28, height: 28)
+
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundStyle(.white)
+                    }
+                }
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(DS.Spacing.md)
+        .background(DS.Colors.surfacePrimary)
+        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+        .shadowResting()
+        .opacity(todo.isCompleted ? 0.6 : 1)
     }
 }

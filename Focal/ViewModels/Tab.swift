@@ -1,6 +1,6 @@
 import SwiftUI
 
-enum Tab: String, CaseIterable, Identifiable {
+enum AppTab: String, CaseIterable, Identifiable {
     case inbox
     case planner
     case todos

@@ -6,7 +6,7 @@ struct ContentView: View {
     @State private var taskStore = TaskStore()
     @State private var todoStore = TodoStore()
     @State private var dragState = TaskDragState()
-    @State private var selectedTab: Tab = .planner
+    @State private var selectedTab: AppTab = .planner
     @State private var showAddTask = false
 
     var body: some View {

@@ -1,14 +1,14 @@
 import SwiftUI
 
 struct BottomTabBar: View {
-    @Binding var selectedTab: Tab
+    @Binding var selectedTab: AppTab
     let onAddTapped: () -> Void
     var showsFAB: Bool = true
 
     var body: some View {
         HStack(spacing: 0) {
             // Left tabs
-            ForEach([Tab.inbox, Tab.planner, Tab.todos], id: \.self) { tab in
+            ForEach([AppTab.inbox, AppTab.planner, AppTab.todos], id: \.self) { tab in
                 TabButton(tab: tab, isSelected: selectedTab == tab) {
                     HapticManager.shared.selection()
                     selectedTab = tab
@@ -20,7 +20,7 @@ struct BottomTabBar: View {
                 .frame(width: DS.Sizes.fabSize + DS.Spacing.xl)
 
             // Right tabs
-            ForEach([Tab.insights, Tab.settings], id: \.self) { tab in
+            ForEach([AppTab.insights, AppTab.settings], id: \.self) { tab in
                 TabButton(tab: tab, isSelected: selectedTab == tab) {
                     HapticManager.shared.selection()
                     selectedTab = tab
@@ -48,7 +48,7 @@ struct BottomTabBar: View {
 
 // MARK: - Tab Button
 struct TabButton: View {
-    let tab: Tab
+    let tab: AppTab
     let isSelected: Bool
     let action: () -> Void
 
