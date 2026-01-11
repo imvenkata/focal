@@ -148,18 +148,6 @@ struct TodoPrioritySection: View {
                     .transition(.opacity.combined(with: .scale(scale: 0.95)))
                 }
             }
-            .dropDestination(for: String.self) { items, _ in
-                // Handle drop - items contain the todo ID
-                guard let idString = items.first,
-                      let uuid = UUID(uuidString: idString) else {
-                    return false
-                }
-                // Find the todo and trigger the drop callback
-                // The actual update will be handled by the parent
-                return true
-            } isTargeted: { _ in
-                // isTargeted is handled at parent level
-            }
         }
         .animation(DS.Animation.spring, value: isDropTarget)
     }
