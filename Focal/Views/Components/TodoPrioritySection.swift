@@ -303,6 +303,8 @@ struct TiimoTodoCard: View {
 
                     // Due date and subtasks info
                     HStack(spacing: DS.Spacing.sm) {
+                        categoryTag
+
                         if let dueText = todo.dueDateFormatted {
                             HStack(spacing: DS.Spacing.xs) {
                                 Image(systemName: todo.isOverdue ? "exclamationmark.circle.fill" : "calendar")
@@ -358,7 +360,22 @@ struct TiimoTodoCard: View {
             .opacity(todo.isCompleted ? 0.6 : 1)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("\(todo.title), priority \(todo.priorityEnum.displayName)")
+        .accessibilityLabel("\(todo.title), category \(todo.categoryEnum.label), priority \(todo.priorityEnum.displayName)")
         .accessibilityHint("Tap to view details")
+    }
+
+    private var categoryTag: some View {
+        let category = todo.categoryEnum
+        return HStack(spacing: DS.Spacing.xs) {
+            Text(category.icon)
+                .scaledFont(size: 10, relativeTo: .caption2)
+            Text(category.label)
+                .scaledFont(size: 10, weight: .semibold, relativeTo: .caption2)
+        }
+        .foregroundStyle(category.tint)
+        .padding(.horizontal, DS.Spacing.xs)
+        .padding(.vertical, DS.Spacing.xs / 2)
+        .background(category.tint.opacity(0.12))
+        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
     }
 }

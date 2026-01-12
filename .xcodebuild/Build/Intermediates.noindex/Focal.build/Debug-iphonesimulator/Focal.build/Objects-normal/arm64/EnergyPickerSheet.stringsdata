@@ -1,0 +1,40 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Pickers/EnergyPickerSheet.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Energy",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 54
+        }
+      },
+      {
+        "comment": "",
+        "key": "The energy monitor helps you get a better overview of what you can handle in a day.",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 44
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@ %@",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 27
+        }
+      },
+      {
+        "comment": "",
+        "key": "Energy",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 59
+        }
+      }
+    ]
+  },
+  "version": 1
+}

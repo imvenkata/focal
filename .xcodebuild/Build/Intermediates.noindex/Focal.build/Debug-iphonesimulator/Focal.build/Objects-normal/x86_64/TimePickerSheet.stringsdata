@@ -1,0 +1,72 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Pickers/TimePickerSheet.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Done",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 70
+        }
+      },
+      {
+        "comment": "",
+        "key": ":",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 89
+        }
+      },
+      {
+        "comment": "",
+        "key": "AM",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 161
+        }
+      },
+      {
+        "comment": "",
+        "key": "PM",
+        "location": {
+          "startingColumn": 41,
+          "startingLine": 161
+        }
+      },
+      {
+        "comment": "",
+        "key": "Ends at",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 169
+        }
+      },
+      {
+        "comment": "",
+        "key": "·",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 177
+        }
+      },
+      {
+        "comment": "",
+        "key": "DURATION",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 313
+        }
+      },
+      {
+        "comment": "",
+        "key": "Duration",
+        "location": {
+          "startingColumn": 24,
+          "startingLine": 332
+        }
+      }
+    ]
+  },
+  "version": 1
+}

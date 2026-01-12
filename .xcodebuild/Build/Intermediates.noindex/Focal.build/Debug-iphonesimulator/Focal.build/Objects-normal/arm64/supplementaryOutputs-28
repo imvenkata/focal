@@ -1,0 +1,23 @@
+{
+  "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps"
+  },
+  "/Users/venkata/projects/focal/Focal/Services/TodoNotificationService.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoNotificationService.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoNotificationService.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoNotificationService.dia",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoNotificationService.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoNotificationService.swiftdeps"
+  },
+  "/Users/venkata/projects/focal/Focal/Views/Pickers/ColorPickerView.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ColorPickerView.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ColorPickerView.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ColorPickerView.dia",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ColorPickerView.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ColorPickerView.swiftdeps"
+  }
+}

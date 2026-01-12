@@ -1,0 +1,23 @@
+{
+  "/Users/venkata/projects/focal/Focal/App/ContentView.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ContentView.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ContentView.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ContentView.dia",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ContentView.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ContentView.swiftdeps"
+  },
+  "/Users/venkata/projects/focal/Focal/App/FocalApp.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/FocalApp.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/FocalApp.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/FocalApp.dia",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/FocalApp.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/FocalApp.swiftdeps"
+  },
+  "/Users/venkata/projects/focal/Focal/Utilities/DesignSystem.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/DesignSystem.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/DesignSystem.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/DesignSystem.dia",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/DesignSystem.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/DesignSystem.swiftdeps"
+  }
+}

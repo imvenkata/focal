@@ -1,0 +1,224 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Task/AddTaskSheet.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Close",
+        "location": {
+          "startingColumn": 41,
+          "startingLine": 54
+        }
+      },
+      {
+        "comment": "",
+        "key": "WHEN",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 80
+        }
+      },
+      {
+        "comment": "",
+        "key": "📅",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 88
+        }
+      },
+      {
+        "comment": "",
+        "key": "When?",
+        "location": {
+          "startingColumn": 46,
+          "startingLine": 92
+        }
+      },
+      {
+        "comment": "",
+        "key": "REMINDER",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 117
+        }
+      },
+      {
+        "comment": "",
+        "key": "ENERGY",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 127
+        }
+      },
+      {
+        "comment": "",
+        "key": "Energy level",
+        "location": {
+          "startingColumn": 49,
+          "startingLine": 138
+        }
+      },
+      {
+        "comment": "",
+        "key": "Opens energy picker",
+        "location": {
+          "startingColumn": 48,
+          "startingLine": 140
+        }
+      },
+      {
+        "comment": "",
+        "key": "NOTES",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 146
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add notes...",
+        "location": {
+          "startingColumn": 46,
+          "startingLine": 157
+        }
+      },
+      {
+        "comment": "",
+        "key": "Create Task",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 178
+        }
+      },
+      {
+        "comment": "",
+        "key": "Choose icon",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 340
+        }
+      },
+      {
+        "comment": "",
+        "key": "Opens icon picker",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 342
+        }
+      },
+      {
+        "comment": "",
+        "key": "Task name",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 346
+        }
+      },
+      {
+        "comment": "",
+        "key": "✨",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 355
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@ · %@",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 358
+        }
+      },
+      {
+        "comment": "",
+        "key": "Choose icon",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 495
+        }
+      },
+      {
+        "comment": "",
+        "key": "Opens icon picker",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 497
+        }
+      },
+      {
+        "comment": "",
+        "key": "Task name",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 501
+        }
+      },
+      {
+        "comment": "",
+        "key": "✨",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 510
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@ · %@",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 513
+        }
+      },
+      {
+        "comment": "",
+        "key": "✨",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 570
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@ · %@",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 573
+        }
+      },
+      {
+        "comment": "",
+        "key": "More colors",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 620
+        }
+      },
+      {
+        "comment": "",
+        "key": "Opens full color picker",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 621
+        }
+      },
+      {
+        "comment": "",
+        "key": "Choose Color",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 713
+        }
+      },
+      {
+        "comment": "",
+        "key": "Done",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 717
+        }
+      }
+    ]
+  },
+  "version": 1
+}

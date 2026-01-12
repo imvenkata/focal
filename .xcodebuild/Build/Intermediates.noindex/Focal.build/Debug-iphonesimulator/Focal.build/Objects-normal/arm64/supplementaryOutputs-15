@@ -1,0 +1,23 @@
+{
+  "/Users/venkata/projects/focal/Focal/Views/Components/TodoCard.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoCard.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoCard.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoCard.dia",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoCard.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoCard.swiftdeps"
+  },
+  "/Users/venkata/projects/focal/Focal/Views/Components/TodoSubtaskRow.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoSubtaskRow.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoSubtaskRow.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoSubtaskRow.dia",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoSubtaskRow.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoSubtaskRow.swiftdeps"
+  },
+  "/Users/venkata/projects/focal/Focal/Views/Todo/TodoDetailView.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoDetailView.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoDetailView.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoDetailView.dia",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoDetailView.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoDetailView.swiftdeps"
+  }
+}

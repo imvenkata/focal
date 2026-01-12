@@ -1,0 +1,40 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Components/SubtaskRow.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%@, %@",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 52
+        }
+      },
+      {
+        "comment": "",
+        "key": "Mark incomplete",
+        "location": {
+          "startingColumn": 55,
+          "startingLine": 29
+        }
+      },
+      {
+        "comment": "",
+        "key": "Mark complete",
+        "location": {
+          "startingColumn": 75,
+          "startingLine": 29
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete subtask",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 47
+        }
+      }
+    ]
+  },
+  "version": 1
+}

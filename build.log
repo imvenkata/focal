@@ -1,7 +1,36 @@
 Command line invocation:
-    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project Focal.xcodeproj -scheme Focal -destination "platform=iOS Simulator,name=iPhone 17 Pro" build
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project Focal.xcodeproj -scheme Focal -sdk iphonesimulator -derivedDataPath /Users/venkata/projects/focal/.xcodebuild build
 
-2026-01-11 06:57:03.048 xcodebuild[17115:1830939] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+Build settings from command line:
+    SDKROOT = iphonesimulator26.2
+
+2026-01-12 17:37:36.409 xcodebuild[25657:368476] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS Simulator, id:dvtdevice-DVTiOSDeviceSimulatorPlaceholder-iphonesimulator:placeholder, name:Any iOS Simulator Device }
+{ platform:iOS Simulator, arch:arm64, id:03AE6032-585F-4291-9829-C9BAA486617E, OS:26.1, name:iPad (A16) }
+{ platform:iOS Simulator, arch:arm64, id:7010C87E-4F82-4161-B7B5-66771F939C8F, OS:26.2, name:iPad (A16) }
+{ platform:iOS Simulator, arch:arm64, id:C1681D8D-4932-44E1-BD19-2E203885178C, OS:26.1, name:iPad Air 11-inch (M3) }
+{ platform:iOS Simulator, arch:arm64, id:76D2CAE4-45B8-4612-8E03-ED15798A8AC6, OS:26.2, name:iPad Air 11-inch (M3) }
+{ platform:iOS Simulator, arch:arm64, id:1972F247-0E3C-4A23-A512-1BFA1CBD04FB, OS:26.1, name:iPad Air 13-inch (M3) }
+{ platform:iOS Simulator, arch:arm64, id:13A86D66-433E-4F75-9102-27C812A58CF9, OS:26.2, name:iPad Air 13-inch (M3) }
+{ platform:iOS Simulator, arch:arm64, id:731537F7-A80A-4CA7-97E3-829F40054A0F, OS:26.1, name:iPad Pro 11-inch (M5) }
+{ platform:iOS Simulator, arch:arm64, id:BD9D7D1F-3DC7-469A-AD56-C584D076E564, OS:26.2, name:iPad Pro 11-inch (M5) }
+{ platform:iOS Simulator, arch:arm64, id:FCEEEDA8-AB76-4F7A-91F5-E3FDB69ABBDA, OS:26.1, name:iPad Pro 13-inch (M5) }
+{ platform:iOS Simulator, arch:arm64, id:CD16B101-7FD1-4D71-99B0-B5263A0745E3, OS:26.2, name:iPad Pro 13-inch (M5) }
+{ platform:iOS Simulator, arch:arm64, id:A97D8FCE-F4CE-4C18-B9FB-E356EDC0AED8, OS:26.1, name:iPad mini (A17 Pro) }
+{ platform:iOS Simulator, arch:arm64, id:CAAF6334-0A57-485A-B683-F56072C78F9F, OS:26.2, name:iPad mini (A17 Pro) }
+{ platform:iOS Simulator, arch:arm64, id:36AE0757-572F-4799-93F4-73C4308420A3, OS:26.1, name:iPhone 16e }
+{ platform:iOS Simulator, arch:arm64, id:8B89A94D-9D3D-4845-974D-C248252EEF38, OS:26.2, name:iPhone 16e }
+{ platform:iOS Simulator, arch:arm64, id:07DEADF7-F62B-45AD-86D9-A596C11893CA, OS:26.1, name:iPhone 17 }
+{ platform:iOS Simulator, arch:arm64, id:CD23287E-DBB5-446D-82B0-5C524F3216BD, OS:26.2, name:iPhone 17 }
+{ platform:iOS Simulator, arch:arm64, id:A9E63561-A45B-42A1-A57B-088C1263FCE7, OS:26.1, name:iPhone 17 Pro }
+{ platform:iOS Simulator, arch:arm64, id:3275663A-7E7F-4FB5-97A3-62981F2CDB45, OS:26.2, name:iPhone 17 Pro }
+{ platform:iOS Simulator, arch:arm64, id:BC536E9F-F399-4B81-A0F6-34D5CA24D319, OS:26.1, name:iPhone 17 Pro Max }
+{ platform:iOS Simulator, arch:arm64, id:71CDF06C-0F16-48EE-A65D-A6DC662AAC67, OS:26.2, name:iPhone 17 Pro Max }
+{ platform:iOS Simulator, arch:arm64, id:9D95C9BE-CBDE-4150-9A48-4A44F9476E15, OS:26.1, name:iPhone Air }
+{ platform:iOS Simulator, arch:arm64, id:61D8BB45-3614-4A95-ABE9-2DAF1F072B5D, OS:26.2, name:iPhone Air }
+{ platform:macOS, arch:arm64, variant:Designed for [iPad,iPhone], id:00006034-000A318C01B8001C, name:My Mac }
+{ platform:iOS, id:dvtdevice-DVTiPhonePlaceholder-iphoneos:placeholder, name:Any iOS Device }
 ComputePackagePrebuildTargetDependencyGraph
 
 Prepare packages
@@ -21,44 +50,74 @@ GatherProvisioningInputs
 
 CreateBuildDescription
 
-ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk /Users/venkata/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache
-    cd /Users/venkata/projects/focal/Focal.xcodeproj
-    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -o /Users/venkata/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -x c -c /dev/null
 
-CompileAssetCatalogVariant thinned /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Products/Debug-iphonesimulator/Focal.app /Users/venkata/projects/focal/Focal/Resources/Assets.xcassets (in target 'Focal' from project 'Focal')
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/venkata/projects/focal/Focal/Resources/Assets.xcassets
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: 6ef0cb66a9399075bfb866aad09b376f
+Build description path: /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/XCBuildData/6ef0cb66a9399075bfb866aad09b376f.xcbuilddata
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk /Users/venkata/projects/focal/.xcodebuild/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache
+    cd /Users/venkata/projects/focal/Focal.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -o /Users/venkata/projects/focal/.xcodebuild/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache
+
+ProcessProductPackaging "" /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal.app-Simulated.xcent (in target 'Focal' from project 'Focal')
     cd /Users/venkata/projects/focal
-    /Applications/Xcode.app/Contents/Developer/usr/bin/actool /Users/venkata/projects/focal/Focal/Resources/Assets.xcassets --compile /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/assetcatalog_output/thinned --output-format human-readable-text --notices --warnings --export-dependency-info /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/assetcatalog_dependencies_thinned --output-partial-info-plist /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/assetcatalog_generated_info.plist_thinned --app-icon AppIcon --accent-color AccentColor --compress-pngs --enable-on-demand-resources YES --filter-for-thinning-device-configuration iPhone18,1 --filter-for-device-os-version 26.2 --development-region en --target-device iphone --target-device ipad --minimum-deployment-target 17.0 --platform iphonesimulator
+    
+    Entitlements:
+    
+    {
+    "application-identifier" = "N5VACR3WF8.com.venkat.focal.app";
+}
+    
+    builtin-productPackagingUtility -entitlements -format xml -o /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal.app-Simulated.xcent
+
+ProcessProductPackagingDER /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal.app-Simulated.xcent /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal.app-Simulated.xcent.der (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    /usr/bin/derq query -f xml -i /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal.app-Simulated.xcent -o /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal.app-Simulated.xcent.der --raw
+
+ProcessInfoPlistFile /Users/venkata/projects/focal/.xcodebuild/Build/Products/Debug-iphonesimulator/Focal.app/Info.plist /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/empty-Focal.plist (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    builtin-infoPlistUtility /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/empty-Focal.plist -producttype com.apple.product-type.application -genpkginfo /Users/venkata/projects/focal/.xcodebuild/Build/Products/Debug-iphonesimulator/Focal.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/assetcatalog_generated_info.plist -o /Users/venkata/projects/focal/.xcodebuild/Build/Products/Debug-iphonesimulator/Focal.app/Info.plist
 
 SwiftDriver Focal normal arm64 com.apple.xcode.tools.swift.compiler (in target 'Focal' from project 'Focal')
     cd /Users/venkata/projects/focal
-    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Focal -Onone -enforce-exclusivity\=checked @/Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios17.0-simulator -g -module-cache-path /Users/venkata/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -enable-testing -index-store-path /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Products/Debug-iphonesimulator -F /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Products/Debug-iphonesimulator -emit-localized-strings -emit-localized-strings-path /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64 -c -j14 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/venkata/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache -output-file-map /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/venkata/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/venkata/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/venkata/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal_const_extract_protocols.json -Xcc -iquote -Xcc /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-generated-files.hmap -Xcc -I/Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-own-target-headers.hmap -Xcc -I/Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-all-target-headers.hmap -Xcc -iquote -Xcc /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-project-headers.hmap -Xcc -I/Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources-normal/arm64 -Xcc -I/Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources/arm64 -Xcc -I/Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal-Swift.h -working-directory /Users/venkata/projects/focal -experimental-emit-module-separately -disable-cmo
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Focal -Onone -enforce-exclusivity\=checked @/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios17.0-simulator -g -module-cache-path /Users/venkata/projects/focal/.xcodebuild/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/venkata/projects/focal/.xcodebuild/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/venkata/projects/focal/.xcodebuild/Build/Products/Debug-iphonesimulator -F /Users/venkata/projects/focal/.xcodebuild/Build/Products/Debug-iphonesimulator -emit-localized-strings -emit-localized-strings-path /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64 -c -j14 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/venkata/projects/focal/.xcodebuild/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache -output-file-map /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/venkata/projects/focal/.xcodebuild/ModuleCache.noindex -sdk-module-cache-path /Users/venkata/projects/focal/.xcodebuild/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/venkata/projects/focal/.xcodebuild/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal_const_extract_protocols.json -Xcc -iquote -Xcc /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-generated-files.hmap -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-own-target-headers.hmap -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-all-target-headers.hmap -Xcc -iquote -Xcc /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-project-headers.hmap -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources-normal/arm64 -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources/arm64 -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal-Swift.h -working-directory /Users/venkata/projects/focal -experimental-emit-module-separately -disable-cmo
 
-SwiftCompile normal arm64 Compiling\ StatsBar.swift,\ ProgressBar.swift /Users/venkata/projects/focal/Focal/Views/Components/StatsBar.swift /Users/venkata/projects/focal/Focal/Views/Components/ProgressBar.swift (in target 'Focal' from project 'Focal')
-Failed frontend command:
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend -frontend -c /Users/venkata/projects/focal/Focal/App/FocalApp.swift /Users/venkata/projects/focal/Focal/App/ContentView.swift /Users/venkata/projects/focal/Focal/Utilities/DesignSystem.swift /Users/venkata/projects/focal/Focal/Models/TaskColor.swift /Users/venkata/projects/focal/Focal/Models/Subtask.swift /Users/venkata/projects/focal/Focal/Models/TaskItem.swift /Users/venkata/projects/focal/Focal/Models/EnergyLevel.swift /Users/venkata/projects/focal/Focal/Utilities/IconMapper.swift /Users/venkata/projects/focal/Focal/Utilities/HapticManager.swift /Users/venkata/projects/focal/Focal/Utilities/DateExtensions.swift /Users/venkata/projects/focal/Focal/Utilities/ScaledFont.swift /Users/venkata/projects/focal/Focal/ViewModels/TaskStore.swift /Users/venkata/projects/focal/Focal/ViewModels/TaskDragState.swift /Users/venkata/projects/focal/Focal/ViewModels/Tab.swift /Users/venkata/projects/focal/Focal/Views/Navigation/BottomTabBar.swift /Users/venkata/projects/focal/Focal/Views/Navigation/FABButton.swift /Users/venkata/projects/focal/Focal/Views/Components/WeekSelector.swift /Users/venkata/projects/focal/Focal/Views/Components/SubtaskRow.swift -primary-file /Users/venkata/projects/focal/Focal/Views/Components/StatsBar.swift -primary-file /Users/venkata/projects/focal/Focal/Views/Components/ProgressBar.swift /Users/venkata/projects/focal/Focal/Views/Components/EmptyIntervalView.swift /Users/venkata/projects/focal/Focal/Views/Task/TaskPinView.swift /Users/venkata/projects/focal/Focal/Views/Task/TaskCardView.swift /Users/venkata/projects/focal/Focal/Views/Timeline/CurrentTimeIndicator.swift /Users/venkata/projects/focal/Focal/Views/Timeline/WeeklyTimelineView.swift /Users/venkata/projects/focal/Focal/Views/Timeline/DailyTimelineView.swift /Users/venkata/projects/focal/Focal/Views/Timeline/PlannerView.swift /Users/venkata/projects/focal/Focal/Views/Task/AddTaskSheet.swift /Users/venkata/projects/focal/Focal/Views/Task/PlannerTaskCreationSheet.swift /Users/venkata/projects/focal/Focal/Views/Task/TaskDetailView.swift /Users/venkata/projects/focal/Focal/Views/Pickers/DatePickerSheet.swift /Users/venkata/projects/focal/Focal/Views/Pickers/WhenPickerSheet.swift /Users/venkata/projects/focal/Focal/Views/Pickers/TimePickerSheet.swift /Users/venkata/projects/focal/Focal/Views/Pickers/EnergyPickerSheet.swift /Users/venkata/projects/focal/Focal/Views/Pickers/IconPickerView.swift /Users/venkata/projects/focal/Focal/Views/Todo/TodoView.swift /Users/venkata/projects/focal/Focal/ViewModels/TodoStore.swift /Users/venkata/projects/focal/Focal/Models/TodoItem.swift /Users/venkata/projects/focal/Focal/Models/TodoPriority.swift /Users/venkata/projects/focal/Focal/Models/TodoSubtask.swift /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources/GeneratedAssetSymbols.swift -emit-dependencies-path /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/StatsBar.d -emit-const-values-path /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/StatsBar.swiftconstvalues -emit-reference-dependencies-path /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/StatsBar.swiftdeps -serialize-diagnostics-path /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/StatsBar.dia -emit-dependencies-path /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ProgressBar.d -emit-const-values-path /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ProgressBar.swiftconstvalues -emit-reference-dependencies-path /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ProgressBar.swiftdeps -serialize-diagnostics-path /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ProgressBar.dia -emit-localized-strings -emit-localized-strings-path /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64 -target arm64-apple-ios17.0-simulator -module-can-import-version DeveloperToolsSupport 23.0.4 23.0.4 -module-can-import-version SwiftUI 7.2.5.1 7.2.5 -module-can-import-version UIKit 9126.2.4.1 9126.2.4 -disable-cross-import-overlay-search -swift-module-cross-import SwiftData /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk/System/Library/Frameworks/SwiftData.framework/Modules/SwiftData.swiftcrossimport/CoreData.swiftoverlay -swift-module-cross-import SwiftData /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk/System/Library/Frameworks/SwiftData.framework/Modules/SwiftData.swiftcrossimport/SwiftUI.swiftoverlay -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libFoundationMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#FoundationMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libObservationMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#ObservationMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libPreviewsMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#PreviewsMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libSwiftDataMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#SwiftDataMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libSwiftMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#SwiftMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libSwiftUIMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#SwiftUIMacros -disable-implicit-swift-modules -Xcc -fno-implicit-modules -Xcc -fno-implicit-module-maps -explicit-swift-module-map-file /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal-dependencies-1.json -Xllvm -aarch64-use-tbi -enable-objc-interop -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -I /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Products/Debug-iphonesimulator -F /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Products/Debug-iphonesimulator -no-color-diagnostics -Xcc -fno-color-diagnostics -enable-testing -g -debug-info-format\=dwarf -dwarf-version\=4 -module-cache-path /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -swift-version 5 -enforce-exclusivity\=checked -Onone -D DEBUG -serialize-debugging-options -const-gather-protocols-file /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal_const_extract_protocols.json -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -empty-abi-descriptor -validate-clang-modules-once -clang-build-session-file /Users/venkata/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -working-directory -Xcc /Users/venkata/projects/focal -enable-anonymous-context-mangled-names -file-compilation-dir /Users/venkata/projects/focal -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -Xcc -ivfsstatcache -Xcc /Users/venkata/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache -Xcc -I/Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/swift-overrides.hmap -Xcc -iquote -Xcc /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-generated-files.hmap -Xcc -I/Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-own-target-headers.hmap -Xcc -I/Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-all-target-headers.hmap -Xcc -iquote -Xcc /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-project-headers.hmap -Xcc -I/Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources-normal/arm64 -Xcc -I/Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources/arm64 -Xcc -I/Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources -Xcc -DDEBUG\=1 -no-auto-bridging-header-chaining -module-name Focal -frontend-parseable-output -disable-clang-spi -target-sdk-version 26.2 -target-sdk-name iphonesimulator26.2 -clang-target arm64-apple-ios26.2-simulator -in-process-plugin-server-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/libSwiftInProcPluginServer.dylib -o /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/StatsBar.o -o /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ProgressBar.o -index-unit-output-path /Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/StatsBar.o -index-unit-output-path /Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/ProgressBar.o -index-store-path /Users/venkata/Library/Developer/Xcode/DerivedData/Focal-deffzdsemcdcnehbqpvmdeajirto/Index.noindex/DataStore -index-system-modules
-
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Components/StatsBar.swift (in target 'Focal' from project 'Focal')
+SwiftDriver Focal normal x86_64 com.apple.xcode.tools.swift.compiler (in target 'Focal' from project 'Focal')
     cd /Users/venkata/projects/focal
-    
-/Users/venkata/projects/focal/Focal/Views/Todo/TodoView.swift:186:18: error: cannot find 'ModelConfiguration' in scope
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-                 ^~~~~~~~~~~~~~~~~~
-/Users/venkata/projects/focal/Focal/Views/Todo/TodoView.swift:187:26: error: cannot find 'ModelContainer' in scope
-    let container = try! ModelContainer(
-                         ^~~~~~~~~~~~~~
-/Users/venkata/projects/focal/Focal/Views/Todo/TodoView.swift:195:5: error: cannot use explicit 'return' statement in the body of result builder 'ViewBuilder'
-    return TodoView()
-    ^
-/Users/venkata/projects/focal/Focal/Views/Todo/TodoView.swift:195:5: note: remove 'return' statements to apply the result builder
-    return TodoView()
-    ^~~~~~~
-    
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Focal -Onone -enforce-exclusivity\=checked @/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/Focal.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target x86_64-apple-ios17.0-simulator -g -module-cache-path /Users/venkata/projects/focal/.xcodebuild/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/venkata/projects/focal/.xcodebuild/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/venkata/projects/focal/.xcodebuild/Build/Products/Debug-iphonesimulator -F /Users/venkata/projects/focal/.xcodebuild/Build/Products/Debug-iphonesimulator -emit-localized-strings -emit-localized-strings-path /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64 -c -j14 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/venkata/projects/focal/.xcodebuild/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache -output-file-map /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/Focal-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/venkata/projects/focal/.xcodebuild/ModuleCache.noindex -sdk-module-cache-path /Users/venkata/projects/focal/.xcodebuild/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/Focal.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/venkata/projects/focal/.xcodebuild/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/Focal_const_extract_protocols.json -Xcc -iquote -Xcc /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-generated-files.hmap -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-own-target-headers.hmap -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-all-target-headers.hmap -Xcc -iquote -Xcc /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-project-headers.hmap -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources-normal/x86_64 -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources/x86_64 -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/Focal-Swift.h -working-directory /Users/venkata/projects/focal -experimental-emit-module-separately -disable-cmo
 
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Components/ProgressBar.swift (in target 'Focal' from project 'Focal')
+SwiftEmitModule normal arm64 Emitting\ module\ for\ Focal (in target 'Focal' from project 'Focal')
+
+EmitSwiftModule normal arm64 (in target 'Focal' from project 'Focal')
     cd /Users/venkata/projects/focal
     
 
-SwiftCompile normal arm64 Compiling\ FocalApp.swift,\ ContentView.swift,\ ScaledFont.swift /Users/venkata/projects/focal/Focal/App/FocalApp.swift /Users/venkata/projects/focal/Focal/App/ContentView.swift /Users/venkata/projects/focal/Focal/Utilities/ScaledFont.swift (in target 'Focal' from project 'Focal')
+SwiftCompile normal arm64 Compiling\ HapticManager.swift,\ DateExtensions.swift,\ ScaledFont.swift,\ TaskStore.swift /Users/venkata/projects/focal/Focal/Utilities/HapticManager.swift /Users/venkata/projects/focal/Focal/Utilities/DateExtensions.swift /Users/venkata/projects/focal/Focal/Utilities/ScaledFont.swift /Users/venkata/projects/focal/Focal/ViewModels/TaskStore.swift (in target 'Focal' from project 'Focal')
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Utilities/HapticManager.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Utilities/DateExtensions.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Utilities/ScaledFont.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/ViewModels/TaskStore.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 Compiling\ FocalApp.swift,\ ContentView.swift,\ DesignSystem.swift,\ TaskColor.swift /Users/venkata/projects/focal/Focal/App/FocalApp.swift /Users/venkata/projects/focal/Focal/App/ContentView.swift /Users/venkata/projects/focal/Focal/Utilities/DesignSystem.swift /Users/venkata/projects/focal/Focal/Models/TaskColor.swift (in target 'Focal' from project 'Focal')
+
 SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/App/FocalApp.swift (in target 'Focal' from project 'Focal')
     cd /Users/venkata/projects/focal
     
@@ -67,11 +126,41 @@ SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/App/ContentView.sw
     cd /Users/venkata/projects/focal
     
 
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Utilities/ScaledFont.swift (in target 'Focal' from project 'Focal')
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Utilities/DesignSystem.swift (in target 'Focal' from project 'Focal')
     cd /Users/venkata/projects/focal
     
 
-SwiftCompile normal arm64 Compiling\ BottomTabBar.swift,\ FABButton.swift /Users/venkata/projects/focal/Focal/Views/Navigation/BottomTabBar.swift /Users/venkata/projects/focal/Focal/Views/Navigation/FABButton.swift (in target 'Focal' from project 'Focal')
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Models/TaskColor.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 Compiling\ Subtask.swift,\ TaskItem.swift,\ EnergyLevel.swift,\ IconMapper.swift /Users/venkata/projects/focal/Focal/Models/Subtask.swift /Users/venkata/projects/focal/Focal/Models/TaskItem.swift /Users/venkata/projects/focal/Focal/Models/EnergyLevel.swift /Users/venkata/projects/focal/Focal/Utilities/IconMapper.swift (in target 'Focal' from project 'Focal')
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Models/Subtask.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Models/TaskItem.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Models/EnergyLevel.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Utilities/IconMapper.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 Compiling\ TaskDragState.swift,\ Tab.swift,\ BottomTabBar.swift,\ FABButton.swift /Users/venkata/projects/focal/Focal/ViewModels/TaskDragState.swift /Users/venkata/projects/focal/Focal/ViewModels/Tab.swift /Users/venkata/projects/focal/Focal/Views/Navigation/BottomTabBar.swift /Users/venkata/projects/focal/Focal/Views/Navigation/FABButton.swift (in target 'Focal' from project 'Focal')
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/ViewModels/TaskDragState.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/ViewModels/Tab.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
 
 SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Navigation/BottomTabBar.swift (in target 'Focal' from project 'Focal')
     cd /Users/venkata/projects/focal
@@ -81,37 +170,7 @@ SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Navigation/F
     cd /Users/venkata/projects/focal
     
 
-SwiftCompile normal arm64 Compiling\ TaskStore.swift,\ Tab.swift /Users/venkata/projects/focal/Focal/ViewModels/TaskStore.swift /Users/venkata/projects/focal/Focal/ViewModels/Tab.swift (in target 'Focal' from project 'Focal')
-
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/ViewModels/TaskStore.swift (in target 'Focal' from project 'Focal')
-    cd /Users/venkata/projects/focal
-    
-
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/ViewModels/Tab.swift (in target 'Focal' from project 'Focal')
-    cd /Users/venkata/projects/focal
-    
-
-SwiftCompile normal arm64 Compiling\ PlannerView.swift,\ AddTaskSheet.swift /Users/venkata/projects/focal/Focal/Views/Timeline/PlannerView.swift /Users/venkata/projects/focal/Focal/Views/Task/AddTaskSheet.swift (in target 'Focal' from project 'Focal')
-
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Timeline/PlannerView.swift (in target 'Focal' from project 'Focal')
-    cd /Users/venkata/projects/focal
-    
-
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Task/AddTaskSheet.swift (in target 'Focal' from project 'Focal')
-    cd /Users/venkata/projects/focal
-    
-
-SwiftCompile normal arm64 Compiling\ TaskCardView.swift,\ CurrentTimeIndicator.swift /Users/venkata/projects/focal/Focal/Views/Task/TaskCardView.swift /Users/venkata/projects/focal/Focal/Views/Timeline/CurrentTimeIndicator.swift (in target 'Focal' from project 'Focal')
-
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Task/TaskCardView.swift (in target 'Focal' from project 'Focal')
-    cd /Users/venkata/projects/focal
-    
-
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Timeline/CurrentTimeIndicator.swift (in target 'Focal' from project 'Focal')
-    cd /Users/venkata/projects/focal
-    
-
-SwiftCompile normal arm64 Compiling\ WeekSelector.swift,\ SubtaskRow.swift /Users/venkata/projects/focal/Focal/Views/Components/WeekSelector.swift /Users/venkata/projects/focal/Focal/Views/Components/SubtaskRow.swift (in target 'Focal' from project 'Focal')
+SwiftCompile normal arm64 Compiling\ WeekSelector.swift,\ SubtaskRow.swift,\ StatsBar.swift,\ ProgressBar.swift /Users/venkata/projects/focal/Focal/Views/Components/WeekSelector.swift /Users/venkata/projects/focal/Focal/Views/Components/SubtaskRow.swift /Users/venkata/projects/focal/Focal/Views/Components/StatsBar.swift /Users/venkata/projects/focal/Focal/Views/Components/ProgressBar.swift (in target 'Focal' from project 'Focal')
 
 SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Components/WeekSelector.swift (in target 'Focal' from project 'Focal')
     cd /Users/venkata/projects/focal
@@ -121,56 +180,15 @@ SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Components/S
     cd /Users/venkata/projects/focal
     
 
-SwiftCompile normal arm64 Compiling\ PlannerTaskCreationSheet.swift,\ TaskDetailView.swift /Users/venkata/projects/focal/Focal/Views/Task/PlannerTaskCreationSheet.swift /Users/venkata/projects/focal/Focal/Views/Task/TaskDetailView.swift (in target 'Focal' from project 'Focal')
-
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Task/PlannerTaskCreationSheet.swift (in target 'Focal' from project 'Focal')
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Components/StatsBar.swift (in target 'Focal' from project 'Focal')
     cd /Users/venkata/projects/focal
     
 
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Task/TaskDetailView.swift (in target 'Focal' from project 'Focal')
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Components/ProgressBar.swift (in target 'Focal' from project 'Focal')
     cd /Users/venkata/projects/focal
     
 
-SwiftCompile normal arm64 Compiling\ DatePickerSheet.swift,\ WhenPickerSheet.swift /Users/venkata/projects/focal/Focal/Views/Pickers/DatePickerSheet.swift /Users/venkata/projects/focal/Focal/Views/Pickers/WhenPickerSheet.swift (in target 'Focal' from project 'Focal')
-
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Pickers/DatePickerSheet.swift (in target 'Focal' from project 'Focal')
-    cd /Users/venkata/projects/focal
-    
-
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Pickers/WhenPickerSheet.swift (in target 'Focal' from project 'Focal')
-    cd /Users/venkata/projects/focal
-    
-
-SwiftCompile normal arm64 Compiling\ WeeklyTimelineView.swift,\ DailyTimelineView.swift /Users/venkata/projects/focal/Focal/Views/Timeline/WeeklyTimelineView.swift /Users/venkata/projects/focal/Focal/Views/Timeline/DailyTimelineView.swift (in target 'Focal' from project 'Focal')
-
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Timeline/WeeklyTimelineView.swift (in target 'Focal' from project 'Focal')
-    cd /Users/venkata/projects/focal
-    
-
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Timeline/DailyTimelineView.swift (in target 'Focal' from project 'Focal')
-    cd /Users/venkata/projects/focal
-    
-
-SwiftCompile normal arm64 Compiling\ TimePickerSheet.swift,\ EnergyPickerSheet.swift /Users/venkata/projects/focal/Focal/Views/Pickers/TimePickerSheet.swift /Users/venkata/projects/focal/Focal/Views/Pickers/EnergyPickerSheet.swift (in target 'Focal' from project 'Focal')
-
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Pickers/TimePickerSheet.swift (in target 'Focal' from project 'Focal')
-    cd /Users/venkata/projects/focal
-    
-
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Pickers/EnergyPickerSheet.swift (in target 'Focal' from project 'Focal')
-    cd /Users/venkata/projects/focal
-    
-
-SwiftCompile normal arm64 Compiling\ IconPickerView.swift,\ TodoView.swift /Users/venkata/projects/focal/Focal/Views/Pickers/IconPickerView.swift /Users/venkata/projects/focal/Focal/Views/Todo/TodoView.swift (in target 'Focal' from project 'Focal')
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Pickers/IconPickerView.swift (in target 'Focal' from project 'Focal')
-    cd /Users/venkata/projects/focal
-    
-
-SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Todo/TodoView.swift (in target 'Focal' from project 'Focal')
-    cd /Users/venkata/projects/focal
-    
-
-SwiftCompile normal arm64 Compiling\ EmptyIntervalView.swift,\ TaskPinView.swift /Users/venkata/projects/focal/Focal/Views/Components/EmptyIntervalView.swift /Users/venkata/projects/focal/Focal/Views/Task/TaskPinView.swift (in target 'Focal' from project 'Focal')
+SwiftCompile normal arm64 Compiling\ EmptyIntervalView.swift,\ TaskPinView.swift,\ TaskCardView.swift,\ CurrentTimeIndicator.swift /Users/venkata/projects/focal/Focal/Views/Components/EmptyIntervalView.swift /Users/venkata/projects/focal/Focal/Views/Task/TaskPinView.swift /Users/venkata/projects/focal/Focal/Views/Task/TaskCardView.swift /Users/venkata/projects/focal/Focal/Views/Timeline/CurrentTimeIndicator.swift (in target 'Focal' from project 'Focal')
 
 SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Components/EmptyIntervalView.swift (in target 'Focal' from project 'Focal')
     cd /Users/venkata/projects/focal
@@ -180,13 +198,161 @@ SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Task/TaskPin
     cd /Users/venkata/projects/focal
     
 
-SwiftEmitModule normal arm64 Emitting\ module\ for\ Focal (in target 'Focal' from project 'Focal')
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Task/TaskCardView.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Timeline/CurrentTimeIndicator.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 Compiling\ PlannerTaskCreationSheet.swift,\ TaskDetailView.swift,\ DatePickerSheet.swift /Users/venkata/projects/focal/Focal/Views/Task/PlannerTaskCreationSheet.swift /Users/venkata/projects/focal/Focal/Views/Task/TaskDetailView.swift /Users/venkata/projects/focal/Focal/Views/Pickers/DatePickerSheet.swift (in target 'Focal' from project 'Focal')
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Task/PlannerTaskCreationSheet.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Task/TaskDetailView.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Pickers/DatePickerSheet.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 Compiling\ WhenPickerSheet.swift,\ TimePickerSheet.swift,\ EnergyPickerSheet.swift /Users/venkata/projects/focal/Focal/Views/Pickers/WhenPickerSheet.swift /Users/venkata/projects/focal/Focal/Views/Pickers/TimePickerSheet.swift /Users/venkata/projects/focal/Focal/Views/Pickers/EnergyPickerSheet.swift (in target 'Focal' from project 'Focal')
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Pickers/WhenPickerSheet.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Pickers/TimePickerSheet.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Pickers/EnergyPickerSheet.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 Compiling\ IconPickerView.swift,\ FloatingTaskInputCard.swift,\ TodoView.swift /Users/venkata/projects/focal/Focal/Views/Pickers/IconPickerView.swift /Users/venkata/projects/focal/Focal/Views/Components/FloatingTaskInputCard.swift /Users/venkata/projects/focal/Focal/Views/Todo/TodoView.swift (in target 'Focal' from project 'Focal')
+Failed frontend command:
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend -frontend -c /Users/venkata/projects/focal/Focal/App/FocalApp.swift /Users/venkata/projects/focal/Focal/App/ContentView.swift /Users/venkata/projects/focal/Focal/Utilities/DesignSystem.swift /Users/venkata/projects/focal/Focal/Models/TaskColor.swift /Users/venkata/projects/focal/Focal/Models/Subtask.swift /Users/venkata/projects/focal/Focal/Models/TaskItem.swift /Users/venkata/projects/focal/Focal/Models/EnergyLevel.swift /Users/venkata/projects/focal/Focal/Utilities/IconMapper.swift /Users/venkata/projects/focal/Focal/Utilities/HapticManager.swift /Users/venkata/projects/focal/Focal/Utilities/DateExtensions.swift /Users/venkata/projects/focal/Focal/Utilities/ScaledFont.swift /Users/venkata/projects/focal/Focal/ViewModels/TaskStore.swift /Users/venkata/projects/focal/Focal/ViewModels/TaskDragState.swift /Users/venkata/projects/focal/Focal/ViewModels/Tab.swift /Users/venkata/projects/focal/Focal/Views/Navigation/BottomTabBar.swift /Users/venkata/projects/focal/Focal/Views/Navigation/FABButton.swift /Users/venkata/projects/focal/Focal/Views/Components/WeekSelector.swift /Users/venkata/projects/focal/Focal/Views/Components/SubtaskRow.swift /Users/venkata/projects/focal/Focal/Views/Components/StatsBar.swift /Users/venkata/projects/focal/Focal/Views/Components/ProgressBar.swift /Users/venkata/projects/focal/Focal/Views/Components/EmptyIntervalView.swift /Users/venkata/projects/focal/Focal/Views/Task/TaskPinView.swift /Users/venkata/projects/focal/Focal/Views/Task/TaskCardView.swift /Users/venkata/projects/focal/Focal/Views/Timeline/CurrentTimeIndicator.swift /Users/venkata/projects/focal/Focal/Views/Timeline/WeeklyTimelineView.swift /Users/venkata/projects/focal/Focal/Views/Timeline/DailyTimelineView.swift /Users/venkata/projects/focal/Focal/Views/Timeline/PlannerView.swift /Users/venkata/projects/focal/Focal/Views/Task/AddTaskSheet.swift /Users/venkata/projects/focal/Focal/Views/Task/PlannerTaskCreationSheet.swift /Users/venkata/projects/focal/Focal/Views/Task/TaskDetailView.swift /Users/venkata/projects/focal/Focal/Views/Pickers/DatePickerSheet.swift /Users/venkata/projects/focal/Focal/Views/Pickers/WhenPickerSheet.swift /Users/venkata/projects/focal/Focal/Views/Pickers/TimePickerSheet.swift /Users/venkata/projects/focal/Focal/Views/Pickers/EnergyPickerSheet.swift -primary-file /Users/venkata/projects/focal/Focal/Views/Pickers/IconPickerView.swift -primary-file /Users/venkata/projects/focal/Focal/Views/Components/FloatingTaskInputCard.swift -primary-file /Users/venkata/projects/focal/Focal/Views/Todo/TodoView.swift /Users/venkata/projects/focal/Focal/ViewModels/TodoStore.swift /Users/venkata/projects/focal/Focal/Models/TodoItem.swift /Users/venkata/projects/focal/Focal/Models/TodoPriority.swift /Users/venkata/projects/focal/Focal/Models/TodoSubtask.swift /Users/venkata/projects/focal/Focal/Views/Components/TodoPrioritySection.swift /Users/venkata/projects/focal/Focal/Views/Components/TodoQuickAddBar.swift /Users/venkata/projects/focal/Focal/Views/Components/TodoCard.swift /Users/venkata/projects/focal/Focal/Views/Components/TodoSubtaskRow.swift /Users/venkata/projects/focal/Focal/Views/Todo/TodoDetailView.swift /Users/venkata/projects/focal/Focal/Services/TodoNotificationService.swift /Users/venkata/projects/focal/Focal/Views/Pickers/ColorPickerView.swift /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources/GeneratedAssetSymbols.swift -supplementary-output-file-map /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/supplementaryOutputs-14 -emit-localized-strings -emit-localized-strings-path /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64 -target arm64-apple-ios17.0-simulator -module-can-import-version DeveloperToolsSupport 23.0.4 23.0.4 -module-can-import-version SwiftUI 7.2.5.1 7.2.5 -module-can-import-version UIKit 9126.2.4.1 9126.2.4 -disable-cross-import-overlay-search -swift-module-cross-import SwiftData /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk/System/Library/Frameworks/SwiftData.framework/Modules/SwiftData.swiftcrossimport/CoreData.swiftoverlay -swift-module-cross-import SwiftData /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk/System/Library/Frameworks/SwiftData.framework/Modules/SwiftData.swiftcrossimport/SwiftUI.swiftoverlay -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libFoundationMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#FoundationMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libObservationMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#ObservationMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libPreviewsMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#PreviewsMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libSwiftDataMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#SwiftDataMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libSwiftMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#SwiftMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libSwiftUIMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#SwiftUIMacros -disable-implicit-swift-modules -Xcc -fno-implicit-modules -Xcc -fno-implicit-module-maps -explicit-swift-module-map-file /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal-dependencies-2.json -Xllvm -aarch64-use-tbi -enable-objc-interop -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -I /Users/venkata/projects/focal/.xcodebuild/Build/Products/Debug-iphonesimulator -F /Users/venkata/projects/focal/.xcodebuild/Build/Products/Debug-iphonesimulator -no-color-diagnostics -Xcc -fno-color-diagnostics -enable-testing -g -debug-info-format\=dwarf -dwarf-version\=4 -module-cache-path /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -profile-generate -profile-coverage-mapping -swift-version 5 -enforce-exclusivity\=checked -Onone -D DEBUG -serialize-debugging-options -const-gather-protocols-file /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal_const_extract_protocols.json -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -empty-abi-descriptor -validate-clang-modules-once -clang-build-session-file /Users/venkata/projects/focal/.xcodebuild/ModuleCache.noindex/Session.modulevalidation -Xcc -working-directory -Xcc /Users/venkata/projects/focal -enable-anonymous-context-mangled-names -file-compilation-dir /Users/venkata/projects/focal -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -Xcc -ivfsstatcache -Xcc /Users/venkata/projects/focal/.xcodebuild/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/swift-overrides.hmap -Xcc -iquote -Xcc /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-generated-files.hmap -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-own-target-headers.hmap -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-all-target-headers.hmap -Xcc -iquote -Xcc /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-project-headers.hmap -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources-normal/arm64 -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources/arm64 -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources -Xcc -DDEBUG\=1 -no-auto-bridging-header-chaining -module-name Focal -frontend-parseable-output -disable-clang-spi -target-sdk-version 26.2 -target-sdk-name iphonesimulator26.2 -clang-target arm64-apple-ios26.2-simulator -in-process-plugin-server-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/libSwiftInProcPluginServer.dylib -o /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/IconPickerView.o -o /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/FloatingTaskInputCard.o -o /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoView.o -index-unit-output-path /Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/IconPickerView.o -index-unit-output-path /Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/FloatingTaskInputCard.o -index-unit-output-path /Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/TodoView.o -index-store-path /Users/venkata/projects/focal/.xcodebuild/Index.noindex/DataStore -index-system-modules
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Pickers/IconPickerView.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Components/FloatingTaskInputCard.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+/Users/venkata/projects/focal/Focal/Views/Components/FloatingTaskInputCard.swift:82:10: warning: 'onChange(of:perform:)' was deprecated in iOS 17.0: Use `onChange` with a two or zero parameter action closure instead.
+        .onChange(of: title) { newValue in
+         ^
+/Users/venkata/projects/focal/Focal/Views/Components/FloatingTaskInputCard.swift:479:47: error: cannot call value of non-function type 'String'
+        let cleanedTitle = parsedResult.map { cleanedTitle(from: trimmedTitle, removing: $0.range) } ?? trimmedTitle
+                                              ^
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Todo/TodoView.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 Compiling\ TodoStore.swift,\ TodoItem.swift,\ TodoPriority.swift /Users/venkata/projects/focal/Focal/ViewModels/TodoStore.swift /Users/venkata/projects/focal/Focal/Models/TodoItem.swift /Users/venkata/projects/focal/Focal/Models/TodoPriority.swift (in target 'Focal' from project 'Focal')
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/ViewModels/TodoStore.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Models/TodoItem.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Models/TodoPriority.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 Compiling\ TodoSubtask.swift,\ TodoPrioritySection.swift,\ TodoQuickAddBar.swift /Users/venkata/projects/focal/Focal/Models/TodoSubtask.swift /Users/venkata/projects/focal/Focal/Views/Components/TodoPrioritySection.swift /Users/venkata/projects/focal/Focal/Views/Components/TodoQuickAddBar.swift (in target 'Focal' from project 'Focal')
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Models/TodoSubtask.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Components/TodoPrioritySection.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Components/TodoQuickAddBar.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 Compiling\ TodoNotificationService.swift,\ ColorPickerView.swift,\ GeneratedAssetSymbols.swift /Users/venkata/projects/focal/Focal/Services/TodoNotificationService.swift /Users/venkata/projects/focal/Focal/Views/Pickers/ColorPickerView.swift /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'Focal' from project 'Focal')
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Services/TodoNotificationService.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Pickers/ColorPickerView.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 Compiling\ TodoCard.swift,\ TodoSubtaskRow.swift,\ TodoDetailView.swift /Users/venkata/projects/focal/Focal/Views/Components/TodoCard.swift /Users/venkata/projects/focal/Focal/Views/Components/TodoSubtaskRow.swift /Users/venkata/projects/focal/Focal/Views/Todo/TodoDetailView.swift (in target 'Focal' from project 'Focal')
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Components/TodoCard.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Components/TodoSubtaskRow.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Todo/TodoDetailView.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftEmitModule normal x86_64 Emitting\ module\ for\ Focal (in target 'Focal' from project 'Focal')
+
+EmitSwiftModule normal x86_64 (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftDriverJobDiscovery normal arm64 Compiling Subtask.swift, TaskItem.swift, EnergyLevel.swift, IconMapper.swift (in target 'Focal' from project 'Focal')
+
+SwiftCompile normal x86_64 Compiling\ Tab.swift,\ BottomTabBar.swift,\ FABButton.swift /Users/venkata/projects/focal/Focal/ViewModels/Tab.swift /Users/venkata/projects/focal/Focal/Views/Navigation/BottomTabBar.swift /Users/venkata/projects/focal/Focal/Views/Navigation/FABButton.swift (in target 'Focal' from project 'Focal')
+
+SwiftCompile normal x86_64 /Users/venkata/projects/focal/Focal/ViewModels/Tab.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal x86_64 /Users/venkata/projects/focal/Focal/Views/Navigation/BottomTabBar.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftCompile normal x86_64 /Users/venkata/projects/focal/Focal/Views/Navigation/FABButton.swift (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    
+
+SwiftDriverJobDiscovery normal arm64 Emitting module for Focal (in target 'Focal' from project 'Focal')
+
+SwiftDriver\ Compilation\ Requirements Focal normal arm64 com.apple.xcode.tools.swift.compiler (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    builtin-Swift-Compilation-Requirements -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Focal -Onone -enforce-exclusivity\=checked @/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios17.0-simulator -g -module-cache-path /Users/venkata/projects/focal/.xcodebuild/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/venkata/projects/focal/.xcodebuild/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/venkata/projects/focal/.xcodebuild/Build/Products/Debug-iphonesimulator -F /Users/venkata/projects/focal/.xcodebuild/Build/Products/Debug-iphonesimulator -emit-localized-strings -emit-localized-strings-path /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64 -c -j14 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/venkata/projects/focal/.xcodebuild/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache -output-file-map /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/venkata/projects/focal/.xcodebuild/ModuleCache.noindex -sdk-module-cache-path /Users/venkata/projects/focal/.xcodebuild/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/venkata/projects/focal/.xcodebuild/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal_const_extract_protocols.json -Xcc -iquote -Xcc /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-generated-files.hmap -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-own-target-headers.hmap -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-all-target-headers.hmap -Xcc -iquote -Xcc /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Focal-project-headers.hmap -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources-normal/arm64 -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources/arm64 -Xcc -I/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal-Swift.h -working-directory /Users/venkata/projects/focal -experimental-emit-module-separately -disable-cmo
+
+SwiftDriverJobDiscovery normal arm64 Compiling TaskDragState.swift, Tab.swift, BottomTabBar.swift, FABButton.swift (in target 'Focal' from project 'Focal')
+
+SwiftCompile normal x86_64 Compiling\ FloatingTaskInputCard.swift,\ TodoView.swift,\ TodoStore.swift /Users/venkata/projects/focal/Focal/Views/Components/FloatingTaskInputCard.swift /Users/venkata/projects/focal/Focal/Views/Todo/TodoView.swift /Users/venkata/projects/focal/Focal/ViewModels/TodoStore.swift (in target 'Focal' from project 'Focal')
+
+SwiftMergeGeneratedHeaders /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources/Focal-Swift.h /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal-Swift.h /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/Focal-Swift.h (in target 'Focal' from project 'Focal')
+    cd /Users/venkata/projects/focal
+    builtin-swiftHeaderTool -arch arm64 /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/arm64/Focal-Swift.h -arch x86_64 /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/Focal-Swift.h -o /Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/DerivedSources/Focal-Swift.h
 
 ** BUILD FAILED **
 
 
 The following build commands failed:
-	SwiftCompile normal arm64 Compiling\ StatsBar.swift,\ ProgressBar.swift /Users/venkata/projects/focal/Focal/Views/Components/StatsBar.swift /Users/venkata/projects/focal/Focal/Views/Components/ProgressBar.swift (in target 'Focal' from project 'Focal')
-	SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Components/StatsBar.swift (in target 'Focal' from project 'Focal')
+	SwiftCompile normal arm64 Compiling\ IconPickerView.swift,\ FloatingTaskInputCard.swift,\ TodoView.swift /Users/venkata/projects/focal/Focal/Views/Pickers/IconPickerView.swift /Users/venkata/projects/focal/Focal/Views/Components/FloatingTaskInputCard.swift /Users/venkata/projects/focal/Focal/Views/Todo/TodoView.swift (in target 'Focal' from project 'Focal')
+	SwiftCompile normal arm64 /Users/venkata/projects/focal/Focal/Views/Components/FloatingTaskInputCard.swift (in target 'Focal' from project 'Focal')
 	Building project Focal with scheme Focal
 (3 failures)

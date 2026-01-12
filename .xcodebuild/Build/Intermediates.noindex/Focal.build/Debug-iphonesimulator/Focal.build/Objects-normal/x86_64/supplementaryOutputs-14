@@ -1,0 +1,30 @@
+{
+  "/Users/venkata/projects/focal/Focal/Models/EnergyLevel.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/EnergyLevel.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/EnergyLevel.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/EnergyLevel.dia",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/EnergyLevel.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/EnergyLevel.swiftdeps"
+  },
+  "/Users/venkata/projects/focal/Focal/Models/Subtask.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/Subtask.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/Subtask.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/Subtask.dia",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/Subtask.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/Subtask.swiftdeps"
+  },
+  "/Users/venkata/projects/focal/Focal/Models/TaskItem.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TaskItem.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TaskItem.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TaskItem.dia",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TaskItem.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TaskItem.swiftdeps"
+  },
+  "/Users/venkata/projects/focal/Focal/Utilities/IconMapper.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/IconMapper.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/IconMapper.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/IconMapper.dia",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/IconMapper.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/IconMapper.swiftdeps"
+  }
+}

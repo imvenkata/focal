@@ -1,0 +1,272 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Task/PlannerTaskCreationSheet.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Close",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 327
+        }
+      },
+      {
+        "comment": "",
+        "key": "Dismisses task creation",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 328
+        }
+      },
+      {
+        "comment": "",
+        "key": "Completion",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 390
+        }
+      },
+      {
+        "comment": "",
+        "key": "Marks the task as completed",
+        "location": {
+          "startingColumn": 36,
+          "startingLine": 391
+        }
+      },
+      {
+        "comment": "",
+        "key": "Completed",
+        "location": {
+          "startingColumn": 51,
+          "startingLine": 392
+        }
+      },
+      {
+        "comment": "",
+        "key": "Not completed",
+        "location": {
+          "startingColumn": 65,
+          "startingLine": 392
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@ (%@)",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 347
+        }
+      },
+      {
+        "comment": "",
+        "key": "Task name",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 351
+        }
+      },
+      {
+        "comment": "",
+        "key": "Task title",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 356
+        }
+      },
+      {
+        "comment": "",
+        "key": "Enter a task name",
+        "location": {
+          "startingColumn": 44,
+          "startingLine": 357
+        }
+      },
+      {
+        "comment": "",
+        "key": "1",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 364
+        }
+      },
+      {
+        "comment": "",
+        "key": "Opens %@ picker",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 472
+        }
+      },
+      {
+        "comment": "",
+        "key": "No subtasks yet",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 487
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add subtask",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 506
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add subtask",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 525
+        }
+      },
+      {
+        "comment": "",
+        "key": "Adds this subtask",
+        "location": {
+          "startingColumn": 36,
+          "startingLine": 526
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete subtask",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 563
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add notes...",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 582
+        }
+      },
+      {
+        "comment": "",
+        "key": "Date",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 627
+        }
+      },
+      {
+        "comment": "",
+        "key": "Select Date",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 618
+        }
+      },
+      {
+        "comment": "",
+        "key": "Today",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 609
+        }
+      },
+      {
+        "comment": "",
+        "key": "Done",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 631
+        }
+      },
+      {
+        "comment": "",
+        "key": "Time & Duration",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 741
+        }
+      },
+      {
+        "comment": "",
+        "key": "Duration %@",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 699
+        }
+      },
+      {
+        "comment": "",
+        "key": "Duration",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 704
+        }
+      },
+      {
+        "comment": "",
+        "key": "Duration %@",
+        "location": {
+          "startingColumn": 53,
+          "startingLine": 724
+        }
+      },
+      {
+        "comment": "",
+        "key": "Done",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 745
+        }
+      },
+      {
+        "comment": "",
+        "key": "Repeat",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 851
+        }
+      },
+      {
+        "comment": "",
+        "key": "REPEAT",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 822
+        }
+      },
+      {
+        "comment": "",
+        "key": "Done",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 855
+        }
+      },
+      {
+        "comment": "",
+        "key": "Continue",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 1004
+        }
+      },
+      {
+        "comment": "",
+        "key": "Creates the task",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 1005
+        }
+      },
+      {
+        "comment": "",
+        "key": "Continue",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 986
+        }
+      }
+    ]
+  },
+  "version": 1
+}

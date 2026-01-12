@@ -1,0 +1,24 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Components/TodoQuickAddBar.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Add it to your list",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 11
+        }
+      },
+      {
+        "comment": "",
+        "key": "Quick Add",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 31
+        }
+      }
+    ]
+  },
+  "version": 1
+}

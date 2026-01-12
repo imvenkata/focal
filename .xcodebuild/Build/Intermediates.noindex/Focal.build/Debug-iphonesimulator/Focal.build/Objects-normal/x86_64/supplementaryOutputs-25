@@ -1,0 +1,23 @@
+{
+  "/Users/venkata/projects/focal/Focal/Views/Components/TodoCard.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TodoCard.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TodoCard.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TodoCard.dia",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TodoCard.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TodoCard.swiftdeps"
+  },
+  "/Users/venkata/projects/focal/Focal/Views/Components/TodoPrioritySection.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TodoPrioritySection.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TodoPrioritySection.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TodoPrioritySection.dia",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TodoPrioritySection.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TodoPrioritySection.swiftdeps"
+  },
+  "/Users/venkata/projects/focal/Focal/Views/Components/TodoQuickAddBar.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TodoQuickAddBar.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TodoQuickAddBar.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TodoQuickAddBar.dia",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TodoQuickAddBar.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/Focal.build/Objects-normal/x86_64/TodoQuickAddBar.swiftdeps"
+  }
+}

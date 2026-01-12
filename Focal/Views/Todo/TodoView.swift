@@ -1,12 +1,13 @@
 import SwiftUI
 import SwiftData
+import UIKit
 
 struct TodoView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(TodoStore.self) private var todoStore
 
-    @State private var quickAddText = ""
-    @FocusState private var isQuickAddFocused: Bool
+    @State private var showFloatingInput = false
+    @State private var keyboardHeight: CGFloat = 0
     @State private var dragTargetPriority: TodoPriority?
     @State private var selectedTodo: TodoItem?
     @State private var showingSearch = false
@@ -26,6 +27,7 @@ struct TodoView: View {
 
                     // Filter chips
                     filterChips
+                    categoryChips
 
                     // Title
                     HStack {
@@ -36,21 +38,37 @@ struct TodoView: View {
 
                         Spacer()
 
-                        // Search button
-                        Button {
-                            withAnimation(DS.Animation.spring) {
-                                showingSearch.toggle()
+                        HStack(spacing: DS.Spacing.sm) {
+                            Button {
+                                openFloatingInput()
+                            } label: {
+                                Image(systemName: "plus")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundStyle(DS.Colors.textSecondary)
+                                    .frame(width: 36, height: 36)
+                                    .background(DS.Colors.surfaceSecondary)
+                                    .clipShape(Circle())
                             }
-                        } label: {
-                            Image(systemName: showingSearch ? "xmark" : "magnifyingglass")
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundStyle(DS.Colors.textSecondary)
-                                .frame(width: 36, height: 36)
-                                .background(DS.Colors.surfaceSecondary)
-                                .clipShape(Circle())
+                            .buttonStyle(.plain)
+                            .accessibilityLabel("Open quick add")
+                            .accessibilityHint("Opens the floating input")
+
+                            // Search button
+                            Button {
+                                withAnimation(DS.Animation.spring) {
+                                    showingSearch.toggle()
+                                }
+                            } label: {
+                                Image(systemName: showingSearch ? "xmark" : "magnifyingglass")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundStyle(DS.Colors.textSecondary)
+                                    .frame(width: 36, height: 36)
+                                    .background(DS.Colors.surfaceSecondary)
+                                    .clipShape(Circle())
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel(showingSearch ? "Close search" : "Search todos")
                         }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel(showingSearch ? "Close search" : "Search todos")
                     }
 
                     // Empty state or content
@@ -68,7 +86,7 @@ struct TodoView: View {
                         }
                     }
 
-                    // Quick add bar
+                    // Quick add launcher
                     quickAddSection
                 }
                 .padding(.horizontal, DS.Spacing.lg)
@@ -77,15 +95,51 @@ struct TodoView: View {
             }
             .scrollDismissesKeyboard(.interactively)
             .background(DS.Colors.background)
+            .blur(radius: showFloatingInput ? 2 : 0)
+            .opacity(showFloatingInput ? 0.7 : 1)
+            .animation(DS.Animation.spring, value: showFloatingInput)
+
+            if showFloatingInput {
+                DS.Colors.overlay.opacity(0.2)
+                    .ignoresSafeArea()
+                    .transition(.opacity)
+                    .onTapGesture {
+                        closeFloatingInput()
+                    }
+                    .accessibilityLabel("Dismiss quick add")
+                    .accessibilityHint("Closes the floating input")
+            }
 
             // Undo toast
-            if todoStore.canUndo {
+            if todoStore.canUndo && !showFloatingInput {
                 undoToast
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
+
+            if showFloatingInput {
+                FloatingTaskInputCard(
+                    onSubmit: handleFloatingSubmit,
+                    onClose: closeFloatingInput
+                )
+                .padding(.horizontal, DS.Spacing.md)
+                .padding(.bottom, keyboardHeight > 0 ? max(0, keyboardHeight - DS.Spacing.sm) : DS.Spacing.lg)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
         }
         .animation(DS.Animation.spring, value: todoStore.canUndo)
+        .animation(DS.Animation.spring, value: showFloatingInput)
         .ignoresSafeArea(.keyboard, edges: .bottom)
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillChangeFrameNotification)) { notification in
+            guard showFloatingInput,
+                  let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+                return
+            }
+            let screenHeight = UIScreen.main.bounds.height
+            let height = max(0, screenHeight - frame.origin.y)
+            withAnimation(DS.Animation.quick) {
+                keyboardHeight = height
+            }
+        }
         .sheet(item: $selectedTodo) { todo in
             TodoDetailView(todo: todo)
         }
@@ -186,6 +240,39 @@ struct TodoView: View {
         }
     }
 
+    private var categoryChips: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: DS.Spacing.sm) {
+                CategoryChip(
+                    label: "All",
+                    icon: "🗂️",
+                    tint: DS.Colors.textSecondary,
+                    isSelected: todoStore.selectedCategory == nil
+                ) {
+                    withAnimation(DS.Animation.spring) {
+                        todoStore.selectedCategory = nil
+                    }
+                    HapticManager.shared.selection()
+                }
+
+                ForEach(TodoCategory.allCases) { category in
+                    CategoryChip(
+                        label: category.label,
+                        icon: category.icon,
+                        tint: category.tint,
+                        isSelected: todoStore.selectedCategory == category
+                    ) {
+                        withAnimation(DS.Animation.spring) {
+                            todoStore.selectedCategory = category
+                        }
+                        HapticManager.shared.selection()
+                    }
+                }
+            }
+        }
+        .accessibilityLabel("Category filters")
+    }
+
     private func countForFilter(_ filter: TodoFilter) -> Int {
         switch filter {
         case .all: return todoStore.activeTodos.count
@@ -245,11 +332,38 @@ struct TodoView: View {
     // MARK: - Quick Add Section
 
     private var quickAddSection: some View {
-        TodoQuickAddBar(
-            text: $quickAddText,
-            onAdd: { addTodo(with: .none) },  // Default to "To-do" category
-            isFocused: $isQuickAddFocused
-        )
+        Button {
+            openFloatingInput()
+        } label: {
+            HStack(spacing: DS.Spacing.md) {
+                Text("Add it to your list")
+                    .scaledFont(size: 15, weight: .medium, relativeTo: .body)
+                    .foregroundStyle(DS.Colors.textSecondary)
+
+                Spacer()
+
+                Image(systemName: "plus.circle.fill")
+                    .font(.system(size: 28, weight: .medium))
+                    .foregroundStyle(DS.Colors.primary)
+                    .frame(width: 44, height: 44)
+                    .background(DS.Colors.primary.opacity(0.1))
+                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+            }
+            .padding(.leading, DS.Spacing.lg)
+            .padding(.trailing, DS.Spacing.xs)
+            .padding(.vertical, DS.Spacing.xs)
+            .background(DS.Colors.surfacePrimary)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+            .overlay(
+                RoundedRectangle(cornerRadius: DS.Radius.lg)
+                    .stroke(style: StrokeStyle(lineWidth: 2, dash: [6, 4]))
+                    .foregroundStyle(DS.Colors.divider)
+            )
+            .shadowResting()
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Open quick add from list")
+        .accessibilityHint("Opens the floating input card")
     }
 
     // MARK: - Priority Sections
@@ -414,13 +528,6 @@ struct TodoView: View {
 
     // MARK: - Actions
 
-    private func addTodo(with priority: TodoPriority) {
-        guard !quickAddText.trimmingCharacters(in: .whitespaces).isEmpty else { return }
-        addTodo(title: quickAddText, priority: priority)
-        quickAddText = ""
-        isQuickAddFocused = false
-    }
-
     private func addTodo(title: String, priority: TodoPriority) {
         let newTodo = TodoItem(
             title: title,
@@ -431,6 +538,36 @@ struct TodoView: View {
 
         withAnimation(DS.Animation.spring) {
             todoStore.addTodo(newTodo)
+        }
+    }
+
+    private func handleFloatingSubmit(_ draft: FloatingTaskInputDraft) {
+        let newTodo = TodoItem(
+            title: draft.title,
+            icon: draft.icon,
+            colorName: draft.color.rawValue,
+            priority: .none,
+            category: draft.category,
+            dueDate: draft.dueDate,
+            estimatedDuration: draft.duration
+        )
+
+        withAnimation(DS.Animation.spring) {
+            todoStore.addTodo(newTodo)
+        }
+    }
+
+    private func openFloatingInput() {
+        withAnimation(DS.Animation.spring) {
+            showFloatingInput = true
+        }
+        HapticManager.shared.selection()
+    }
+
+    private func closeFloatingInput() {
+        withAnimation(DS.Animation.spring) {
+            showFloatingInput = false
+            keyboardHeight = 0
         }
     }
     
@@ -584,6 +721,34 @@ private struct FilterChip: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("\(filter.rawValue) filter, \(count) items")
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+}
+
+private struct CategoryChip: View {
+    let label: String
+    let icon: String
+    let tint: Color
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: DS.Spacing.xs) {
+                Text(icon)
+                    .scaledFont(size: 12, relativeTo: .caption)
+
+                Text(label)
+                    .scaledFont(size: 13, weight: .semibold, relativeTo: .callout)
+            }
+            .foregroundStyle(isSelected ? .white : tint)
+            .padding(.horizontal, DS.Spacing.md)
+            .padding(.vertical, DS.Spacing.sm)
+            .background(isSelected ? tint : tint.opacity(0.12))
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("\(label) category")
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }

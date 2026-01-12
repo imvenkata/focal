@@ -1,0 +1,24 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Timeline/DailyTimelineView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Drag down to close",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 238
+        }
+      },
+      {
+        "comment": "",
+        "key": "Swipe down to return to week view",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 239
+        }
+      }
+    ]
+  },
+  "version": 1
+}

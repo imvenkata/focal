@@ -1,132 +1,44 @@
- Core Structure
-   - View mode toggle - Week/Day switching exists in PlannerHeader
-   - Week selector - Day circles with task indicators
-   - TaskStore - Observable state management with view modes
-   - Design System - Colors, spacing, typography constants
-   - Navigation - Bottom tab bar with 4 tabs (Inbox, Planner, AI/Insights, Settings)
-  Timeline Views
-   - WeeklyTimelineView - Grid with time labels, day columns, task pins
-   - DailyTimelineView - Vertical timeline with time slots, task cards
-   - Current time indicator - Red line showing current time
-  ❌ Missing Features from React Reference
-  1. View Toggle UX Mismatch
-  React: Segmented control (Week/Day pills) in header
-  Focal: Dropdown-style button with chevron
+ Findings
 
-  Recommendation: Replace ViewModeToggle with proper segmented control:
+  - [High] Save failures are swallowed (try?), so todo creation can “succeed” while
+    silently failing to persist; this is a release‑blocker for reliability and trust.
+    Focal/ViewModels/TodoStore.swift:70, Focal/ViewModels/TodoStore.swift:232
+  - [High] Parsed date preview is shown but never applied to the created todo (no
+    dueDate/dueTime), so the UI promises scheduling without actually doing it. Focal/
+    Views/Components/FloatingTaskInputCard.swift:75, Focal/Views/Components/
+    FloatingTaskInputCard.swift:359, Focal/Views/Todo/TodoView.swift:510
+  - [Medium] Category selection has no visible effect: it’s stored as a tag but not
+    surfaced or used for grouping/filtering, so users can’t see the category they
+    picked. Focal/Views/Todo/TodoView.swift:510, Focal/Views/Todo/TodoView.swift:337
+  - [Medium] “More” and “Voice input” controls are active but do nothing beyond
+    haptics; shipping inert controls is a product‑quality risk. Focal/Views/
+    Components/FloatingTaskInputCard.swift:212, Focal/Views/Components/
+    FloatingTaskInputCard.swift:223
+  - [Medium] Double success haptics on submit (UI + store) will feel glitchy. Focal/
+    Views/Components/FloatingTaskInputCard.swift:449, Focal/ViewModels/
+    TodoStore.swift:232
+  - [Medium] UI test is now stale and will fail: it still expects the old quick‑add
+    text field and button, and doesn’t cover the new floating flow. Focal/
+    FocalUITests/TodoE2ETests.swift:31
+  - [Low] Keyboard height uses UIScreen.main.bounds which breaks in split view/
+    rotation and can misplace the floating card. Focal/Views/Todo/TodoView.swift:136
+  - [Low] Accessibility: when the floating input is shown, background content remains
+    reachable by VoiceOver (not marked as modal/hidden). Focal/Views/Todo/
+    TodoView.swift:101
 
-   HStack(spacing: 2) {
-       ForEach(TaskStore.ViewMode.allCases) { mode in
-           Button {
-               viewMode = mode
-           } label: {
-               Text(mode.rawValue.capitalized)
-                   .font(.system(size: 12, weight: .semibold))
-                   .foregroundStyle(viewMode == mode ? DS.Colors.textPrimary : DS.Colors.textSecondary)
-                   .padding(.horizontal, 12)
-                   .padding(.vertical, 6)
-                   .background(viewMode == mode ? .white : .clear)
-                   .clipShape(RoundedRectangle(cornerRadius: 8))
-           }
-       }
-   }
-   .padding(2)
-   .background(DS.Colors.background)
-   .clipShape(RoundedRectangle(cornerRadius: 10))
+  Open Questions / Assumptions
 
+  - Should category map to a real field (or priority) and appear in the list/
+    filtering UI, or is it just metadata for future features?
+  - Should parsed date be converted to a real dueDate/dueTime and optionally removed
+    from the title?
+  - Should success haptic be emitted at the store layer or the UI layer (not both)?
 
-  2. Week View Visual Differences
-  React:
-   - Colored task dots under day circles (lines 165-173)
-   - Vertical track lines connecting tasks (lines 227-235)
-   - Duration bars extending below task pills (lines 251-259)
+  No code changes in this review.
 
-  Focal:
-   - ❌ No task dots preview under day circles in WeekSelector
-   - ✅ Has grid lines but missing vertical tracks
-   - ❌ No duration visualization bars
+  If you want me to move this to production‑ready, I can:
 
-  3. Day View Layout
-  React:
-   - White card with rounded top corners (line 294)
-   - Handle bar at top (lines 296-298)
-   - Energy circular progress + stats row (lines 301-327)
-   - Vertical dashed line with task pills (lines 333-334)
-
-  Focal:
-   - ✅ Has stats bar but different layout
-   - ❌ No rounded card container
-   - ❌ No handle bar
-   - ✅ Has dashed line
-   - ❌ Task pills don't match design (should be larger with centered icon)
-
-  4. Task Card Design
-  React Day View (lines 344-356):
-   - Large rounded pill (56px min, scales with duration)
-   - Icon centered vertically
-   - Time range + duration badge next to title
-   - Checkbox on right
-
-  Focal: Uses TaskCardView which likely has different styling
-
-  5. Empty State Messaging
-  React: "A well-spent interval" with 💤 emoji (lines 394-399)
-  Focal: "Free time" with add button
-
-  6. Progress/Stats Bar
-  React:
-   - Streak indicator (🔥 20)
-   - Horizontal progress bar
-   - Fraction display (12/20)
-
-  Focal: Has ProgressBar component but verify it matches design
-
-  7. Current Time Indicator
-  React: Red gradient line with pulsing dot (lines 264-282)
-  Focal: ✅ Has CurrentTimeIndicator - verify styling
-
-  8. FAB Placement
-  React: Bottom right, above nav bar (lines 465-470)
-  Focal: Handled by BottomTabBar onAddTapped - verify visual match
-
-  🔧 Priority Fixes
-  High Priority
-   1. Fix view mode toggle to match segmented control design
-   2. Add task dot indicators under day circles in WeekSelector
-   3. Update day view container with rounded card + handle
-   4. Standardize task pill sizing - 56px default, scales with duration
-  Medium Priority
-   5. Add vertical track lines in week view
-   6. Add duration bars below task pills in week view
-   7. Match empty state messaging style
-   8. Verify current time indicator styling (gradient + pulse)
-  Low Priority
-   9. Match exact spacing/padding values
-   10. Verify all color usage matches DS.Colors
-  📁 Files to Modify
-   1. Focal/Views/Timeline/PlannerView.swift - ViewModeToggle component
-   2. Focal/Views/Components/WeekSelector.swift - Add task dots
-   3. Focal/Views/Timeline/DailyTimelineView.swift - Wrap in card container
-   4. Focal/Views/Timeline/WeeklyTimelineView.swift - Add track lines + duration bars
-   5. Focal/Views/Task/TaskCardView.swift - Verify day view styling
-   6. Focal/Views/Task/TaskPinView.swift - Verify week view pill sizing
-  Let me know which component you'd like to fix first!
-
-
-    📋 Action Plan (Priority Order)
-  Phase 1: Fix Header & Day Circles (Highest Impact)
-   1. ✅ Update header title to show day number in day view
-   2. ✅ Change selected day circle from blue to stone-800
-   3. ✅ Fix today indicator to use amber colors
-   4. ✅ Make task dots use actual task colors (not all blue)
-   5. ✅ Increase dot size from 4px to 8px
-  Phase 2: Fix Layout Structure
-   6. ✅ Move ProgressBar inside WeeklyTimelineView
-   7. ✅ Wrap DailyTimelineView in white card container
-   8. ✅ Add handle bar to day view
-   9. ✅ Adjust day view to slide up animation
-  Phase 3: Polish Details
-   10. Verify StatsBar matches React design (circular progress)
-   11. Add vertical track lines in week view
-   12. Add duration bars below task pills
-   13. Match task pill sizing in day view
+  1. Implement date parsing → dueDate/dueTime + optional title cleanup.
+  2. Make category first‑class (model + UI badges/filters) or remove it from the card
+     until supported.
+  3. Add save error surfacing + update UI tests to cover the floating flow.

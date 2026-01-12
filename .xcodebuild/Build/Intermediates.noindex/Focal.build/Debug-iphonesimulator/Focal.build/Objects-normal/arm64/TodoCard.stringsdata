@@ -1,0 +1,24 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Components/TodoCard.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%lld/%lld",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 117
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add subtask",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 154
+        }
+      }
+    ]
+  },
+  "version": 1
+}

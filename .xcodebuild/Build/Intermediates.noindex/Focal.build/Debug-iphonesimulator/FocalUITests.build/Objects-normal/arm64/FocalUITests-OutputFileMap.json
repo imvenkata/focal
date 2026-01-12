@@ -1,0 +1,39 @@
+{
+  "" : {
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITests-primary.dia",
+    "emit-module-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITests-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITests-primary-emit-module.dia",
+    "pch" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITests-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITests-primary.swiftdeps"
+  },
+  "/Users/venkata/projects/focal/Focal/FocalUITests/TodoE2ETests.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/TodoE2ETests.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/TodoE2ETests.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/TodoE2ETests.dia",
+    "index-unit-output-path" : "/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/TodoE2ETests.o",
+    "llvm-bc" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/TodoE2ETests.bc",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/TodoE2ETests.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/TodoE2ETests.swiftdeps",
+    "swiftmodule" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/TodoE2ETests~partial.swiftmodule"
+  },
+  "/Users/venkata/projects/focal/FocalUITests/FocalUITests.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITests.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITests.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITests.dia",
+    "index-unit-output-path" : "/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITests.o",
+    "llvm-bc" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITests.bc",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITests.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITests.swiftdeps",
+    "swiftmodule" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITests~partial.swiftmodule"
+  },
+  "/Users/venkata/projects/focal/FocalUITests/FocalUITestsLaunchTests.swift" : {
+    "const-values" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITestsLaunchTests.swiftconstvalues",
+    "dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITestsLaunchTests.d",
+    "diagnostics" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITestsLaunchTests.dia",
+    "index-unit-output-path" : "/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITestsLaunchTests.o",
+    "llvm-bc" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITestsLaunchTests.bc",
+    "object" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITestsLaunchTests.o",
+    "swift-dependencies" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITestsLaunchTests.swiftdeps",
+    "swiftmodule" : "/Users/venkata/projects/focal/.xcodebuild/Build/Intermediates.noindex/Focal.build/Debug-iphonesimulator/FocalUITests.build/Objects-normal/arm64/FocalUITestsLaunchTests~partial.swiftmodule"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Pickers/ColorPickerView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Choose Color",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 11
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@ color",
+        "location": {
+          "startingColumn": 41,
+          "startingLine": 60
+        }
+      }
+    ]
+  },
+  "version": 1
+}

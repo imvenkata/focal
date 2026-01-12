@@ -11,6 +11,7 @@ final class TodoStore {
     // MARK: - Search & Filter
     var searchText: String = ""
     var selectedFilter: TodoFilter = .all
+    var selectedCategory: TodoCategory? = nil
     var showCompletedSection: Bool = true
     var isCompletedSectionCollapsed: Bool = true
 
@@ -120,6 +121,10 @@ final class TodoStore {
 
     var filteredTodos: [TodoItem] {
         var result = todos.filter { !$0.isArchived }
+
+        if let selectedCategory {
+            result = result.filter { $0.categoryEnum == selectedCategory }
+        }
 
         // Apply filter
         switch selectedFilter {
@@ -450,7 +455,8 @@ final class TodoStore {
             title: "Weekly shopping",
             icon: "🛒",
             colorName: "sage",
-            priority: .high
+            priority: .high,
+            category: .routine
         )
         todo1.addSubtask("Milk")
         todo1.subtasks.first?.toggle() // Mark first as completed
@@ -463,7 +469,8 @@ final class TodoStore {
             title: "Doctor appointment prep",
             icon: "🏥",
             colorName: "sky",
-            priority: .high
+            priority: .high,
+            category: .event
         )
         todo2.addSubtask("Confirm appointment time")
         todo2.subtasks.first?.toggle()
@@ -475,7 +482,8 @@ final class TodoStore {
             title: "Party planning",
             icon: "🎉",
             colorName: "rose",
-            priority: .medium
+            priority: .medium,
+            category: .event
         )
         todo3.addSubtask("Send invitations")
         todo3.addSubtask("Order cake")
@@ -487,14 +495,16 @@ final class TodoStore {
             title: "Snowdonia trip",
             icon: "🏔️",
             colorName: "amber",
-            priority: .medium
+            priority: .medium,
+            category: .event
         )
 
         let todo5 = TodoItem(
             title: "Complete physics book",
             icon: "📚",
             colorName: "lavender",
-            priority: .low
+            priority: .low,
+            category: .routine
         )
         todo5.addSubtask("Chapter 5: Waves")
         todo5.subtasks.first?.toggle()

@@ -7,6 +7,6 @@ struct FocalApp: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: [TaskItem.self, TodoItem.self])
+        .modelContainer(for: [TaskItem.self, Subtask.self, TodoItem.self, TodoSubtask.self])
     }
 }

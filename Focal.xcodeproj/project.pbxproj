@@ -12,7 +12,7 @@
 		32BB63888F9DEBDD075C2BEB /* TodoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF5F585D9A6A4F63D8A2A3A /* TodoStore.swift */; };
 		4FCBD833CB2DA148F69332ED /* TodoSubtask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C708910AF989C606B6222A /* TodoSubtask.swift */; };
 		5D76839EEC61FF7012B60F2E /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2531C6901CE315809209807 /* ColorPickerView.swift */; };
-		7170CDD6A4960F090FC99FCC /* TodoNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7ADFDB2671609E24766606 /* TodoNotificationService.swift */; };
+		7170CDD6A4960F090FC99FCC /* Services/TodoNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7ADFDB2671609E24766606 /* Services/TodoNotificationService.swift */; };
 		8F17231E9B27A7A509AF8B2E /* TodoPrioritySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E4473A9CBF971B857051263 /* TodoPrioritySection.swift */; };
 		A10000001000000000000001 /* FocalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000001 /* FocalApp.swift */; };
 		A10000001000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000002 /* ContentView.swift */; };
@@ -46,6 +46,7 @@
 		A10000001000000000000030 /* IconPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000030 /* IconPickerView.swift */; };
 		A10000001000000000000031 /* TaskDragState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000031 /* TaskDragState.swift */; };
 		A10000001000000000000032 /* PlannerTaskCreationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000032 /* PlannerTaskCreationSheet.swift */; };
+		A10000001000000000000033 /* FloatingTaskInputCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000033 /* FloatingTaskInputCard.swift */; };
 		A10B813E21666375B367175F3 /* SubtaskRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A282333FC8F8804A9C1BB400A /* SubtaskRow.swift */; };
 		A10BB315BB394583A9F66BC45 /* ScaledFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B5219DBAD054D1545A12A03 /* ScaledFont.swift */; };
 		A18439BC0ACADDAA14905961A /* FABButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26DBE8B1DE2506AE8AD00664 /* FABButton.swift */; };
@@ -72,9 +73,19 @@
 		146B21794815476C9E265BFB /* TodoQuickAddBar.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoQuickAddBar.swift; sourceTree = "<group>"; };
 		14C21FF334FA26EBC35FA426 /* TodoE2ETests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TodoE2ETests.swift; path = Focal/FocalUITests/TodoE2ETests.swift; sourceTree = "<group>"; };
 		594D1A4023CD27521A246ADE /* TodoCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoCard.swift; sourceTree = "<group>"; };
-		5F7ADFDB2671609E24766606 /* TodoNotificationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Services/TodoNotificationService.swift; sourceTree = "<group>"; };
+		5F7ADFDB2671609E24766606 /* Services/TodoNotificationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Services/TodoNotificationService.swift; sourceTree = "<group>"; };
 		6B64140C22C9E28B0BC63EBE /* TodoDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoDetailView.swift; sourceTree = "<group>"; };
 		6C21B3B125B31641B121F22E /* TodoSubtaskRow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoSubtaskRow.swift; sourceTree = "<group>"; };
+		8295D9B92F154E3500E08D8B /* EmptyIntervalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyIntervalView.swift; sourceTree = "<group>"; };
+		8295D9BA2F154E3500E08D8B /* FloatingTaskInputCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingTaskInputCard.swift; sourceTree = "<group>"; };
+		8295D9BB2F154E3500E08D8B /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
+		8295D9BC2F154E3500E08D8B /* StatsBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsBar.swift; sourceTree = "<group>"; };
+		8295D9BD2F154E3500E08D8B /* SubtaskRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtaskRow.swift; sourceTree = "<group>"; };
+		8295D9BE2F154E3500E08D8B /* TodoCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCard.swift; sourceTree = "<group>"; };
+		8295D9BF2F154E3500E08D8B /* TodoPrioritySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoPrioritySection.swift; sourceTree = "<group>"; };
+		8295D9C02F154E3500E08D8B /* TodoQuickAddBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoQuickAddBar.swift; sourceTree = "<group>"; };
+		8295D9C12F154E3500E08D8B /* TodoSubtaskRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoSubtaskRow.swift; sourceTree = "<group>"; };
+		8295D9C22F154E3500E08D8B /* WeekSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekSelector.swift; sourceTree = "<group>"; };
 		82B249E82F144B6500EE5FD8 /* FocalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocalUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		95C708910AF989C606B6222A /* TodoSubtask.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoSubtask.swift; sourceTree = "<group>"; };
 		9E4473A9CBF971B857051263 /* TodoPrioritySection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoPrioritySection.swift; sourceTree = "<group>"; };
@@ -112,6 +123,7 @@
 		A20000001000000000000030 /* IconPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconPickerView.swift; sourceTree = "<group>"; };
 		A20000001000000000000031 /* TaskDragState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDragState.swift; sourceTree = "<group>"; };
 		A20000001000000000000032 /* PlannerTaskCreationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlannerTaskCreationSheet.swift; sourceTree = "<group>"; };
+		A20000001000000000000033 /* FloatingTaskInputCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingTaskInputCard.swift; sourceTree = "<group>"; };
 		A26DBE8B1DE2506AE8AD00664 /* FABButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FABButton.swift; sourceTree = "<group>"; };
 		A282333FC8F8804A9C1BB400A /* SubtaskRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtaskRow.swift; sourceTree = "<group>"; };
 		A2B5219DBAD054D1545A12A03 /* ScaledFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaledFont.swift; sourceTree = "<group>"; };
@@ -123,17 +135,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		82B249E92F144B6500EE5FD8 /* FocalUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = FocalUITests;
-			sourceTree = "<group>";
-		};
+		82B249E92F144B6500EE5FD8 /* FocalUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FocalUITests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +165,23 @@
 			path = Todo;
 			sourceTree = "<group>";
 		};
+		8295D9C32F154E3500E08D8B /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				8295D9B92F154E3500E08D8B /* EmptyIntervalView.swift */,
+				8295D9BA2F154E3500E08D8B /* FloatingTaskInputCard.swift */,
+				8295D9BB2F154E3500E08D8B /* ProgressBar.swift */,
+				8295D9BC2F154E3500E08D8B /* StatsBar.swift */,
+				8295D9BD2F154E3500E08D8B /* SubtaskRow.swift */,
+				8295D9BE2F154E3500E08D8B /* TodoCard.swift */,
+				8295D9BF2F154E3500E08D8B /* TodoPrioritySection.swift */,
+				8295D9C02F154E3500E08D8B /* TodoQuickAddBar.swift */,
+				8295D9C12F154E3500E08D8B /* TodoSubtaskRow.swift */,
+				8295D9C22F154E3500E08D8B /* WeekSelector.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		A40000001000000000000001 = {
 			isa = PBXGroup;
 			children = (
@@ -170,6 +189,7 @@
 				82B249E92F144B6500EE5FD8 /* FocalUITests */,
 				A40000001000000000000003 /* Products */,
 				14C21FF334FA26EBC35FA426 /* TodoE2ETests.swift */,
+				8295D9C32F154E3500E08D8B /* Components */,
 			);
 			sourceTree = "<group>";
 		};
@@ -309,6 +329,7 @@
 				A20000001000000000000029 /* EmptyIntervalView.swift */,
 				9E4473A9CBF971B857051263 /* TodoPrioritySection.swift */,
 				146B21794815476C9E265BFB /* TodoQuickAddBar.swift */,
+				A20000001000000000000033 /* FloatingTaskInputCard.swift */,
 				594D1A4023CD27521A246ADE /* TodoCard.swift */,
 				6C21B3B125B31641B121F22E /* TodoSubtaskRow.swift */,
 			);
@@ -327,7 +348,7 @@
 		D058117F62EA886DECE63F83 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				5F7ADFDB2671609E24766606 /* TodoNotificationService.swift */,
+				5F7ADFDB2671609E24766606 /* Services/TodoNotificationService.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -477,6 +498,7 @@
 				A10000001000000000000026 /* TimePickerSheet.swift in Sources */,
 				A10000001000000000000027 /* EnergyPickerSheet.swift in Sources */,
 				A10000001000000000000030 /* IconPickerView.swift in Sources */,
+				A10000001000000000000033 /* FloatingTaskInputCard.swift in Sources */,
 				C4AEE34C3593BBA1327E4925 /* TodoView.swift in Sources */,
 				32BB63888F9DEBDD075C2BEB /* TodoStore.swift in Sources */,
 				FAE04556D68AB0186327675B /* TodoItem.swift in Sources */,
@@ -487,7 +509,7 @@
 				A19189BDABAEBD93AC997668 /* TodoCard.swift in Sources */,
 				03030B8431D7299DA47F4F22 /* TodoSubtaskRow.swift in Sources */,
 				1655F2C73889FCBB695958B9 /* TodoDetailView.swift in Sources */,
-				7170CDD6A4960F090FC99FCC /* TodoNotificationService.swift in Sources */,
+				7170CDD6A4960F090FC99FCC /* Services/TodoNotificationService.swift in Sources */,
 				5D76839EEC61FF7012B60F2E /* ColorPickerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

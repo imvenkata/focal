@@ -1,0 +1,392 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Task/TaskDetailView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Alerts",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 360
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete Task",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 371
+        }
+      },
+      {
+        "comment": "",
+        "key": "Repeat options",
+        "location": {
+          "startingColumn": 53,
+          "startingLine": 124
+        }
+      },
+      {
+        "comment": "",
+        "key": "Energy level",
+        "location": {
+          "startingColumn": 53,
+          "startingLine": 145
+        }
+      },
+      {
+        "comment": "",
+        "key": "Opens energy picker",
+        "location": {
+          "startingColumn": 52,
+          "startingLine": 146
+        }
+      },
+      {
+        "comment": "",
+        "key": "Repeat",
+        "location": {
+          "startingColumn": 46,
+          "startingLine": 103
+        }
+      },
+      {
+        "comment": "",
+        "key": "Energy",
+        "location": {
+          "startingColumn": 46,
+          "startingLine": 135
+        }
+      },
+      {
+        "comment": "",
+        "key": "Subtasks",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 150
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add Subtask",
+        "location": {
+          "startingColumn": 51,
+          "startingLine": 190
+        }
+      },
+      {
+        "comment": "",
+        "key": "New subtask",
+        "location": {
+          "startingColumn": 65,
+          "startingLine": 198
+        }
+      },
+      {
+        "comment": "",
+        "key": "Enter a subtask title",
+        "location": {
+          "startingColumn": 64,
+          "startingLine": 199
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add subtask",
+        "location": {
+          "startingColumn": 65,
+          "startingLine": 215
+        }
+      },
+      {
+        "comment": "",
+        "key": "Adds the new subtask",
+        "location": {
+          "startingColumn": 64,
+          "startingLine": 216
+        }
+      },
+      {
+        "comment": "",
+        "key": "Notes",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 226
+        }
+      },
+      {
+        "comment": "",
+        "key": "Notes",
+        "location": {
+          "startingColumn": 57,
+          "startingLine": 259
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add additional details",
+        "location": {
+          "startingColumn": 56,
+          "startingLine": 260
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add notes, meeting links...",
+        "location": {
+          "startingColumn": 50,
+          "startingLine": 250
+        }
+      },
+      {
+        "comment": "",
+        "key": "Choose when to be notified.",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 369
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 372
+        }
+      },
+      {
+        "comment": "",
+        "key": "Are you sure you want to delete this task?",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 377
+        }
+      },
+      {
+        "comment": "",
+        "key": "Close",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 450
+        }
+      },
+      {
+        "comment": "",
+        "key": "Closes task details",
+        "location": {
+          "startingColumn": 36,
+          "startingLine": 451
+        }
+      },
+      {
+        "comment": "",
+        "key": "More options",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 508
+        }
+      },
+      {
+        "comment": "",
+        "key": "Shows more actions",
+        "location": {
+          "startingColumn": 36,
+          "startingLine": 509
+        }
+      },
+      {
+        "comment": "",
+        "key": "Duplicate",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 459
+        }
+      },
+      {
+        "comment": "",
+        "key": "Share",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 466
+        }
+      },
+      {
+        "comment": "",
+        "key": "Pin to Top",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 473
+        }
+      },
+      {
+        "comment": "",
+        "key": "Move to...",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 480
+        }
+      },
+      {
+        "comment": "",
+        "key": "Skip Once",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 487
+        }
+      },
+      {
+        "comment": "",
+        "key": "Copy Link",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 494
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 503
+        }
+      },
+      {
+        "comment": "",
+        "key": "Mark task incomplete",
+        "location": {
+          "startingColumn": 56,
+          "startingLine": 604
+        }
+      },
+      {
+        "comment": "",
+        "key": "Mark task complete",
+        "location": {
+          "startingColumn": 81,
+          "startingLine": 604
+        }
+      },
+      {
+        "comment": "",
+        "key": "Toggles task completion",
+        "location": {
+          "startingColumn": 36,
+          "startingLine": 605
+        }
+      },
+      {
+        "comment": "",
+        "key": "Choose color",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 533
+        }
+      },
+      {
+        "comment": "",
+        "key": "Shows color options",
+        "location": {
+          "startingColumn": 44,
+          "startingLine": 534
+        }
+      },
+      {
+        "comment": "",
+        "key": "🎨",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 520
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@ (%@)",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 554
+        }
+      },
+      {
+        "comment": "",
+        "key": "Task name",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 558
+        }
+      },
+      {
+        "comment": "",
+        "key": "Task title",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 571
+        }
+      },
+      {
+        "comment": "",
+        "key": "Edit the task title",
+        "location": {
+          "startingColumn": 44,
+          "startingLine": 572
+        }
+      },
+      {
+        "comment": "",
+        "key": "Selects %@",
+        "location": {
+          "startingColumn": 36,
+          "startingLine": 708
+        }
+      },
+      {
+        "comment": "",
+        "key": "Mark subtask incomplete",
+        "location": {
+          "startingColumn": 55,
+          "startingLine": 806
+        }
+      },
+      {
+        "comment": "",
+        "key": "Mark subtask complete",
+        "location": {
+          "startingColumn": 83,
+          "startingLine": 806
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 821
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete task",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 848
+        }
+      },
+      {
+        "comment": "",
+        "key": "Deletes this task",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 849
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete Task",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 838
+        }
+      }
+    ]
+  },
+  "version": 1
+}

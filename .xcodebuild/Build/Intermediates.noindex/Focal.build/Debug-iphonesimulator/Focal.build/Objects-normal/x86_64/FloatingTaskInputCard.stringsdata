@@ -1,0 +1,176 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Components/FloatingTaskInputCard.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Collapse quick add",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 105
+        }
+      },
+      {
+        "comment": "",
+        "key": "Expand quick add",
+        "location": {
+          "startingColumn": 65,
+          "startingLine": 105
+        }
+      },
+      {
+        "comment": "",
+        "key": "Shows or hides suggested steps",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 106
+        }
+      },
+      {
+        "comment": "",
+        "key": "What needs to be done?",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 111
+        }
+      },
+      {
+        "comment": "",
+        "key": "Task title",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 118
+        }
+      },
+      {
+        "comment": "",
+        "key": "Enter what you need to do",
+        "location": {
+          "startingColumn": 36,
+          "startingLine": 119
+        }
+      },
+      {
+        "comment": "",
+        "key": "Choose icon",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 141
+        }
+      },
+      {
+        "comment": "",
+        "key": "Opens the icon picker",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 142
+        }
+      },
+      {
+        "comment": "",
+        "key": "Category",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 167
+        }
+      },
+      {
+        "comment": "",
+        "key": "Double tap to change category",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 168
+        }
+      },
+      {
+        "comment": "",
+        "key": "Duration",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 183
+        }
+      },
+      {
+        "comment": "",
+        "key": "Double tap to choose duration",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 184
+        }
+      },
+      {
+        "comment": "",
+        "key": "More options",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 192
+        }
+      },
+      {
+        "comment": "",
+        "key": "Opens extra options",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 193
+        }
+      },
+      {
+        "comment": "",
+        "key": "Voice input",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 208
+        }
+      },
+      {
+        "comment": "",
+        "key": "Starts voice input",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 209
+        }
+      },
+      {
+        "comment": "",
+        "key": "Create todo",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 223
+        }
+      },
+      {
+        "comment": "",
+        "key": "Creates the todo",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 224
+        }
+      },
+      {
+        "comment": "",
+        "key": "Duration %@",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 249
+        }
+      },
+      {
+        "comment": "",
+        "key": "✨",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 258
+        }
+      },
+      {
+        "comment": "",
+        "key": "Suggested steps",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 261
+        }
+      }
+    ]
+  },
+  "version": 1
+}

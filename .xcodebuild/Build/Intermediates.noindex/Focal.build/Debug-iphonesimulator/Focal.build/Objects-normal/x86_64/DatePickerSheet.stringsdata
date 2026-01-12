@@ -1,0 +1,32 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Pickers/DatePickerSheet.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Date",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 36
+        }
+      },
+      {
+        "comment": "",
+        "key": "Select Date",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 24
+        }
+      },
+      {
+        "comment": "",
+        "key": "Today",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 13
+        }
+      }
+    ]
+  },
+  "version": 1
+}

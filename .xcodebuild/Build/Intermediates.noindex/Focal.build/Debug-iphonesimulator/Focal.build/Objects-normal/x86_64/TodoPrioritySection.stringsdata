@@ -1,0 +1,64 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Components/TodoPrioritySection.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "(%lld)",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 43
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add to %@...",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 90
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 100
+        }
+      },
+      {
+        "comment": "",
+        "key": "Drop here to move to %@",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 139
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@, category %@, priority %@",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 363
+        }
+      },
+      {
+        "comment": "",
+        "key": "Tap to view details",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 364
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld/%lld",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 322
+        }
+      }
+    ]
+  },
+  "version": 1
+}

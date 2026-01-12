@@ -27,23 +27,24 @@ final class TodoE2ETests: XCTestCase {
         XCTAssertTrue(todoTab.exists, "Todo tab should exist")
         todoTab.tap()
         
-        // 2. Add a new Todo
-        let quickAddField = app.textFields["Add it to your list"]
-        XCTAssertTrue(quickAddField.exists, "Quick add field should exist")
+        // 2. Open floating quick add and add a new Todo
+        let openQuickAdd = app.buttons["Open quick add"]
+        XCTAssertTrue(openQuickAdd.exists, "Open quick add button should exist")
+        openQuickAdd.tap()
         
-        quickAddField.tap()
-        quickAddField.typeText("Buy Milk")
+        let titleField = app.textFields["Task title"]
+        XCTAssertTrue(titleField.waitForExistence(timeout: 2.0), "Task title field should exist")
+        titleField.tap()
+        titleField.typeText("Buy Milk tomorrow")
         
-        // Dismiss keyboard if needed or just tap add
-        // The 'Quick Add' button we just labeled
-        let addButton = app.buttons["Quick Add"]
-        XCTAssertTrue(addButton.exists, "Quick Add button should exist")
-        addButton.tap()
+        let createButton = app.buttons["Create todo"]
+        XCTAssertTrue(createButton.exists, "Create todo button should exist")
+        createButton.tap()
         
         // 3. Verify Todo appears in list
         // The Todo card has an accessibility label format: "\(title), priority \(priority)"
         // Since we added it without priority, it defaults to .none ("To-do")
-        let todoButton = app.buttons["Buy Milk, priority To-do"]
+        let todoButton = app.buttons["Buy Milk, category To-do, priority To-do"]
         
         // Wait for it to appear (animation)
         let exists = todoButton.waitForExistence(timeout: 2.0)

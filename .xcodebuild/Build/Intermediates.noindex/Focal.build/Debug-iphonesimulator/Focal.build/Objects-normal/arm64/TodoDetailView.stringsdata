@@ -1,0 +1,384 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Todo/TodoDetailView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Reminder",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 166
+        }
+      },
+      {
+        "comment": "",
+        "key": "Priority",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 176
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete Todo",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 188
+        }
+      },
+      {
+        "comment": "",
+        "key": "When should we remind you?",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 174
+        }
+      },
+      {
+        "comment": "",
+        "key": "Set priority level",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 186
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 189
+        }
+      },
+      {
+        "comment": "",
+        "key": "Are you sure you want to delete this todo?",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 194
+        }
+      },
+      {
+        "comment": "",
+        "key": "Priority: %@",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 300
+        }
+      },
+      {
+        "comment": "",
+        "key": "Energy: %@",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 321
+        }
+      },
+      {
+        "comment": "",
+        "key": "Energy",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 311
+        }
+      },
+      {
+        "comment": "",
+        "key": "Subtasks",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 330
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld/%lld",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 338
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add subtask",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 381
+        }
+      },
+      {
+        "comment": "",
+        "key": "New subtask",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 387
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add subtask",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 403
+        }
+      },
+      {
+        "comment": "",
+        "key": "Notes",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 417
+        }
+      },
+      {
+        "comment": "",
+        "key": "Notes",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 450
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add notes, links, details...",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 441
+        }
+      },
+      {
+        "comment": "",
+        "key": "Close",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 491
+        }
+      },
+      {
+        "comment": "",
+        "key": "More options",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 535
+        }
+      },
+      {
+        "comment": "",
+        "key": "Change Icon",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 510
+        }
+      },
+      {
+        "comment": "",
+        "key": "Change Color",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 516
+        }
+      },
+      {
+        "comment": "",
+        "key": "Archive",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 524
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 530
+        }
+      },
+      {
+        "comment": "",
+        "key": "Mark incomplete",
+        "location": {
+          "startingColumn": 56,
+          "startingLine": 629
+        }
+      },
+      {
+        "comment": "",
+        "key": "Mark complete",
+        "location": {
+          "startingColumn": 76,
+          "startingLine": 629
+        }
+      },
+      {
+        "comment": "",
+        "key": "Change icon",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 561
+        }
+      },
+      {
+        "comment": "",
+        "key": "✏️",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 548
+        }
+      },
+      {
+        "comment": "",
+        "key": "Todo name",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 583
+        }
+      },
+      {
+        "comment": "",
+        "key": "Todo title",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 596
+        }
+      },
+      {
+        "comment": "",
+        "key": "at %@",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 576
+        }
+      },
+      {
+        "comment": "",
+        "key": "Mark incomplete",
+        "location": {
+          "startingColumn": 55,
+          "startingLine": 782
+        }
+      },
+      {
+        "comment": "",
+        "key": "Mark complete",
+        "location": {
+          "startingColumn": 75,
+          "startingLine": 782
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 796
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete todo",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 823
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete Todo",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 813
+        }
+      },
+      {
+        "comment": "",
+        "key": "Due Date",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 881
+        }
+      },
+      {
+        "comment": "",
+        "key": "Select Date",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 858
+        }
+      },
+      {
+        "comment": "",
+        "key": "Remove Due Date",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 872
+        }
+      },
+      {
+        "comment": "",
+        "key": "Done",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 885
+        }
+      },
+      {
+        "comment": "",
+        "key": "Due Time",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 969
+        }
+      },
+      {
+        "comment": "",
+        "key": "Select Time",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 932
+        }
+      },
+      {
+        "comment": "",
+        "key": "Remove Time",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 960
+        }
+      },
+      {
+        "comment": "",
+        "key": "Done",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 973
+        }
+      },
+      {
+        "comment": "",
+        "key": "Repeat",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 1059
+        }
+      },
+      {
+        "comment": "",
+        "key": "REPEAT",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 1030
+        }
+      },
+      {
+        "comment": "",
+        "key": "Done",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 1063
+        }
+      }
+    ]
+  },
+  "version": 1
+}

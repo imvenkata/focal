@@ -1,0 +1,240 @@
+{
+  "source": "/Users/venkata/projects/focal/Focal/Views/Todo/TodoView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Dismiss quick add",
+        "location": {
+          "startingColumn": 41,
+          "startingLine": 109
+        }
+      },
+      {
+        "comment": "",
+        "key": "Closes the floating input",
+        "location": {
+          "startingColumn": 40,
+          "startingLine": 110
+        }
+      },
+      {
+        "comment": "",
+        "key": "Category filters",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 273
+        }
+      },
+      {
+        "comment": "",
+        "key": "To-do",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 34
+        }
+      },
+      {
+        "comment": "",
+        "key": "Open quick add",
+        "location": {
+          "startingColumn": 49,
+          "startingLine": 53
+        }
+      },
+      {
+        "comment": "",
+        "key": "Opens the floating input",
+        "location": {
+          "startingColumn": 48,
+          "startingLine": 54
+        }
+      },
+      {
+        "comment": "",
+        "key": "Close search",
+        "location": {
+          "startingColumn": 65,
+          "startingLine": 70
+        }
+      },
+      {
+        "comment": "",
+        "key": "Search todos",
+        "location": {
+          "startingColumn": 82,
+          "startingLine": 70
+        }
+      },
+      {
+        "comment": "",
+        "key": "Open quick add from list",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 365
+        }
+      },
+      {
+        "comment": "",
+        "key": "Opens the floating input card",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 366
+        }
+      },
+      {
+        "comment": "",
+        "key": "🌿",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 154
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld / %lld",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 157
+        }
+      },
+      {
+        "comment": "",
+        "key": "Search todos...",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 198
+        }
+      },
+      {
+        "comment": "",
+        "key": "📝",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 294
+        }
+      },
+      {
+        "comment": "",
+        "key": "No todos yet",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 298
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add your first todo to get started.\nOrganize by priority, set due dates, and more.",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 302
+        }
+      },
+      {
+        "comment": "",
+        "key": "No results found",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 319
+        }
+      },
+      {
+        "comment": "",
+        "key": "Try a different search term",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 323
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add it to your list",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 339
+        }
+      },
+      {
+        "comment": "",
+        "key": "COMPLETED",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 438
+        }
+      },
+      {
+        "comment": "",
+        "key": "(%lld)",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 443
+        }
+      },
+      {
+        "comment": "",
+        "key": "Archive all",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 462
+        }
+      },
+      {
+        "comment": "",
+        "key": "+%lld more",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 490
+        }
+      },
+      {
+        "comment": "",
+        "key": "Undo",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 514
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld %@",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 688
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 680
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@ filter, %lld items",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 723
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 708
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@ category",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 751
+        }
+      }
+    ]
+  },
+  "version": 1
+}

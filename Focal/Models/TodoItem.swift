@@ -9,6 +9,7 @@ final class TodoItem {
     var icon: String
     var colorName: String
     var priority: String
+    var category: String
     @Relationship(deleteRule: .cascade) var subtasks: [TodoSubtask]
     var notes: String?
     var isCompleted: Bool
@@ -34,6 +35,7 @@ final class TodoItem {
         icon: String = "📝",
         colorName: String = "sky",
         priority: TodoPriority = .medium,
+        category: TodoCategory = .todo,
         notes: String? = nil,
         dueDate: Date? = nil,
         dueTime: Date? = nil,
@@ -48,6 +50,7 @@ final class TodoItem {
         self.icon = icon
         self.colorName = colorName
         self.priority = priority.rawValue
+        self.category = category.rawValue
         self.subtasks = []
         self.notes = notes
         self.isCompleted = false
@@ -73,6 +76,10 @@ final class TodoItem {
 
     var priorityEnum: TodoPriority {
         TodoPriority(rawValue: priority) ?? .medium
+    }
+
+    var categoryEnum: TodoCategory {
+        TodoCategory(rawValue: category) ?? .todo
     }
 
     var color: TaskColor {
@@ -122,6 +129,11 @@ final class TodoItem {
 
     func setPriority(_ priority: TodoPriority) {
         self.priority = priority.rawValue
+        updatedAt = Date()
+    }
+
+    func setCategory(_ category: TodoCategory) {
+        self.category = category.rawValue
         updatedAt = Date()
     }
 
@@ -352,6 +364,40 @@ enum TodoRecurrenceOption: String, CaseIterable, Identifiable {
         case .monthly: return "calendar.circle"
         case .yearly: return "gift"
         case .custom: return "slider.horizontal.3"
+        }
+    }
+}
+
+// MARK: - Todo Categories
+
+enum TodoCategory: String, CaseIterable, Identifiable {
+    case todo = "todo"
+    case routine = "routine"
+    case event = "event"
+
+    var id: String { rawValue }
+
+    var label: String {
+        switch self {
+        case .todo: return "To-do"
+        case .routine: return "Routine"
+        case .event: return "Event"
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .todo: return "📋"
+        case .routine: return "🔁"
+        case .event: return "📅"
+        }
+    }
+
+    var tint: Color {
+        switch self {
+        case .todo: return DS.Colors.slate
+        case .routine: return DS.Colors.sage
+        case .event: return DS.Colors.sky
         }
     }
 }
