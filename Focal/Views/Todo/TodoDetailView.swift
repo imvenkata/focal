@@ -168,6 +168,10 @@ struct TodoDetailView: View {
                 Button(option.displayName) {
                     todo.setReminder(option)
                     HapticManager.shared.selection()
+                    // Schedule notification
+                    Task {
+                        await TodoNotificationService.shared.scheduleReminder(for: todo)
+                    }
                 }
             }
         } message: {
@@ -187,6 +191,10 @@ struct TodoDetailView: View {
         }
         .confirmationDialog("Delete Todo", isPresented: $showDeleteConfirmation) {
             Button("Delete", role: .destructive) {
+                // Remove notification before deleting todo
+                Task {
+                    await TodoNotificationService.shared.removeReminder(for: todo)
+                }
                 todoStore.deleteTodo(todo)
                 dismiss()
             }

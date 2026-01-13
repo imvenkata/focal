@@ -14,6 +14,7 @@ struct PlannerTaskCreationSheet: View {
     @State private var selectedDuration: TimeInterval = 15 * 60
     @State private var recurrence: RecurrenceOption = .none
     @State private var selectedRecurrenceDays: Set<Int> = []
+    @State private var reminder: ReminderOption = .none
     @State private var notes = ""
     @State private var subtasks: [PlannerSubtask] = []
     @State private var newSubtaskTitle = ""
@@ -22,6 +23,7 @@ struct PlannerTaskCreationSheet: View {
     @State private var showDatePicker = false
     @State private var showTimePicker = false
     @State private var showRepeatPicker = false
+    @State private var showReminderPicker = false
 
     @FocusState private var isTitleFocused: Bool
     @FocusState private var isSubtaskFocused: Bool
@@ -88,6 +90,18 @@ struct PlannerTaskCreationSheet: View {
                                 HapticManager.shared.selection()
                                 showRepeatPicker = true
                             }
+
+                            PlannerDivider()
+
+                            PlannerActionRow(
+                                icon: "bell",
+                                title: "Reminder",
+                                value: reminder == .none ? "None" : reminder.rawValue,
+                                accentColor: accentColor
+                            ) {
+                                HapticManager.shared.selection()
+                                showReminderPicker = true
+                            }
                         }
                         .background(DS.Colors.surfacePrimary)
                         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous))
@@ -144,6 +158,16 @@ struct PlannerTaskCreationSheet: View {
                 selectedDays: $selectedRecurrenceDays,
                 accentColor: accentColor
             )
+        }
+        .confirmationDialog("Reminder", isPresented: $showReminderPicker) {
+            ForEach(ReminderOption.allCases) { option in
+                Button(option.rawValue) {
+                    reminder = option
+                    HapticManager.shared.selection()
+                }
+            }
+        } message: {
+            Text("Choose when to be notified.")
         }
         .onAppear {
             syncInitialTime()
@@ -261,11 +285,20 @@ struct PlannerTaskCreationSheet: View {
             duration: selectedDuration,
             recurrenceOption: recurrence == .none ? nil : recurrence.rawValue,
             repeatDays: recurrence == .custom ? Array(selectedRecurrenceDays) : [],
+            reminderOption: reminder == .none ? nil : reminder.rawValue,
             notes: notes.isEmpty ? nil : notes
         )
 
         taskStore.addTask(task)
         subtasks.forEach { task.addSubtask($0.title) }
+
+        // Schedule notification if reminder is set
+        if reminder != .none {
+            Task {
+                await TaskNotificationService.shared.scheduleReminder(for: task)
+            }
+        }
+
         HapticManager.shared.notification(.success)
         dismiss()
     }

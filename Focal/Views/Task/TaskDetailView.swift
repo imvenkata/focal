@@ -363,6 +363,10 @@ struct TaskDetailView: View {
                     task.reminderOption = option == .none ? nil : option.rawValue
                     task.updatedAt = Date()
                     HapticManager.shared.selection()
+                    // Schedule notification
+                    Task {
+                        await TaskNotificationService.shared.scheduleReminder(for: task)
+                    }
                 }
             }
         } message: {
@@ -370,6 +374,8 @@ struct TaskDetailView: View {
         }
         .confirmationDialog("Delete Task", isPresented: $showDeleteConfirmation) {
             Button("Delete", role: .destructive) {
+                // Remove notification before deleting task
+                TaskNotificationService.shared.removeReminder(forTaskId: task.id)
                 taskStore.deleteTask(task)
                 dismiss()
             }

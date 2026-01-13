@@ -13,11 +13,9 @@ struct ContentView: View {
         let showsBottomFab = !(selectedTab == .planner && taskStore.viewMode == .day)
 
         ZStack(alignment: .bottom) {
-            // Main content
+            // Main content (Phase 1: Planner and Todos only)
             Group {
                 switch selectedTab {
-                case .inbox:
-                    InboxView()
                 case .planner:
                     PlannerView()
                         .environment(taskStore)
@@ -25,10 +23,9 @@ struct ContentView: View {
                 case .todos:
                     TodoView()
                         .environment(todoStore)
-                case .insights:
-                    InsightsView()
-                case .settings:
-                    SettingsView()
+                default:
+                    // Future tabs: inbox, insights, settings
+                    EmptyView()
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

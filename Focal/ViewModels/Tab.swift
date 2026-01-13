@@ -9,6 +9,11 @@ enum AppTab: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
+    /// Tabs currently visible in the app (Phase 1: only Planner and Todos)
+    static var visibleTabs: [AppTab] {
+        [.planner, .todos]
+    }
+
     var icon: String {
         switch self {
         case .inbox: return "tray.fill"

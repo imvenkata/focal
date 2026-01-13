@@ -288,6 +288,14 @@ struct AddTaskSheet: View {
         )
 
         taskStore.addTask(task)
+
+        // Schedule notification if reminder is set
+        if reminder != .none {
+            Task {
+                await TaskNotificationService.shared.scheduleReminder(for: task)
+            }
+        }
+
         HapticManager.shared.notification(.success)
         dismiss()
     }

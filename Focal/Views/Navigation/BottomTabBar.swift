@@ -7,24 +7,20 @@ struct BottomTabBar: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            // Left tabs
-            ForEach([AppTab.inbox, AppTab.planner, AppTab.todos], id: \.self) { tab in
-                TabButton(tab: tab, isSelected: selectedTab == tab) {
-                    HapticManager.shared.selection()
-                    selectedTab = tab
-                }
+            // Planner tab
+            TabButton(tab: .planner, isSelected: selectedTab == .planner) {
+                HapticManager.shared.selection()
+                selectedTab = .planner
             }
 
-            // FAB spacer
+            // FAB spacer (centered)
             Spacer()
                 .frame(width: DS.Sizes.fabSize + DS.Spacing.xl)
 
-            // Right tabs
-            ForEach([AppTab.insights, AppTab.settings], id: \.self) { tab in
-                TabButton(tab: tab, isSelected: selectedTab == tab) {
-                    HapticManager.shared.selection()
-                    selectedTab = tab
-                }
+            // Todos tab
+            TabButton(tab: .todos, isSelected: selectedTab == .todos) {
+                HapticManager.shared.selection()
+                selectedTab = .todos
             }
         }
         .padding(.horizontal, DS.Spacing.lg)
