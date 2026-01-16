@@ -1,12 +1,8 @@
 Command line invocation:
     /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -scheme Focal -destination "platform=iOS Simulator,name=iPhone 15" build
 
-2026-01-13 22:45:52.050 xcodebuild[74254:1372292] warning:  The file reference for "Focal/Models/VirtualTaskInstance.swift" is a member of multiple groups ("Models" and ""); this indicates a malformed project.  Only the membership in one of the groups will be preserved (but membership in targets will be unaffected).  If you want a reference to the same file in more than one group, please add another reference to the same path.
-2026-01-13 22:45:52.050 xcodebuild[74254:1372292] warning:  The file reference for "Focal/Models/TaskCompletionRecord.swift" is a member of multiple groups ("Models" and ""); this indicates a malformed project.  Only the membership in one of the groups will be preserved (but membership in targets will be unaffected).  If you want a reference to the same file in more than one group, please add another reference to the same path.
-2026-01-13 22:45:52.050 xcodebuild[74254:1372292] warning:  The file reference for "Focal/Services/TaskNotificationService.swift" is a member of multiple groups ("Services" and ""); this indicates a malformed project.  Only the membership in one of the groups will be preserved (but membership in targets will be unaffected).  If you want a reference to the same file in more than one group, please add another reference to the same path.
-2026-01-13 22:45:52.050 xcodebuild[74254:1372292] warning:  The file reference for "Focal/Services/RecurringTaskGenerator.swift" is a member of multiple groups ("Services" and ""); this indicates a malformed project.  Only the membership in one of the groups will be preserved (but membership in targets will be unaffected).  If you want a reference to the same file in more than one group, please add another reference to the same path.
-2026-01-13 22:45:52.218 xcodebuild[74254:1372292] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
-2026-01-13 22:46:52.358 xcodebuild[74254:1372292] Writing error result bundle to /var/folders/vj/ckzqgbdn6qq3zdbm8lbnkc140000gn/T/ResultBundle_2026-13-01_22-46-0052.xcresult
+2026-01-13 22:48:51.149 xcodebuild[75577:1378044] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-01-13 22:49:51.297 xcodebuild[75577:1378044] Writing error result bundle to /var/folders/vj/ckzqgbdn6qq3zdbm8lbnkc140000gn/T/ResultBundle_2026-13-01_22-49-0051.xcresult
 xcodebuild: error: Unable to find a device matching the provided destination specifier:
 		{ platform:iOS Simulator, OS:latest, name:iPhone 15 }
 

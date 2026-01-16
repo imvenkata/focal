@@ -7,10 +7,12 @@ struct TodoView: View {
     @Environment(TodoStore.self) private var todoStore
 
     @State private var showFloatingInput = false
+    @State private var inputPriority: TodoPriority = .none
     @State private var keyboardHeight: CGFloat = 0
     @State private var dragTargetPriority: TodoPriority?
     @State private var selectedTodo: TodoItem?
     @State private var showingSearch = false
+    @State private var showFocusMode = false
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -39,6 +41,26 @@ struct TodoView: View {
                         Spacer()
 
                         HStack(spacing: DS.Spacing.sm) {
+                            // Focus mode button
+                            Button {
+                                showFocusMode = true
+                            } label: {
+                                HStack(spacing: DS.Spacing.xs) {
+                                    Image(systemName: "scope")
+                                        .font(.system(size: 14, weight: .semibold))
+                                    Text("Focus")
+                                        .scaledFont(size: 13, weight: .semibold, relativeTo: .caption)
+                                }
+                                .foregroundStyle(DS.Colors.primary)
+                                .padding(.horizontal, DS.Spacing.md)
+                                .padding(.vertical, DS.Spacing.sm)
+                                .background(DS.Colors.primary.opacity(0.1))
+                                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel("Enter focus mode")
+                            .accessibilityHint("Shows one task at a time for focused work")
+
                             Button {
                                 openFloatingInput()
                             } label: {
@@ -118,6 +140,7 @@ struct TodoView: View {
 
             if showFloatingInput {
                 FloatingTaskInputCard(
+                    initialPriority: inputPriority,
                     onSubmit: handleFloatingSubmit,
                     onClose: closeFloatingInput
                 )
@@ -142,6 +165,9 @@ struct TodoView: View {
         }
         .sheet(item: $selectedTodo) { todo in
             TodoDetailView(todo: todo)
+        }
+        .fullScreenCover(isPresented: $showFocusMode) {
+            FocusModeView()
         }
     }
 
@@ -398,8 +424,11 @@ struct TodoView: View {
             onToggleCompletion: { todoStore.toggleCompletion(for: $0) },
             onTap: { selectedTodo = $0 },
             onDelete: { todoStore.deleteTodo($0) },
-            onAddItem: { addTodo(title: $0, priority: priority) },
-            onDropItem: { moveTodo($0, to: priority) }
+            onAddItem: { openFloatingInput(priority: priority) },
+            onDropItem: { moveTodo($0, to: priority) },
+            onReorder: { fromIndex, toIndex in
+                reorderTodo(from: fromIndex, to: toIndex, in: priority)
+            }
         )
         .dropDestination(for: String.self) { items, _ in
             guard let idString = items.first,
@@ -528,25 +557,12 @@ struct TodoView: View {
 
     // MARK: - Actions
 
-    private func addTodo(title: String, priority: TodoPriority) {
-        let newTodo = TodoItem(
-            title: title,
-            icon: suggestIcon(for: title),
-            colorName: nextColor().rawValue,
-            priority: priority
-        )
-
-        withAnimation(DS.Animation.spring) {
-            todoStore.addTodo(newTodo)
-        }
-    }
-
     private func handleFloatingSubmit(_ draft: FloatingTaskInputDraft) {
         let newTodo = TodoItem(
             title: draft.title,
             icon: draft.icon,
             colorName: draft.color.rawValue,
-            priority: .none,
+            priority: draft.priority,
             category: draft.category,
             dueDate: draft.dueDate,
             estimatedDuration: draft.duration
@@ -557,7 +573,8 @@ struct TodoView: View {
         }
     }
 
-    private func openFloatingInput() {
+    private func openFloatingInput(priority: TodoPriority = .none) {
+        inputPriority = priority
         withAnimation(DS.Animation.spring) {
             showFloatingInput = true
         }
@@ -660,6 +677,12 @@ struct TodoView: View {
     private func moveTodo(_ todo: TodoItem, to priority: TodoPriority) {
         todoStore.updatePriority(for: todo, to: priority)
         HapticManager.shared.notification(.success)
+    }
+
+    private func reorderTodo(from sourceIndex: Int, to destinationIndex: Int, in priority: TodoPriority) {
+        let indexSet = IndexSet(integer: sourceIndex)
+        let destination = destinationIndex > sourceIndex ? destinationIndex + 1 : destinationIndex
+        todoStore.moveTodo(from: indexSet, to: destination, in: priority)
     }
 }
 

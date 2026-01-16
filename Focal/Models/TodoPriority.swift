@@ -11,9 +11,9 @@ enum TodoPriority: String, CaseIterable, Codable, Identifiable {
 
     var displayName: String {
         switch self {
-        case .high: return "High"
-        case .medium: return "Medium"
-        case .low: return "Low"
+        case .high: return "Must"
+        case .medium: return "Should"
+        case .low: return "Could"
         case .none: return "To-do"
         }
     }

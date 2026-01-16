@@ -9,12 +9,12 @@ struct TodoPrioritySection: View {
     let onToggleCompletion: (TodoItem) -> Void
     let onTap: (TodoItem) -> Void
     let onDelete: (TodoItem) -> Void
-    let onAddItem: (String) -> Void
+    let onAddItem: () -> Void
     let onDropItem: (TodoItem) -> Void
+    var onReorder: ((Int, Int) -> Void)? = nil
 
-    @State private var isAdding = false
-    @State private var newItemText = ""
-    @FocusState private var isInputFocused: Bool
+    @State private var isHovering = false
+    @State private var draggedItem: TodoItem?
 
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.sm) {
@@ -64,70 +64,44 @@ struct TodoPrioritySection: View {
 
                 Spacer()
 
-                // Add button - toggles inline input
-                Button(action: {
-                    withAnimation(DS.Animation.spring) {
-                        isAdding.toggle()
-                        if isAdding {
-                            isInputFocused = true
-                        }
-                    }
-                }) {
-                    Image(systemName: isAdding ? "xmark" : "plus")
+                // Add button - triggers callback
+                Button(action: onAddItem) {
+                    Image(systemName: "plus")
                         .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(isAdding ? DS.Colors.textSecondary : DS.Colors.textTertiary)
+                        .foregroundStyle(DS.Colors.textTertiary)
                         .frame(width: 28, height: 28)
-                        .background(isAdding ? DS.Colors.bgSecondary : Color.clear)
+                        .background(Color.clear)
                         .clipShape(Circle())
+                        .contentShape(Circle())
                 }
                 .buttonStyle(.plain)
+                .opacity(isHovering || !todos.isEmpty ? 1 : 0.5)
             }
             .padding(.horizontal, DS.Spacing.xs)
-
-            // Inline add input
-            if isAdding {
-                HStack(spacing: DS.Spacing.md) {
-                    TextField("Add to \(priority.displayName)...", text: $newItemText)
-                        .scaledFont(size: 15, relativeTo: .body)
-                        .foregroundStyle(DS.Colors.textPrimary)
-                        .focused($isInputFocused)
-                        .submitLabel(.done)
-                        .onSubmit {
-                            addItem()
-                        }
-
-                    Button(action: addItem) {
-                        Text("Add")
-                            .scaledFont(size: 14, weight: .semibold, relativeTo: .subheadline)
-                            .foregroundStyle(.white)
-                            .padding(.horizontal, DS.Spacing.md)
-                            .padding(.vertical, DS.Spacing.sm)
-                            .background(newItemText.isEmpty ? DS.Colors.textTertiary : priority.iconColor)
-                            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
-                    }
-                    .buttonStyle(.plain)
-                    .disabled(newItemText.isEmpty)
-                }
-                .padding(DS.Spacing.md)
-                .background(DS.Colors.surfacePrimary)
-                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
-                .overlay(
-                    RoundedRectangle(cornerRadius: DS.Radius.lg)
-                        .stroke(priority.iconColor.opacity(0.3), lineWidth: 1.5)
-                )
-                .transition(.opacity.combined(with: .scale(scale: 0.95)))
-            }
 
             // Tasks list and drop zone
             VStack(spacing: DS.Spacing.sm) {
                 if !isCollapsed {
-                    ForEach(todos, id: \.id) { todo in
+                    ForEach(Array(todos.enumerated()), id: \.element.id) { index, todo in
                         DraggableTodoCard(
                             todo: todo,
                             onToggleCompletion: { onToggleCompletion(todo) },
                             onTap: { onTap(todo) },
                             onDelete: { onDelete(todo) }
                         )
+                        .opacity(draggedItem?.id == todo.id ? 0.5 : 1.0)
+                        .onDrag {
+                            draggedItem = todo
+                            HapticManager.shared.dragActivated()
+                            return NSItemProvider(object: todo.id.uuidString as NSString)
+                        }
+                        .onDrop(of: [.text], delegate: ReorderDropDelegate(
+                            item: todo,
+                            items: todos,
+                            currentIndex: index,
+                            draggedItem: $draggedItem,
+                            onReorder: onReorder
+                        ))
                     }
                 }
 
@@ -153,16 +127,12 @@ struct TodoPrioritySection: View {
                 }
             }
         }
-        .animation(DS.Animation.spring, value: isDropTarget)
-    }
-
-    private func addItem() {
-        guard !newItemText.trimmingCharacters(in: .whitespaces).isEmpty else { return }
-        onAddItem(newItemText)
-        newItemText = ""
-        withAnimation(DS.Animation.spring) {
-            isAdding = false
+        .onHover { hovering in
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isHovering = hovering
+            }
         }
+        .animation(DS.Animation.spring, value: isDropTarget)
     }
 }
 
@@ -284,76 +254,83 @@ struct TiimoTodoCard: View {
 
     var body: some View {
         Button(action: onTap) {
-            HStack(spacing: DS.Spacing.md) {
-                // Emoji badge
-                Text(todo.icon)
-                    .font(.system(size: 22))
-                    .frame(width: 44, height: 44)
-                    .background(todo.color.lightColor.opacity(0.6))
-                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+            HStack(spacing: 0) {
+                // Priority stripe on the left edge
+                Rectangle()
+                    .fill(todo.priorityEnum.accentColor)
+                    .frame(width: 4)
 
-                // Title and metadata
-                VStack(alignment: .leading, spacing: DS.Spacing.xs) {
-                    Text(todo.title)
-                        .scaledFont(size: 15, weight: .medium, relativeTo: .body)
-                        .foregroundStyle(todo.isCompleted ? DS.Colors.textSecondary : DS.Colors.textPrimary)
-                        .strikethrough(todo.isCompleted)
-                        .lineLimit(2)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                HStack(spacing: DS.Spacing.md) {
+                    // Emoji badge
+                    Text(todo.icon)
+                        .font(.system(size: 22))
+                        .frame(width: 44, height: 44)
+                        .background(todo.color.lightColor.opacity(0.6))
+                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
 
-                    // Due date and subtasks info
-                    HStack(spacing: DS.Spacing.sm) {
-                        categoryTag
+                    // Title and metadata
+                    VStack(alignment: .leading, spacing: DS.Spacing.xs) {
+                        Text(todo.title)
+                            .scaledFont(size: 15, weight: .medium, relativeTo: .body)
+                            .foregroundStyle(todo.isCompleted ? DS.Colors.textSecondary : DS.Colors.textPrimary)
+                            .strikethrough(todo.isCompleted)
+                            .lineLimit(2)
+                            .frame(maxWidth: .infinity, alignment: .leading)
 
-                        if let dueText = todo.dueDateFormatted {
-                            HStack(spacing: DS.Spacing.xs) {
-                                Image(systemName: todo.isOverdue ? "exclamationmark.circle.fill" : "calendar")
-                                    .font(.system(size: 10, weight: .semibold))
-                                Text(dueText)
-                                    .scaledFont(size: 11, weight: .medium, relativeTo: .caption2)
+                        // Due date and subtasks info
+                        HStack(spacing: DS.Spacing.sm) {
+                            categoryTag
+
+                            if let dueText = todo.dueDateFormatted {
+                                HStack(spacing: DS.Spacing.xs) {
+                                    Image(systemName: todo.isOverdue ? "exclamationmark.circle.fill" : "calendar")
+                                        .font(.system(size: 10, weight: .semibold))
+                                    Text(dueText)
+                                        .scaledFont(size: 11, weight: .medium, relativeTo: .caption2)
+                                }
+                                .foregroundStyle(todo.isOverdue ? DS.Colors.danger : DS.Colors.textTertiary)
                             }
-                            .foregroundStyle(todo.isOverdue ? DS.Colors.danger : DS.Colors.textTertiary)
-                        }
 
-                        if todo.hasSubtasks {
-                            HStack(spacing: DS.Spacing.xs) {
-                                Image(systemName: "checklist")
-                                    .font(.system(size: 10, weight: .semibold))
-                                Text("\(todo.completedSubtasksCount)/\(todo.totalSubtasks)")
-                                    .scaledFont(size: 11, weight: .medium, design: .monospaced, relativeTo: .caption2)
-                            }
-                            .foregroundStyle(DS.Colors.textTertiary)
-                        }
-
-                        if todo.reminderOption != nil {
-                            Image(systemName: "bell.fill")
-                                .font(.system(size: 10, weight: .semibold))
+                            if todo.hasSubtasks {
+                                HStack(spacing: DS.Spacing.xs) {
+                                    Image(systemName: "checklist")
+                                        .font(.system(size: 10, weight: .semibold))
+                                    Text("\(todo.completedSubtasksCount)/\(todo.totalSubtasks)")
+                                        .scaledFont(size: 11, weight: .medium, design: .monospaced, relativeTo: .caption2)
+                                }
                                 .foregroundStyle(DS.Colors.textTertiary)
+                            }
+
+                            if todo.reminderOption != nil {
+                                Image(systemName: "bell.fill")
+                                    .font(.system(size: 10, weight: .semibold))
+                                    .foregroundStyle(DS.Colors.textTertiary)
+                            }
                         }
                     }
-                }
 
-                // Circular checkbox
-                Button(action: onToggleCompletion) {
-                    ZStack {
-                        Circle()
-                            .stroke(todo.isCompleted ? Color.clear : DS.Colors.divider, lineWidth: 2)
-                            .frame(width: 28, height: 28)
-
-                        if todo.isCompleted {
+                    // Circular checkbox
+                    Button(action: onToggleCompletion) {
+                        ZStack {
                             Circle()
-                                .fill(DS.Colors.sage)
+                                .stroke(todo.isCompleted ? Color.clear : DS.Colors.divider, lineWidth: 2)
                                 .frame(width: 28, height: 28)
 
-                            Image(systemName: "checkmark")
-                                .font(.system(size: 14, weight: .bold))
-                                .foregroundStyle(.white)
+                            if todo.isCompleted {
+                                Circle()
+                                    .fill(DS.Colors.sage)
+                                    .frame(width: 28, height: 28)
+
+                                Image(systemName: "checkmark")
+                                    .font(.system(size: 14, weight: .bold))
+                                    .foregroundStyle(.white)
+                            }
                         }
                     }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
+                .padding(DS.Spacing.md)
             }
-            .padding(DS.Spacing.md)
             .background(DS.Colors.surfacePrimary)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
             .shadowResting()
@@ -377,5 +354,48 @@ struct TiimoTodoCard: View {
         .padding(.vertical, DS.Spacing.xs / 2)
         .background(category.tint.opacity(0.12))
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
+    }
+}
+
+// MARK: - Reorder Drop Delegate
+
+struct ReorderDropDelegate: DropDelegate {
+    let item: TodoItem
+    let items: [TodoItem]
+    let currentIndex: Int
+    @Binding var draggedItem: TodoItem?
+    var onReorder: ((Int, Int) -> Void)?
+
+    func dropEntered(info: DropInfo) {
+        guard let draggedItem = draggedItem,
+              draggedItem.id != item.id,
+              let fromIndex = items.firstIndex(where: { $0.id == draggedItem.id }),
+              let toIndex = items.firstIndex(where: { $0.id == item.id }),
+              fromIndex != toIndex else { return }
+
+        HapticManager.shared.selection()
+    }
+
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        return DropProposal(operation: .move)
+    }
+
+    func performDrop(info: DropInfo) -> Bool {
+        guard let draggedItem = draggedItem,
+              let fromIndex = items.firstIndex(where: { $0.id == draggedItem.id }),
+              let toIndex = items.firstIndex(where: { $0.id == item.id }),
+              fromIndex != toIndex else {
+            self.draggedItem = nil
+            return false
+        }
+
+        onReorder?(fromIndex, toIndex)
+        HapticManager.shared.dragDropped()
+        self.draggedItem = nil
+        return true
+    }
+
+    func dropExited(info: DropInfo) {
+        // No action needed
     }
 }

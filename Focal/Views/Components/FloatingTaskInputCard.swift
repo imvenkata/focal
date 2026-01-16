@@ -6,6 +6,7 @@ struct FloatingTaskInputDraft {
     let icon: String
     let color: TaskColor
     let category: TodoCategory
+    let priority: TodoPriority
     let duration: TimeInterval?
     let dueDate: Date?
 }
@@ -17,6 +18,7 @@ private struct ParsedDateResult {
 }
 
 struct FloatingTaskInputCard: View {
+    let initialPriority: TodoPriority
     let onSubmit: (FloatingTaskInputDraft) -> Void
     let onClose: () -> Void
 
@@ -483,6 +485,7 @@ struct FloatingTaskInputCard: View {
             icon: selectedIcon,
             color: selectedColor,
             category: selectedCategory,
+            priority: initialPriority,
             duration: selectedDuration,
             dueDate: parsedResult?.date
         )
@@ -513,7 +516,7 @@ private struct DurationOption: Identifiable {
 }
 
 #Preview {
-    FloatingTaskInputCard(onSubmit: { _ in }, onClose: {})
+    FloatingTaskInputCard(initialPriority: .none, onSubmit: { _ in }, onClose: {})
         .padding(DS.Spacing.lg)
         .background(DS.Colors.background)
 }
