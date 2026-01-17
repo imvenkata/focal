@@ -246,6 +246,8 @@ struct TodoView: View {
         }
         .sheet(item: $selectedTodo) { todo in
             TodoDetailView(todo: todo)
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
         }
         .fullScreenCover(isPresented: $showFocusMode) {
             FocusModeView()
