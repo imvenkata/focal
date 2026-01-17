@@ -603,6 +603,7 @@ private struct TodoDetailHeader: View {
                         }
                         .accessibilityLabel("Todo title")
                 }
+                .frame(maxWidth: 200)
                 .padding(.top, DS.Spacing.xs)
 
                 Spacer()
