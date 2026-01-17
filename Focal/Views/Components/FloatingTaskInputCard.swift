@@ -29,8 +29,6 @@ struct FloatingTaskInputCard: View {
     @State private var isExpanded = false
     @State private var selectedIcon = "✨"
     @State private var selectedColor: TaskColor = .sage
-    @State private var isIconPinned = false
-    @State private var showIconPicker = false
 
     @FocusState private var isTitleFocused: Bool
 
@@ -84,12 +82,6 @@ struct FloatingTaskInputCard: View {
         .onChange(of: title) { _, newValue in
             updateSuggestions(for: newValue)
         }
-        .sheet(isPresented: $showIconPicker) {
-            IconPickerView(selectedIcon: $selectedIcon) {
-                isIconPinned = true
-                showIconPicker = false
-            }
-        }
     }
 
     private var handleButton: some View {
@@ -120,55 +112,44 @@ struct FloatingTaskInputCard: View {
                 .accessibilityLabel("Task title")
                 .accessibilityHint("Enter what you need to do")
 
+            // Auto-selected icon display (non-interactive)
+            ZStack {
+                RoundedRectangle(cornerRadius: DS.Radius.md, style: .continuous)
+                    .fill(selectedColor.lightColor)
+
+                RoundedRectangle(cornerRadius: DS.Radius.md, style: .continuous)
+                    .stroke(selectedColor.color, lineWidth: DS.Sizes.hairline * 1.5)
+
+                Text(selectedIcon)
+                    .scaledFont(size: 22, relativeTo: .title2)
+            }
+            .frame(
+                width: DS.Sizes.iconButtonSize + DS.Spacing.sm,
+                height: DS.Sizes.iconButtonSize + DS.Spacing.sm
+            )
+            .shadowColored(selectedColor.color)
+            .accessibilityLabel("Task icon: \(selectedIcon)")
+
+            // Voice recorder button
             Button {
-                showIconPicker = true
+                HapticManager.shared.impact(.light)
+                // TODO: Implement voice input
             } label: {
-                ZStack {
-                    RoundedRectangle(cornerRadius: DS.Radius.md, style: .continuous)
-                        .fill(selectedColor.lightColor)
-
-                    RoundedRectangle(cornerRadius: DS.Radius.md, style: .continuous)
-                        .stroke(selectedColor.color, lineWidth: DS.Sizes.hairline * 1.5)
-
-                    Text(selectedIcon)
-                        .scaledFont(size: 22, relativeTo: .title2)
-                }
-                .frame(
-                    width: DS.Sizes.iconButtonSize + DS.Spacing.sm,
-                    height: DS.Sizes.iconButtonSize + DS.Spacing.sm
-                )
-                .shadowColored(selectedColor.color)
+                Image(systemName: "mic.fill")
+                    .scaledFont(size: 16, weight: .semibold, relativeTo: .callout)
+                    .foregroundStyle(DS.Colors.textSecondary)
+                    .frame(width: DS.Sizes.iconButtonSize, height: DS.Sizes.iconButtonSize)
+                    .background(DS.Colors.surfaceSecondary)
+                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Choose icon")
-            .accessibilityHint("Opens the icon picker")
+            .accessibilityLabel("Voice input")
+            .accessibilityHint("Record task with your voice")
         }
     }
 
     private var chipsRow: some View {
         HStack(spacing: DS.Spacing.sm) {
-            Menu {
-                ForEach(TodoCategory.allCases) { category in
-                    Button {
-                        selectedCategory = category
-                        HapticManager.shared.impact(.light)
-                    } label: {
-                        HStack(spacing: DS.Spacing.sm) {
-                            Text(category.icon)
-                            Text(category.label)
-                        }
-                    }
-                }
-            } label: {
-                chipView(
-                    label: selectedCategory.label,
-                    icon: selectedCategory.icon,
-                    isActive: true
-                )
-            }
-            .accessibilityLabel("Category")
-            .accessibilityHint("Double tap to change category")
-
             Button {
                 withAnimation(DS.Animation.spring) {
                     showDurationPicker.toggle()
@@ -195,20 +176,6 @@ struct FloatingTaskInputCard: View {
             .accessibilityHint("Opens extra options")
 
             Spacer(minLength: DS.Spacing.sm)
-
-            Button {
-                HapticManager.shared.impact(.light)
-            } label: {
-                Image(systemName: "mic.fill")
-                    .scaledFont(size: 14, weight: .semibold, relativeTo: .caption)
-                    .foregroundStyle(DS.Colors.textSecondary)
-                    .frame(width: DS.Sizes.iconButtonSize, height: DS.Sizes.iconButtonSize)
-                    .background(DS.Colors.surfaceSecondary)
-                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("Voice input")
-            .accessibilityHint("Starts voice input")
 
             Button {
                 submit()
@@ -351,7 +318,6 @@ struct FloatingTaskInputCard: View {
     }
 
     private func updateSuggestions(for value: String) {
-        guard !isIconPinned else { return }
         if let mapping = IconMapper.shared.findMatch(for: value) {
             selectedIcon = mapping.icon
             selectedColor = mapping.suggestedColor

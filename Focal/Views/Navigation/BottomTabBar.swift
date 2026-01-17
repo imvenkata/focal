@@ -2,28 +2,27 @@ import SwiftUI
 
 struct BottomTabBar: View {
     @Binding var selectedTab: AppTab
-    let onAddTapped: () -> Void
-    var showsFAB: Bool = true
 
     var body: some View {
-        HStack(spacing: 0) {
-            // Planner tab
-            TabButton(tab: .planner, isSelected: selectedTab == .planner) {
-                HapticManager.shared.selection()
-                selectedTab = .planner
-            }
-
-            // FAB spacer (centered)
-            Spacer()
-                .frame(width: DS.Sizes.fabSize + DS.Spacing.xl)
-
-            // Todos tab
+        HStack(spacing: DS.Spacing.xl) {
+            // Todos tab (first)
             TabButton(tab: .todos, isSelected: selectedTab == .todos) {
                 HapticManager.shared.selection()
                 selectedTab = .todos
             }
+            .frame(maxWidth: 80)
+
+            // Planner tab (second)
+            TabButton(tab: .planner, isSelected: selectedTab == .planner) {
+                HapticManager.shared.selection()
+                selectedTab = .planner
+            }
+            .frame(maxWidth: 80)
+
+            // Blank space on right
+            Spacer()
         }
-        .padding(.horizontal, DS.Spacing.lg)
+        .padding(.horizontal, DS.Spacing.xl)
         .padding(.top, DS.Spacing.md)
         .padding(.bottom, 34)
         .background(.ultraThinMaterial)
@@ -31,13 +30,6 @@ struct BottomTabBar: View {
             Rectangle()
                 .fill(DS.Colors.borderSubtle)
                 .frame(height: 1)
-        }
-        .overlay(alignment: .top) {
-            // FAB
-            if showsFAB {
-                FABButton(action: onAddTapped)
-                    .offset(y: -DS.Sizes.fabSize / 2)
-            }
         }
     }
 }
@@ -71,9 +63,7 @@ struct TabButton: View {
 #Preview {
     VStack {
         Spacer()
-        BottomTabBar(selectedTab: .constant(.planner), onAddTapped: {
-            print("Add tapped")
-        })
+        BottomTabBar(selectedTab: .constant(.todos))
     }
     .background(DS.Colors.bgPrimary)
 }

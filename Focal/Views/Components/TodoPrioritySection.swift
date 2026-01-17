@@ -279,8 +279,6 @@ struct TiimoTodoCard: View {
 
                         // Due date and subtasks info
                         HStack(spacing: DS.Spacing.sm) {
-                            categoryTag
-
                             if let dueText = todo.dueDateFormatted {
                                 HStack(spacing: DS.Spacing.xs) {
                                     Image(systemName: todo.isOverdue ? "exclamationmark.circle.fill" : "calendar")

@@ -630,3 +630,91 @@ struct CloseButton: View {
         .accessibilityLabel("Close")
     }
 }
+
+// MARK: - Calm Mode Messages
+enum CalmMessages {
+    static func greeting(for hour: Int) -> String {
+        switch hour {
+        case 5..<12:
+            return "Good morning 🌅"
+        case 12..<17:
+            return "Good afternoon 🌿"
+        case 17..<21:
+            return "Good evening 🌙"
+        default:
+            return "Take it easy 🌙"
+        }
+    }
+
+    static let encouragement = [
+        "You've got this!",
+        "One step at a time",
+        "Take your time",
+        "You're doing great!",
+        "Small steps matter",
+        "Be kind to yourself"
+    ]
+
+    static func randomEncouragement() -> String {
+        encouragement.randomElement() ?? "You've got this!"
+    }
+
+    static func completed(_ count: Int) -> String {
+        switch count {
+        case 0:
+            return "Ready to start? 🌱"
+        case 1:
+            return "You've completed 1 today! 🎉"
+        case 2...4:
+            return "You've completed \(count) today! 🎉"
+        default:
+            return "Amazing! \(count) completed today! 🌟"
+        }
+    }
+
+    static func softDueLabel(_ todo: TodoItem) -> String {
+        if todo.isDueToday {
+            return "For today"
+        } else if todo.isDueTomorrow {
+            return "For tomorrow"
+        } else if todo.isOverdue {
+            return "Needs attention"
+        } else if let formatted = todo.dueDateFormatted {
+            return formatted
+        }
+        return ""
+    }
+}
+
+// MARK: - User Energy State (for Calm Mode)
+enum UserEnergy: String, CaseIterable, Identifiable {
+    case low = "Low"
+    case medium = "Medium"
+    case high = "High"
+
+    var id: String { rawValue }
+
+    var emoji: String {
+        switch self {
+        case .low: return "😴"
+        case .medium: return "😊"
+        case .high: return "⚡"
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .low: return DS.Colors.lavender
+        case .medium: return DS.Colors.sage
+        case .high: return DS.Colors.amber
+        }
+    }
+
+    var description: String {
+        switch self {
+        case .low: return "Low energy, simple tasks"
+        case .medium: return "Balanced, regular tasks"
+        case .high: return "Full energy, any task"
+        }
+    }
+}

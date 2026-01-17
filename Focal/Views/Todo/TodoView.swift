@@ -14,7 +14,56 @@ struct TodoView: View {
     @State private var showingSearch = false
     @State private var showFocusMode = false
 
+    // Calm Mode preference (persisted)
+    @AppStorage("calmModeEnabled") private var calmModeEnabled = false
+
+    // View options (persisted)
+    @AppStorage("todoGroupByPriority") private var groupByPriority = false
+
     var body: some View {
+        if calmModeEnabled {
+            CalmTodoView()
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        calmModeToggle
+                    }
+                }
+        } else {
+            standardTodoView
+        }
+    }
+
+    // MARK: - Calm Mode Toggle
+
+    private var calmModeToggle: some View {
+        Button {
+            withAnimation(DS.Animation.spring) {
+                calmModeEnabled.toggle()
+            }
+            HapticManager.shared.selection()
+        } label: {
+            HStack(spacing: DS.Spacing.xs) {
+                Image(systemName: calmModeEnabled ? "leaf.fill" : "leaf")
+                    .font(.system(size: 14, weight: .medium))
+                Text(calmModeEnabled ? "Calm" : "Calm Mode")
+                    .scaledFont(size: 13, weight: .medium, relativeTo: .caption)
+            }
+            .foregroundStyle(calmModeEnabled ? DS.Colors.success : DS.Colors.textSecondary)
+            .padding(.horizontal, DS.Spacing.md)
+            .padding(.vertical, DS.Spacing.sm)
+            .background(
+                RoundedRectangle(cornerRadius: DS.Radius.md, style: .continuous)
+                    .fill(calmModeEnabled ? DS.Colors.success.opacity(0.15) : DS.Colors.surfaceSecondary)
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(calmModeEnabled ? "Calm mode is on" : "Calm mode is off")
+        .accessibilityHint("Double tap to toggle calm mode")
+    }
+
+    // MARK: - Standard Todo View
+
+    private var standardTodoView: some View {
         ZStack(alignment: .bottom) {
             ScrollView {
                 VStack(spacing: DS.Spacing.xl) {
@@ -26,10 +75,6 @@ struct TodoView: View {
                         searchBar
                             .transition(.move(edge: .top).combined(with: .opacity))
                     }
-
-                    // Filter chips
-                    filterChips
-                    categoryChips
 
                     // Title
                     HStack {
@@ -75,6 +120,31 @@ struct TodoView: View {
                             .accessibilityLabel("Open quick add")
                             .accessibilityHint("Opens the floating input")
 
+                            // View options menu (ellipsis)
+                            Menu {
+                                // Grouping toggle
+                                Button {
+                                    withAnimation(DS.Animation.spring) {
+                                        groupByPriority.toggle()
+                                    }
+                                    HapticManager.shared.selection()
+                                } label: {
+                                    Label(
+                                        groupByPriority ? "Ungroup tasks" : "Group by priority",
+                                        systemImage: groupByPriority ? "rectangle.stack" : "list.bullet"
+                                    )
+                                }
+                            } label: {
+                                Image(systemName: "ellipsis")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundStyle(DS.Colors.textSecondary)
+                                    .frame(width: 36, height: 36)
+                                    .background(DS.Colors.surfaceSecondary)
+                                    .clipShape(Circle())
+                            }
+                            .accessibilityLabel("View options")
+                            .accessibilityHint("Opens menu to customize task display")
+
                             // Search button
                             Button {
                                 withAnimation(DS.Animation.spring) {
@@ -99,8 +169,14 @@ struct TodoView: View {
                     } else if todoStore.filteredTodos.isEmpty && !todoStore.searchText.isEmpty {
                         noResultsState
                     } else {
-                        // Priority sections
-                        prioritySections
+                        // Show grouped or ungrouped based on preference
+                        if groupByPriority {
+                            // Grouped by priority sections
+                            prioritySections
+                        } else {
+                            // Ungrouped flat list
+                            ungroupedTaskList
+                        }
 
                         // Completed section
                         if !todoStore.filteredCompletedTodos.isEmpty {
@@ -152,6 +228,11 @@ struct TodoView: View {
         .animation(DS.Animation.spring, value: todoStore.canUndo)
         .animation(DS.Animation.spring, value: showFloatingInput)
         .ignoresSafeArea(.keyboard, edges: .bottom)
+        .onAppear {
+            // Refresh todos from database when view appears
+            // This ensures data is up-to-date when switching back to this tab
+            todoStore.fetchTodos()
+        }
         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillChangeFrameNotification)) { notification in
             guard showFloatingInput,
                   let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
@@ -169,9 +250,12 @@ struct TodoView: View {
         .fullScreenCover(isPresented: $showFocusMode) {
             FocusModeView()
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                calmModeToggle
+            }
+        }
     }
-
-    // MARK: - Header
 
     private var headerSection: some View {
         HStack(spacing: DS.Spacing.md) {
@@ -189,25 +273,6 @@ struct TodoView: View {
             .background(DS.Colors.surfacePrimary)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.pill))
             .shadowResting()
-
-            // Stats badges
-            if todoStore.overdueCount > 0 {
-                StatBadge(
-                    icon: "exclamationmark.circle.fill",
-                    count: todoStore.overdueCount,
-                    color: DS.Colors.danger,
-                    label: "Overdue"
-                )
-            }
-
-            if todoStore.dueTodayCount > 0 {
-                StatBadge(
-                    icon: "sun.max.fill",
-                    count: todoStore.dueTodayCount,
-                    color: DS.Colors.amber,
-                    label: "Due today"
-                )
-            }
 
             Spacer()
         }
@@ -243,74 +308,6 @@ struct TodoView: View {
         .padding(DS.Spacing.md)
         .background(DS.Colors.surfaceSecondary)
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
-    }
-
-    // MARK: - Filter Chips
-
-    private var filterChips: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: DS.Spacing.sm) {
-                ForEach(TodoFilter.allCases) { filter in
-                    FilterChip(
-                        filter: filter,
-                        isSelected: todoStore.selectedFilter == filter,
-                        count: countForFilter(filter)
-                    ) {
-                        withAnimation(DS.Animation.spring) {
-                            todoStore.selectedFilter = filter
-                        }
-                        HapticManager.shared.selection()
-                    }
-                }
-            }
-        }
-    }
-
-    private var categoryChips: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: DS.Spacing.sm) {
-                CategoryChip(
-                    label: "All",
-                    icon: "🗂️",
-                    tint: DS.Colors.textSecondary,
-                    isSelected: todoStore.selectedCategory == nil
-                ) {
-                    withAnimation(DS.Animation.spring) {
-                        todoStore.selectedCategory = nil
-                    }
-                    HapticManager.shared.selection()
-                }
-
-                ForEach(TodoCategory.allCases) { category in
-                    CategoryChip(
-                        label: category.label,
-                        icon: category.icon,
-                        tint: category.tint,
-                        isSelected: todoStore.selectedCategory == category
-                    ) {
-                        withAnimation(DS.Animation.spring) {
-                            todoStore.selectedCategory = category
-                        }
-                        HapticManager.shared.selection()
-                    }
-                }
-            }
-        }
-        .accessibilityLabel("Category filters")
-    }
-
-    private func countForFilter(_ filter: TodoFilter) -> Int {
-        switch filter {
-        case .all: return todoStore.activeTodos.count
-        case .today: return todoStore.dueTodayCount
-        case .upcoming:
-            return todoStore.activeTodos.filter { todo in
-                guard let dueDate = todo.dueDate else { return false }
-                return dueDate > Date() && !todo.isDueToday
-            }.count
-        case .overdue: return todoStore.overdueCount
-        case .noDueDate: return todoStore.activeTodos.filter { $0.dueDate == nil }.count
-        }
     }
 
     // MARK: - Empty State
@@ -446,6 +443,59 @@ struct TodoView: View {
                 dragTargetPriority = isTargeted ? priority : nil
             }
         }
+    }
+
+    // MARK: - Ungrouped Task List
+
+    private var ungroupedTaskList: some View {
+        VStack(spacing: DS.Spacing.sm) {
+            ForEach(allActiveTodosSorted) { todo in
+                DraggableTodoCard(
+                    todo: todo,
+                    onToggleCompletion: { todoStore.toggleCompletion(for: todo) },
+                    onTap: { selectedTodo = todo },
+                    onDelete: { todoStore.deleteTodo(todo) }
+                )
+            }
+        }
+    }
+
+    /// All active todos sorted by priority then due date
+    private var allActiveTodosSorted: [TodoItem] {
+        todoStore.activeTodos
+            .filter { todo in
+                // Apply search filter
+                if !todoStore.searchText.isEmpty {
+                    let query = todoStore.searchText.lowercased()
+                    return todo.title.lowercased().contains(query) ||
+                           todo.notes?.lowercased().contains(query) == true
+                }
+                return true
+            }
+            .sorted { a, b in
+                // Sort by priority first
+                if a.priorityEnum.sortOrder != b.priorityEnum.sortOrder {
+                    return a.priorityEnum.sortOrder < b.priorityEnum.sortOrder
+                }
+                // Then by overdue
+                if a.isOverdue != b.isOverdue {
+                    return a.isOverdue
+                }
+                // Then by due today
+                if a.isDueToday != b.isDueToday {
+                    return a.isDueToday
+                }
+                // Then by due date
+                if let aDate = a.dueDate, let bDate = b.dueDate {
+                    return aDate < bDate
+                } else if a.dueDate != nil {
+                    return true
+                } else if b.dueDate != nil {
+                    return false
+                }
+                // Finally by creation date
+                return a.createdAt < b.createdAt
+            }
     }
 
     // MARK: - Completed Section
@@ -709,70 +759,6 @@ private struct StatBadge: View {
         .background(color.opacity(0.15))
         .clipShape(Capsule())
         .accessibilityLabel("\(count) \(label)")
-    }
-}
-
-private struct FilterChip: View {
-    let filter: TodoFilter
-    let isSelected: Bool
-    let count: Int
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: DS.Spacing.xs) {
-                Image(systemName: filter.icon)
-                    .font(.system(size: 12, weight: .semibold))
-
-                Text(filter.rawValue)
-                    .scaledFont(size: 13, weight: .semibold, relativeTo: .callout)
-
-                if count > 0 {
-                    Text("\(count)")
-                        .scaledFont(size: 11, weight: .bold, design: .rounded, relativeTo: .caption2)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(isSelected ? .white.opacity(0.3) : filter.color.opacity(0.2))
-                        .clipShape(Capsule())
-                }
-            }
-            .foregroundStyle(isSelected ? .white : filter.color)
-            .padding(.horizontal, DS.Spacing.md)
-            .padding(.vertical, DS.Spacing.sm)
-            .background(isSelected ? filter.color : filter.color.opacity(0.1))
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("\(filter.rawValue) filter, \(count) items")
-        .accessibilityAddTraits(isSelected ? .isSelected : [])
-    }
-}
-
-private struct CategoryChip: View {
-    let label: String
-    let icon: String
-    let tint: Color
-    let isSelected: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: DS.Spacing.xs) {
-                Text(icon)
-                    .scaledFont(size: 12, relativeTo: .caption)
-
-                Text(label)
-                    .scaledFont(size: 13, weight: .semibold, relativeTo: .callout)
-            }
-            .foregroundStyle(isSelected ? .white : tint)
-            .padding(.horizontal, DS.Spacing.md)
-            .padding(.vertical, DS.Spacing.sm)
-            .background(isSelected ? tint : tint.opacity(0.12))
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("\(label) category")
-        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 

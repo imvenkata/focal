@@ -57,7 +57,7 @@ final class TodoStore {
         fetchTodos()
     }
 
-    private func fetchTodos() {
+    func fetchTodos() {
         guard let modelContext else { return }
         let descriptor = FetchDescriptor<TodoItem>(
             sortBy: [

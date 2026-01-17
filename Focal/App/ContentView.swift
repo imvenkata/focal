@@ -7,11 +7,8 @@ struct ContentView: View {
     @State private var todoStore = TodoStore()
     @State private var dragState = TaskDragState()
     @State private var selectedTab: AppTab = .planner
-    @State private var showAddTask = false
 
     var body: some View {
-        let showsBottomFab = !(selectedTab == .planner && taskStore.viewMode == .day)
-
         ZStack(alignment: .bottom) {
             // Main content (Phase 1: Planner and Todos only)
             Group {
@@ -31,15 +28,9 @@ struct ContentView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             // Bottom navigation
-            BottomTabBar(selectedTab: $selectedTab, onAddTapped: {
-                showAddTask = true
-            }, showsFAB: showsBottomFab)
+            BottomTabBar(selectedTab: $selectedTab)
         }
         .ignoresSafeArea(.keyboard)
-        .sheet(isPresented: $showAddTask) {
-            PlannerTaskCreationSheet()
-                .environment(taskStore)
-        }
         .onAppear {
             taskStore.setModelContext(modelContext)
             todoStore.setModelContext(modelContext)
