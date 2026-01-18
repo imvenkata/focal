@@ -27,6 +27,7 @@
 		6920DB89862A47C367A92FBA /* SimpleTodoCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5429E08E04BD30E53AD0815 /* SimpleTodoCard.swift */; };
 		6E84E43CB871FB455747C4F3 /* BrainDumpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811D8E38D383B460CCB7A457 /* BrainDumpView.swift */; };
 		7170CDD6A4960F090FC99FCC /* TodoNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7ADFDB2671609E24766606 /* TodoNotificationService.swift */; };
+		7E4CD39D4370DB60534EF867 /* ScheduleSuggestionsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16AD4E6C59A6D7DCABB3CC4 /* ScheduleSuggestionsSheet.swift */; };
 		8F17231E9B27A7A509AF8B2E /* TodoPrioritySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E4473A9CBF971B857051263 /* TodoPrioritySection.swift */; };
 		8F319E69A447C83851CC129F /* VirtualTaskInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE7C8ABBC775162F49F4698 /* VirtualTaskInstance.swift */; };
 		A10000001000000000000001 /* FocalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000001 /* FocalApp.swift */; };
@@ -70,14 +71,17 @@
 		BF7A0F3000AFA57DC12F7005 /* TodoE2ETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C21FF334FA26EBC35FA426 /* TodoE2ETests.swift */; };
 		C17E56E8BCCCAE6516B0DFC4 /* TodoQuickAddBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146B21794815476C9E265BFB /* TodoQuickAddBar.swift */; };
 		C4AEE34C3593BBA1327E4925 /* TodoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB89FFC207F3D80D51FB4919 /* TodoView.swift */; };
+		CB20AB27F7B2821DE9DA42AA /* AIInsightCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E745EA95776BE48CD5FE62BB /* AIInsightCard.swift */; };
 		D01DF767EE8324DF8279756B /* AIOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14A1CCC2007F3ADF1D940D7 /* AIOnboardingView.swift */; };
 		D672C2844A58466DB7096353 /* AISettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6001D0698FB72015A7AA3383 /* AISettingsView.swift */; };
 		D993FB165B2DEDFD3076BD57 /* CalmTodoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463EAF7AD429B739BEA7B1AB /* CalmTodoView.swift */; };
 		DE0D021599AFE8FC0991C53F /* LLMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4CD4485B7372CC3C5CEC515 /* LLMService.swift */; };
 		E39F2863AE4E6DAEE4BE7A35 /* TaskNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A83373A8F7896F39B3E169 /* TaskNotificationService.swift */; };
+		F24EC1EB7FF703D81689DE74 /* TaskBreakdownSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAE20F62A0590CA859BB0CE /* TaskBreakdownSheet.swift */; };
 		F4897277A5D193D7549F1584 /* HeroTaskCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B71CDA142BE21B7A3368CFE /* HeroTaskCard.swift */; };
 		F9E8D7C6B5A432109876 /* WhenPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F678901234 /* WhenPickerSheet.swift */; };
 		FAE04556D68AB0186327675B /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D094A98D3D70EB376B8DBFF0 /* TodoItem.swift */; };
+		FB2358B8DEF634C015770324 /* RescheduleBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C7BA347A644CDED7AF0CB8 /* RescheduleBanner.swift */; };
 		FECB185277A3C91E10383091 /* PromptTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF94E356ED79AB8E009B563 /* PromptTemplates.swift */; };
 /* End PBXBuildFile section */
 
@@ -101,6 +105,7 @@
 		1B71CDA142BE21B7A3368CFE /* HeroTaskCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HeroTaskCard.swift; sourceTree = "<group>"; };
 		27E53E28D90E75ECAC5F5338 /* LLMProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LLMProvider.swift; path = Services/AI/LLMProvider.swift; sourceTree = "<group>"; };
 		2CA1DC87F1AE83F652E299C4 /* SimpleTaskRow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SimpleTaskRow.swift; sourceTree = "<group>"; };
+		3CAE20F62A0590CA859BB0CE /* TaskBreakdownSheet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TaskBreakdownSheet.swift; sourceTree = "<group>"; };
 		463EAF7AD429B739BEA7B1AB /* CalmTodoView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CalmTodoView.swift; sourceTree = "<group>"; };
 		4840E4DE32F7A02339E9C6DC /* AIModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AIModels.swift; sourceTree = "<group>"; };
 		4DB5DFBB8550AE2B6C3A0FD8 /* EnergySelector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EnergySelector.swift; sourceTree = "<group>"; };
@@ -163,8 +168,11 @@
 		CDF5F585D9A6A4F63D8A2A3A /* TodoStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoStore.swift; sourceTree = "<group>"; };
 		D094A98D3D70EB376B8DBFF0 /* TodoItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
 		D9B452298DCF994E4BBD745B /* KeychainManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		D9C7BA347A644CDED7AF0CB8 /* RescheduleBanner.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RescheduleBanner.swift; sourceTree = "<group>"; };
 		DB89FFC207F3D80D51FB4919 /* TodoView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoView.swift; sourceTree = "<group>"; };
 		E14BBD715903C5565B74A49D /* TodoPriority.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoPriority.swift; sourceTree = "<group>"; };
+		E16AD4E6C59A6D7DCABB3CC4 /* ScheduleSuggestionsSheet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScheduleSuggestionsSheet.swift; sourceTree = "<group>"; };
+		E745EA95776BE48CD5FE62BB /* AIInsightCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AIInsightCard.swift; sourceTree = "<group>"; };
 		F5429E08E04BD30E53AD0815 /* SimpleTodoCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SimpleTodoCard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -411,6 +419,10 @@
 				116033CEBAF79FDF5C683C2B /* AIQuickAddBar.swift */,
 				811D8E38D383B460CCB7A457 /* BrainDumpView.swift */,
 				6001D0698FB72015A7AA3383 /* AISettingsView.swift */,
+				3CAE20F62A0590CA859BB0CE /* TaskBreakdownSheet.swift */,
+				E16AD4E6C59A6D7DCABB3CC4 /* ScheduleSuggestionsSheet.swift */,
+				D9C7BA347A644CDED7AF0CB8 /* RescheduleBanner.swift */,
+				E745EA95776BE48CD5FE62BB /* AIInsightCard.swift */,
 			);
 			name = AI;
 			path = AI;
@@ -607,6 +619,10 @@
 				3BF19FA3BD778E1D7185D4D4 /* AIQuickAddBar.swift in Sources */,
 				6E84E43CB871FB455747C4F3 /* BrainDumpView.swift in Sources */,
 				D672C2844A58466DB7096353 /* AISettingsView.swift in Sources */,
+				F24EC1EB7FF703D81689DE74 /* TaskBreakdownSheet.swift in Sources */,
+				7E4CD39D4370DB60534EF867 /* ScheduleSuggestionsSheet.swift in Sources */,
+				FB2358B8DEF634C015770324 /* RescheduleBanner.swift in Sources */,
+				CB20AB27F7B2821DE9DA42AA /* AIInsightCard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

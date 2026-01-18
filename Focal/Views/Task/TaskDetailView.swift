@@ -3,6 +3,7 @@ import SwiftUI
 struct TaskDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(TaskStore.self) private var taskStore
+    @Environment(AICoordinator.self) private var ai
 
     let task: TaskItem
 
@@ -15,6 +16,7 @@ struct TaskDetailView: View {
     @State private var showColorPicker = false
     @State private var showDeleteConfirmation = false
     @State private var showRepeatPicker = false
+    @State private var showBreakdownSheet = false
     @State private var newSubtaskTitle = ""
 
     @FocusState private var isSubtaskFieldFocused: Bool
@@ -220,6 +222,36 @@ struct TaskDetailView: View {
                                 }
                                 .background(DS.Colors.surfaceSecondary)
                                 .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxl, style: .continuous))
+
+                                // AI Breakdown Button
+                                if ai.isConfigured && task.subtasks.isEmpty {
+                                    Button {
+                                        showBreakdownSheet = true
+                                        HapticManager.shared.impact(.medium)
+                                    } label: {
+                                        HStack(spacing: DS.Spacing.sm) {
+                                            Image(systemName: "sparkles")
+                                                .scaledFont(size: 14, weight: .semibold, relativeTo: .callout)
+                                                .foregroundStyle(DS.Colors.primary)
+
+                                            Text("Break down with AI")
+                                                .scaledFont(size: 14, weight: .medium, relativeTo: .callout)
+                                                .foregroundStyle(DS.Colors.primary)
+
+                                            Spacer()
+
+                                            Image(systemName: "chevron.right")
+                                                .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
+                                                .foregroundStyle(DS.Colors.textTertiary)
+                                        }
+                                        .padding(DS.Spacing.md)
+                                        .background(DS.Colors.primary.opacity(0.1))
+                                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+                                    }
+                                    .buttonStyle(.plain)
+                                    .accessibilityLabel("Break down task with AI")
+                                    .accessibilityHint("Opens AI breakdown assistant")
+                                }
                             }
 
                             VStack(alignment: .leading, spacing: DS.Spacing.md) {
@@ -381,6 +413,14 @@ struct TaskDetailView: View {
             }
         } message: {
             Text("Are you sure you want to delete this task?")
+        }
+        .sheet(isPresented: $showBreakdownSheet) {
+            TaskBreakdownSheet(taskTitle: task.title) { subtasks in
+                for subtask in subtasks {
+                    task.subtasks.append(subtask)
+                }
+                task.updatedAt = Date()
+            }
         }
     }
 
