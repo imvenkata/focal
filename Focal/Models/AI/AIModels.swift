@@ -12,10 +12,16 @@ struct ParsedTask: Codable {
     let color: String?
     let isRecurring: Bool?
     let recurrence: String?
+    let priority: String?
+    let category: String?
+    let reminder: String?
+    let subtasks: [String]?
+    let notes: String?
     let confidence: Double
 
     enum CodingKeys: String, CodingKey {
         case title, date, time, icon, color, recurrence, confidence
+        case priority, category, reminder, subtasks, notes
         case durationMinutes = "duration_minutes"
         case energyLevel = "energy_level"
         case isRecurring = "is_recurring"
@@ -32,12 +38,25 @@ struct ParsedTask: Codable {
         task.icon = icon ?? "📌"
         task.colorName = color ?? "sky"
         task.energyLevel = energyLevel ?? 2
+        task.notes = notes
 
         // Set recurrence if specified
         if isRecurring == true, let recurrence = recurrence {
             let (option, days) = resolveRecurrence(recurrence)
             task.recurrenceOption = option
             task.repeatDays = days
+        }
+
+        // Set reminder if specified
+        if let reminder = reminder {
+            task.reminderOption = resolveReminder(reminder)
+        }
+
+        // Add subtasks if specified
+        if let subtasks = subtasks {
+            for subtaskTitle in subtasks {
+                task.addSubtask(subtaskTitle)
+            }
         }
 
         return task
@@ -63,6 +82,52 @@ struct ParsedTask: Codable {
         }
     }
 
+    /// Convert reminder string to ReminderOption
+    private func resolveReminder(_ reminder: String) -> String {
+        switch reminder.lowercased() {
+        case "at_time", "at time":
+            return "At time"
+        case "5_min", "5 min", "5 minutes":
+            return "5 min"
+        case "15_min", "15 min", "15 minutes":
+            return "15 min"
+        case "30_min", "30 min", "30 minutes":
+            return "30 min"
+        case "1_hour", "1 hour", "one hour":
+            return "1 hour"
+        case "1_day", "1 day", "one day":
+            return "1 day before"
+        default:
+            return "15 min"
+        }
+    }
+
+    /// Convert priority string to TodoPriority rawValue
+    private func resolvePriority(_ priority: String) -> String {
+        switch priority.lowercased() {
+        case "high", "urgent", "critical":
+            return "HIGH"
+        case "medium", "normal":
+            return "MEDIUM"
+        case "low":
+            return "LOW"
+        default:
+            return "NONE"
+        }
+    }
+
+    /// Convert category string
+    private func resolveCategory(_ category: String) -> String {
+        switch category.lowercased() {
+        case "routine", "habit":
+            return "routine"
+        case "event", "meeting", "appointment":
+            return "event"
+        default:
+            return "todo"
+        }
+    }
+
     /// Convert to TodoItem for Todo list
     func toTodoItem() -> TodoItem {
         let todo = TodoItem(title: title)
@@ -71,9 +136,45 @@ struct ParsedTask: Codable {
         todo.colorName = color ?? "sky"
         todo.dueDate = resolvedDate
         todo.hasDueTime = time != nil
+        todo.notes = notes
+        todo.energyLevel = energyLevel ?? 2
 
         if let time, let dueDate = todo.dueDate {
             todo.dueTime = resolvedTime(on: dueDate)
+        }
+
+        // Set priority
+        if let priority = priority {
+            todo.priority = resolvePriority(priority)
+        }
+
+        // Set category
+        if let category = category {
+            todo.category = resolveCategory(category)
+        }
+
+        // Set reminder
+        if let reminder = reminder {
+            todo.reminderOption = resolveReminder(reminder)
+        }
+
+        // Set recurrence
+        if isRecurring == true, let recurrence = recurrence {
+            let (option, days) = resolveRecurrence(recurrence)
+            todo.recurrenceOption = option
+            todo.repeatDays = days
+        }
+
+        // Set duration
+        if let duration = durationMinutes {
+            todo.estimatedDuration = TimeInterval(duration * 60)
+        }
+
+        // Add subtasks
+        if let subtasks = subtasks {
+            for subtaskTitle in subtasks {
+                todo.addSubtask(subtaskTitle)
+            }
         }
 
         return todo

@@ -57,13 +57,35 @@ enum PromptTemplates {
            - Remove words like "routine", "every day", times, durations from the title
            - Bad: "Gym routine every day" → Good: "Gym"
            - Bad: "Morning workout at 6am" → Good: "Morning workout"
+
         2. Detect recurring patterns:
            - "every day", "daily", "each day" → is_recurring: true, recurrence: "daily"
            - "every weekday", "Mon-Fri" → is_recurring: true, recurrence: "weekdays"
            - "every weekend" → is_recurring: true, recurrence: "weekends"
            - "every week", "weekly" → is_recurring: true, recurrence: "weekly"
+
         3. Parse time expressions: "6am" = "06:00", "7pm" = "19:00", "noon" = "12:00"
+
         4. If no date specified but recurring, use today's date as the start date
+
+        5. Detect priority from urgency words:
+           - "urgent", "asap", "critical", "important", "must" → "high"
+           - "should", "need to" → "medium"
+           - "sometime", "when possible", "could", "maybe" → "low"
+           - No urgency mentioned → "none"
+
+        6. Detect category:
+           - Recurring tasks or habits → "routine"
+           - One-time events with specific time → "event"
+           - General tasks without specific time → "todo"
+
+        7. Detect reminder requests:
+           - "remind me", "notification", "alert" → set appropriate reminder
+           - "remind me 1 hour before" → "1 hour before"
+
+        8. For complex tasks, generate subtasks:
+           - "Plan birthday party" → subtasks: ["Book venue", "Send invitations", "Order cake"]
+           - Only generate subtasks for tasks that clearly have multiple steps
 
         Return JSON in this exact format:
         {
@@ -76,6 +98,11 @@ enum PromptTemplates {
             "color": "coral|sage|sky|lavender|amber|rose|slate" or null,
             "is_recurring": true if any repeating pattern detected,
             "recurrence": "daily|weekly|weekdays|weekends|biweekly|monthly" or null,
+            "priority": "high|medium|low|none",
+            "category": "todo|routine|event",
+            "reminder": "at_time|5_min|15_min|30_min|1_hour|1_day" or null,
+            "subtasks": ["subtask 1", "subtask 2"] or null if not a complex task,
+            "notes": "any additional context extracted" or null,
             "confidence": 0.0-1.0 how confident you are in the parsing
         }
         """
