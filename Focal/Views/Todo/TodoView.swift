@@ -81,31 +81,25 @@ struct TodoView: View {
                     // Title
                     HStack {
                         Text("To-do")
-                            .font(.system(size: 34, weight: .bold))
+                            .font(.system(size: 20, weight: .bold))
                             .foregroundStyle(DS.Colors.textPrimary)
                             .tracking(-0.5)
 
                         Spacer()
 
                         HStack(spacing: DS.Spacing.sm) {
-                            // Group/List toggle (visible, like Day/Week in Planner)
                             Button {
                                 withAnimation(DS.Animation.spring) {
                                     groupByPriority.toggle()
                                 }
                                 HapticManager.shared.selection()
                             } label: {
-                                HStack(spacing: DS.Spacing.xs) {
-                                    Image(systemName: groupByPriority ? "rectangle.3.group" : "list.bullet")
-                                        .font(.system(size: 14, weight: .semibold))
-                                    Text(groupByPriority ? "Grouped" : "List")
-                                        .scaledFont(size: 13, weight: .semibold, relativeTo: .caption)
-                                }
-                                .foregroundStyle(DS.Colors.textSecondary)
-                                .padding(.horizontal, DS.Spacing.md)
-                                .padding(.vertical, DS.Spacing.sm)
-                                .background(DS.Colors.surfaceSecondary)
-                                .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.md))
+                                Image(systemName: groupByPriority ? "rectangle.3.group" : "list.bullet")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundStyle(DS.Colors.textSecondary)
+                                    .frame(width: 36, height: 36)
+                                    .background(DS.Colors.surfaceSecondary)
+                                    .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.md))
                             }
                             .buttonStyle(.plain)
                             .accessibilityLabel(groupByPriority ? "Grouped view" : "List view")
@@ -115,17 +109,12 @@ struct TodoView: View {
                             Button {
                                 showFocusMode = true
                             } label: {
-                                HStack(spacing: DS.Spacing.xs) {
-                                    Image(systemName: "scope")
-                                        .font(.system(size: 14, weight: .semibold))
-                                    Text("Focus")
-                                        .scaledFont(size: 13, weight: .semibold, relativeTo: .caption)
-                                }
-                                .foregroundStyle(DS.Colors.primary)
-                                .padding(.horizontal, DS.Spacing.md)
-                                .padding(.vertical, DS.Spacing.sm)
-                                .background(DS.Colors.primary.opacity(0.1))
-                                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+                                Image(systemName: "scope")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundStyle(DS.Colors.primary)
+                                    .frame(width: 36, height: 36)
+                                    .background(DS.Colors.primary.opacity(0.1))
+                                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
                             }
                             .buttonStyle(.plain)
                             .accessibilityLabel("Enter focus mode")
