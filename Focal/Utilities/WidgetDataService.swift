@@ -93,10 +93,9 @@ extension TaskColor {
         case .coral: return "#FF5722"
         case .amber: return "#FFC107"
         case .rose: return "#E91E63"
-        case .mint: return "#00BCD4"
-        case .peach: return "#FF9800"
-        case .ocean: return "#3F51B5"
         case .slate: return "#607D8B"
+        case .night: return "#1A1A2E"
         }
     }
 }
+

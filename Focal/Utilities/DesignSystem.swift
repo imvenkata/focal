@@ -435,6 +435,10 @@ extension View {
         self.shadow(color: DS.Colors.overlay.opacity(0.16), radius: 12, x: 0, y: 6)
     }
 
+    func shadowElevated() -> some View {
+        self.shadow(color: DS.Colors.overlay.opacity(0.12), radius: 8, x: 0, y: 4)
+    }
+
     func shadowColored(_ color: Color) -> some View {
         self.shadow(color: color.opacity(0.25), radius: 8, x: 0, y: 4)
     }

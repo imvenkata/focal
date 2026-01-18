@@ -37,6 +37,10 @@ struct WeeklyTimelineView: View {
         DS.Sizes.timeLabelWidth + DS.Spacing.sm // 32 + 8 = 40pt
     }
 
+    // Horizontal swipe state
+    @State private var horizontalSwipeOffset: CGFloat = 0
+    private let swipeThreshold: CGFloat = 50
+
     var body: some View {
         VStack(spacing: 0) {
             WeeklyMiniStatsBar(
@@ -150,6 +154,66 @@ struct WeeklyTimelineView: View {
                 }
             } // Close GeometryReader
         }
+        .offset(x: horizontalSwipeOffset)
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 30, coordinateSpace: .local)
+                .onChanged { value in
+                    // Don't interfere with task dragging
+                    guard !dragState.isDragging else { return }
+                    
+                    // Only track horizontal movement if it's primarily horizontal
+                    let horizontal = value.translation.width
+                    let vertical = value.translation.height
+                    if abs(horizontal) > abs(vertical) && abs(vertical) < 30 {
+                        horizontalSwipeOffset = horizontal * 0.3
+                    }
+                }
+                .onEnded { value in
+                    guard !dragState.isDragging else {
+                        horizontalSwipeOffset = 0
+                        return
+                    }
+                    
+                    let horizontal = value.translation.width
+                    let vertical = value.translation.height
+                    let velocity = value.velocity.width
+                    
+                    // Only trigger if horizontal movement exceeds vertical
+                    if abs(horizontal) > abs(vertical) {
+                        if horizontal < -swipeThreshold || velocity < -500 {
+                            // Swipe left → next week
+                            withAnimation(.easeOut(duration: 0.15)) {
+                                horizontalSwipeOffset = -50
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                taskStore.goToNextWeek()
+                                withAnimation(.easeOut(duration: 0.2)) {
+                                    horizontalSwipeOffset = 0
+                                }
+                            }
+                        } else if horizontal > swipeThreshold || velocity > 500 {
+                            // Swipe right → previous week
+                            withAnimation(.easeOut(duration: 0.15)) {
+                                horizontalSwipeOffset = 50
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                taskStore.goToPreviousWeek()
+                                withAnimation(.easeOut(duration: 0.2)) {
+                                    horizontalSwipeOffset = 0
+                                }
+                            }
+                        } else {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                horizontalSwipeOffset = 0
+                            }
+                        }
+                    } else {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                            horizontalSwipeOffset = 0
+                        }
+                    }
+                }
+        )
         .transition(.opacity)
     }
 

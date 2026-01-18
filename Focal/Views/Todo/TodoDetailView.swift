@@ -1053,7 +1053,7 @@ private struct InlineRecurrenceButton: View {
                 .foregroundStyle(isSelected ? .white : DS.Colors.textSecondary)
                 .padding(.horizontal, DS.Spacing.md)
                 .padding(.vertical, DS.Spacing.sm)
-                .background(isSelected ? accentColor : DS.Colors.surfaceTertiary)
+                .background(isSelected ? accentColor : DS.Colors.surfaceSecondary)
                 .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
         }
         .buttonStyle(.plain)
@@ -1117,7 +1117,7 @@ private struct InlineDayButton: View {
                 .scaledFont(size: 14, weight: .semibold, relativeTo: .callout)
                 .foregroundStyle(isSelected ? .white : DS.Colors.textSecondary)
                 .frame(width: 36, height: 36)
-                .background(isSelected ? accentColor : DS.Colors.surfaceTertiary)
+                .background(isSelected ? accentColor : DS.Colors.surfaceSecondary)
                 .clipShape(Circle())
         }
         .buttonStyle(.plain)
@@ -1137,7 +1137,7 @@ private struct InlinePresetButton: View {
                 .foregroundStyle(isSelected ? accentColor : DS.Colors.textSecondary)
                 .padding(.horizontal, DS.Spacing.md)
                 .padding(.vertical, DS.Spacing.sm)
-                .background(isSelected ? accentColor.opacity(0.1) : DS.Colors.surfaceTertiary)
+                .background(isSelected ? accentColor.opacity(0.1) : DS.Colors.surfaceSecondary)
                 .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
         }
         .buttonStyle(.plain)

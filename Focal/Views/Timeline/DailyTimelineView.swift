@@ -7,7 +7,13 @@ struct DailyTimelineView: View {
     @State private var presetHour: Int?
     @State private var dragOffset: CGFloat = 0
     @State private var isDragging = false
+    @State private var horizontalSwipeOffset: CGFloat = 0
+    @State private var swipeDirection: SwipeDirection = .none
     var onClose: (() -> Void)?
+
+    private enum SwipeDirection {
+        case none, left, right
+    }
 
     // Pinch-to-zoom state
     @State private var zoomScale: CGFloat = 1.0
@@ -18,6 +24,7 @@ struct DailyTimelineView: View {
     private let timelineStartHour = 6
     private let timelineEndHour = 23  // Aligned with weekly view (was 22)
     private let dismissThreshold: CGFloat = 120
+    private let swipeThreshold: CGFloat = 50
     private let baseMinuteHeight: CGFloat = 0.5
 
     // Zoom constraints
@@ -161,6 +168,60 @@ struct DailyTimelineView: View {
                 lastZoomScale = zoomScale
             }
         }
+        .offset(x: horizontalSwipeOffset)
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 30, coordinateSpace: .local)
+                .onChanged { value in
+                    // Only track horizontal movement if it's primarily horizontal
+                    let horizontal = value.translation.width
+                    let vertical = value.translation.height
+                    if abs(horizontal) > abs(vertical) && abs(vertical) < 30 {
+                        horizontalSwipeOffset = horizontal * 0.3
+                    }
+                }
+                .onEnded { value in
+                    let horizontal = value.translation.width
+                    let vertical = value.translation.height
+                    let velocity = value.velocity.width
+                    
+                    // Only trigger if horizontal movement exceeds vertical
+                    if abs(horizontal) > abs(vertical) {
+                        if horizontal < -swipeThreshold || velocity < -500 {
+                            // Swipe left → next day
+                            swipeDirection = .left
+                            withAnimation(.easeOut(duration: 0.15)) {
+                                horizontalSwipeOffset = -50
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                taskStore.goToNextDay()
+                                withAnimation(.easeOut(duration: 0.2)) {
+                                    horizontalSwipeOffset = 0
+                                }
+                            }
+                        } else if horizontal > swipeThreshold || velocity > 500 {
+                            // Swipe right → previous day
+                            swipeDirection = .right
+                            withAnimation(.easeOut(duration: 0.15)) {
+                                horizontalSwipeOffset = 50
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                taskStore.goToPreviousDay()
+                                withAnimation(.easeOut(duration: 0.2)) {
+                                    horizontalSwipeOffset = 0
+                                }
+                            }
+                        } else {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                horizontalSwipeOffset = 0
+                            }
+                        }
+                    } else {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                            horizontalSwipeOffset = 0
+                        }
+                    }
+                }
+        )
         .overlay(alignment: .bottomTrailing) {
             CompactFABButton {
                 showAddTask = true
