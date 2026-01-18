@@ -189,7 +189,7 @@ struct PlannerTaskCreationSheet: View {
         .sheet(isPresented: $showScheduleSuggestions) {
             ScheduleSuggestionsSheet(
                 taskTitle: title,
-                duration: Int(selectedDuration / 60),
+                duration: selectedDuration,
                 energyLevel: 3 // Default medium energy
             ) { suggestedTime in
                 // Apply the suggested time
