@@ -12,7 +12,7 @@ enum AppTab: String, CaseIterable, Identifiable {
 
     /// Tabs currently visible in the app (Phase 1: only Planner and Todos)
     static var visibleTabs: [AppTab] {
-        [.planner, .todos]
+        [.planner, .todos, .settings]
     }
 
     var icon: String {

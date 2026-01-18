@@ -37,6 +37,12 @@ struct ContentView: View {
                         .environment(todoStore)
                 }
             }
+            
+            // Settings tab
+            Tab("Settings", systemImage: "gearshape.fill", value: .settings) {
+                SettingsView()
+                    .environment(aiCoordinator)
+            }
         }
         .onAppear {
             taskStore.setModelContext(modelContext)
@@ -79,16 +85,18 @@ struct InsightsView: View {
 }
 
 struct SettingsView: View {
+    @Environment(AICoordinator.self) private var ai
+    @State private var showAIOnboarding = false
+    
     var body: some View {
-        VStack {
-            Text("Settings")
-                .font(.largeTitle)
-                .fontWeight(.semibold)
-            Text("Coming soon")
-                .foregroundStyle(.secondary)
+        NavigationStack {
+            AISettingsView(showOnboarding: $showAIOnboarding)
+                .environment(ai)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(DS.Colors.background)
+        .sheet(isPresented: $showAIOnboarding) {
+            AIOnboardingView()
+                .environment(ai)
+        }
     }
 }
 

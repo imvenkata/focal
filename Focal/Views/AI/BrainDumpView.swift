@@ -65,7 +65,7 @@ struct BrainDumpView: View {
                     .padding(DS.Spacing.md)
 
                 if rawText.isEmpty {
-                    Text("Buy groceries, call mom about weekend plans, finish the quarterly report by Friday, schedule dentist appointment, renew gym membership, plan birthday party for Sarah...")
+                    Text("Ask anything...")
                         .font(.body)
                         .foregroundStyle(DS.Colors.textMuted)
                         .padding(DS.Spacing.md)
@@ -73,7 +73,7 @@ struct BrainDumpView: View {
                         .allowsHitTesting(false)
                 }
             }
-            .frame(maxHeight: .infinity)
+            .frame(height: 200)
             .background(DS.Colors.surfaceSecondary)
             .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.lg))
             .padding(.horizontal)
