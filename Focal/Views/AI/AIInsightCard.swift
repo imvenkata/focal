@@ -132,7 +132,29 @@ struct AIInsightsView: View {
 
     @State private var insights: AIInsights?
     @State private var isLoading: Bool = false
-    @State private var dismissedInsights: Set<String> = []
+    
+    // Persist dismissed insights so they don't reappear when switching views
+    @AppStorage("dismissedInsightIds") private var dismissedInsightsData: Data = Data()
+    @AppStorage("insightsDismissedDate") private var dismissedDate: Double = 0
+    
+    private var dismissedInsights: Set<String> {
+        get {
+            // Clear dismissed insights if it's a new day
+            let today = Calendar.current.startOfDay(for: Date()).timeIntervalSince1970
+            if dismissedDate < today {
+                return []
+            }
+            return (try? JSONDecoder().decode(Set<String>.self, from: dismissedInsightsData)) ?? []
+        }
+    }
+    
+    private func dismissInsight(_ id: String) {
+        var current = dismissedInsights
+        current.insert(id)
+        let today = Calendar.current.startOfDay(for: Date()).timeIntervalSince1970
+        dismissedDate = today
+        dismissedInsightsData = (try? JSONEncoder().encode(current)) ?? Data()
+    }
 
     var body: some View {
         VStack(spacing: DS.Spacing.md) {
@@ -149,7 +171,7 @@ struct AIInsightsView: View {
                 ForEach(visibleInsights) { insight in
                     AIInsightCard(insight: insight) {
                         withAnimation(DS.Animation.spring) {
-                            _ = dismissedInsights.insert(insight.id.uuidString)
+                            dismissInsight(insight.id.uuidString)
                         }
                     }
                     .transition(.asymmetric(
