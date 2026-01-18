@@ -15,8 +15,6 @@ struct TodoView: View {
     @State private var selectedTodo: TodoItem?
     @State private var showingSearch = false
     @State private var showFocusMode = false
-    @State private var showBrainDump = false
-    @State private var showAIOnboarding = false
 
     // Calm Mode preference (persisted)
     @AppStorage("calmModeEnabled") private var calmModeEnabled = false
@@ -216,19 +214,6 @@ struct TodoView: View {
                 .padding(.bottom, keyboardHeight > 0 ? max(0, keyboardHeight - DS.Spacing.sm) : DS.Spacing.lg)
                 .transition(.move(edge: .bottom).combined(with: .opacity))
             }
-
-            // Floating Brain Dump button (✨)
-            if !showFloatingInput {
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        brainDumpFAB
-                    }
-                }
-                .padding(.trailing, DS.Spacing.lg)
-                .padding(.bottom, DS.Sizes.bottomNavHeight + DS.Spacing.lg)
-            }
         }
         .animation(DS.Animation.spring, value: todoStore.canUndo)
         .animation(DS.Animation.spring, value: showFloatingInput)
@@ -253,15 +238,6 @@ struct TodoView: View {
             TodoDetailView(todo: todo)
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
-        }
-        .sheet(isPresented: $showBrainDump) {
-            BrainDumpView()
-                .environment(ai)
-                .environment(todoStore)
-        }
-        .sheet(isPresented: $showAIOnboarding) {
-            AIOnboardingView()
-                .environment(ai)
         }
         .fullScreenCover(isPresented: $showFocusMode) {
             FocusModeView()
@@ -292,41 +268,6 @@ struct TodoView: View {
 
             Spacer()
         }
-    }
-
-    // MARK: - Brain Dump FAB (✨)
-
-    private var brainDumpFAB: some View {
-        Button {
-            if ai.isConfigured {
-                showBrainDump = true
-            } else {
-                showAIOnboarding = true
-            }
-            HapticManager.shared.impact(.medium)
-        } label: {
-            HStack(spacing: DS.Spacing.sm) {
-                Image(systemName: "sparkles")
-                    .font(.system(size: 18, weight: .semibold))
-                Text("Brain Dump")
-                    .scaledFont(size: 15, weight: .semibold, relativeTo: .body)
-            }
-            .foregroundStyle(.white)
-            .padding(.horizontal, DS.Spacing.lg)
-            .padding(.vertical, DS.Spacing.md)
-            .background(
-                LinearGradient(
-                    colors: [.purple, .blue],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            )
-            .clipShape(Capsule())
-            .shadow(color: .purple.opacity(0.4), radius: 12, y: 4)
-        }
-        .buttonStyle(BrainDumpButtonStyle())
-        .accessibilityLabel("Brain Dump")
-        .accessibilityHint(ai.isConfigured ? "Opens AI brain dump to organize your thoughts" : "Set up AI to use Brain Dump")
     }
 
     // MARK: - Search Bar
@@ -917,17 +858,6 @@ extension Date {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .abbreviated
         return formatter.localizedString(for: self, relativeTo: Date())
-    }
-}
-
-// MARK: - Brain Dump Button Style
-
-private struct BrainDumpButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-            .opacity(configuration.isPressed ? 0.9 : 1.0)
-            .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
     }
 }
 
