@@ -8,48 +8,39 @@ struct ContentView: View {
     @State private var dragState = TaskDragState()
     @State private var aiCoordinator = AICoordinator()
     @State private var selectedTab: AppTab = .planner
-    @State private var showBrainDump = false
     @State private var showAIOnboarding = false
+    @State private var brainDumpSearchText = ""
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            // Main content (Phase 1: Planner and Todos only)
-            Group {
-                switch selectedTab {
-                case .planner:
-                    PlannerView()
-                        .environment(taskStore)
-                        .environment(dragState)
-                        .environment(aiCoordinator)
-                case .todos:
-                    TodoView()
-                        .environment(todoStore)
-                        .environment(taskStore)
-                        .environment(aiCoordinator)
-                case .settings:
-                    AISettingsView(
-                        showOnboarding: $showAIOnboarding
-                    )
+        TabView(selection: $selectedTab) {
+            // Planner tab
+            Tab("Planner", systemImage: "calendar", value: .planner) {
+                PlannerView()
+                    .environment(taskStore)
+                    .environment(dragState)
                     .environment(aiCoordinator)
-                default:
-                    // Future tabs: inbox, insights
-                    EmptyView()
+            }
+            
+            // Todos tab
+            Tab("Todos", systemImage: "checklist", value: .todos) {
+                TodoView()
+                    .environment(todoStore)
+                    .environment(taskStore)
+                    .environment(aiCoordinator)
+            }
+            
+            // Brain Dump as floating action button (uses .search role for liquid glass separation)
+            Tab("Brain Dump", systemImage: "sparkles", value: .brainDump, role: .search) {
+                NavigationStack {
+                    BrainDumpView()
+                        .environment(aiCoordinator)
+                        .environment(todoStore)
                 }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-            // Bottom navigation
-            BottomTabBar(selectedTab: $selectedTab)
         }
-        .ignoresSafeArea(.keyboard)
         .onAppear {
             taskStore.setModelContext(modelContext)
             todoStore.setModelContext(modelContext)
-        }
-        .sheet(isPresented: $showBrainDump) {
-            BrainDumpView()
-                .environment(aiCoordinator)
-                .environment(todoStore)
         }
         .sheet(isPresented: $showAIOnboarding) {
             AIOnboardingView()

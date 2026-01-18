@@ -6,6 +6,7 @@ enum AppTab: String, CaseIterable, Identifiable {
     case todos
     case insights
     case settings
+    case brainDump
 
     var id: String { rawValue }
 
@@ -21,6 +22,7 @@ enum AppTab: String, CaseIterable, Identifiable {
         case .todos: return "checklist"
         case .insights: return "chart.bar.fill"
         case .settings: return "gearshape.fill"
+        case .brainDump: return "sparkles"
         }
     }
 
@@ -31,6 +33,8 @@ enum AppTab: String, CaseIterable, Identifiable {
         case .todos: return "Todos"
         case .insights: return "Insights"
         case .settings: return "Settings"
+        case .brainDump: return "Brain Dump"
         }
     }
 }
+
