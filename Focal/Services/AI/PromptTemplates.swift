@@ -52,17 +52,30 @@ enum PromptTemplates {
 
         "\(input)"
 
+        IMPORTANT parsing rules:
+        1. Title should be SHORT and CLEAN - just the activity name (e.g., "Gym", "Meeting", "Call mom")
+           - Remove words like "routine", "every day", times, durations from the title
+           - Bad: "Gym routine every day" → Good: "Gym"
+           - Bad: "Morning workout at 6am" → Good: "Morning workout"
+        2. Detect recurring patterns:
+           - "every day", "daily", "each day" → is_recurring: true, recurrence: "daily"
+           - "every weekday", "Mon-Fri" → is_recurring: true, recurrence: "weekdays"
+           - "every weekend" → is_recurring: true, recurrence: "weekends"
+           - "every week", "weekly" → is_recurring: true, recurrence: "weekly"
+        3. Parse time expressions: "6am" = "06:00", "7pm" = "19:00", "noon" = "12:00"
+        4. If no date specified but recurring, use today's date as the start date
+
         Return JSON in this exact format:
         {
-            "title": "clean task title without date/time",
+            "title": "short clean activity name only",
             "date": "YYYY-MM-DD or null if not specified",
             "time": "HH:mm or null if not specified",
             "duration_minutes": estimated minutes or null,
             "energy_level": 0-4 (0=restful, 4=intense) or null,
             "icon": "single emoji that represents this task",
             "color": "coral|sage|sky|lavender|amber|rose|slate" or null,
-            "is_recurring": true/false,
-            "recurrence": "daily|weekly|weekdays|weekends" or null,
+            "is_recurring": true if any repeating pattern detected,
+            "recurrence": "daily|weekly|weekdays|weekends|biweekly|monthly" or null,
             "confidence": 0.0-1.0 how confident you are in the parsing
         }
         """

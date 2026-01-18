@@ -33,7 +33,34 @@ struct ParsedTask: Codable {
         task.colorName = color ?? "sky"
         task.energyLevel = energyLevel ?? 2
 
+        // Set recurrence if specified
+        if isRecurring == true, let recurrence = recurrence {
+            let (option, days) = resolveRecurrence(recurrence)
+            task.recurrenceOption = option
+            task.repeatDays = days
+        }
+
         return task
+    }
+
+    /// Convert recurrence string to RecurrenceOption and repeatDays
+    private func resolveRecurrence(_ recurrence: String) -> (String, [Int]) {
+        switch recurrence.lowercased() {
+        case "daily", "every day", "everyday":
+            return ("Custom", [0, 1, 2, 3, 4, 5, 6]) // All days
+        case "weekly":
+            return ("Weekly", [])
+        case "weekdays", "every weekday":
+            return ("Custom", [1, 2, 3, 4, 5]) // Mon-Fri
+        case "weekends", "every weekend":
+            return ("Custom", [0, 6]) // Sun, Sat
+        case "biweekly":
+            return ("Biweekly", [])
+        case "monthly":
+            return ("Monthly", [])
+        default:
+            return ("Daily", [])
+        }
     }
 
     /// Convert to TodoItem for Todo list
