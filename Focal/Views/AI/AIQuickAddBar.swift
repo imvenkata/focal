@@ -10,6 +10,7 @@ struct AIQuickAddBar: View {
     @State private var parsedTask: ParsedTask?
     @State private var showParsedPreview: Bool = false
     @State private var error: String?
+    @State private var showOnboarding: Bool = false
 
     @FocusState private var isFocused: Bool
 
@@ -48,7 +49,73 @@ struct AIQuickAddBar: View {
                 .transition(.move(edge: .bottom).combined(with: .opacity))
             }
 
-            // Input bar
+            // Input bar or setup prompt
+            if ai.isConfigured {
+                configuredInputBar
+            } else {
+                setupPromptBar
+            }
+        }
+        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xl))
+        .shadow(color: .black.opacity(0.1), radius: 8, y: 2)
+        .sheet(isPresented: $showOnboarding) {
+            AIOnboardingView()
+                .environment(ai)
+        }
+    }
+
+    // MARK: - Configured Input Bar
+
+    private var configuredInputBar: some View {
+        HStack(spacing: DS.Spacing.sm) {
+            // AI indicator
+            Image(systemName: "sparkles")
+                .font(.system(size: 16))
+                .foregroundStyle(
+                    LinearGradient(
+                        colors: [.purple, .blue],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+
+            // Text field
+            TextField("Add task with AI... \"Gym tomorrow 7am\"", text: $inputText)
+                .textFieldStyle(.plain)
+                .focused($isFocused)
+                .submitLabel(.done)
+                .onSubmit { Task { await processInput() } }
+
+            // Submit button
+            if !inputText.isEmpty {
+                Button {
+                    Task { await processInput() }
+                } label: {
+                    Group {
+                        if isProcessing {
+                            ProgressView()
+                                .scaleEffect(0.8)
+                        } else {
+                            Image(systemName: "arrow.up.circle.fill")
+                                .font(.system(size: 28))
+                        }
+                    }
+                    .foregroundStyle(DS.Colors.primary)
+                }
+                .disabled(isProcessing)
+            }
+        }
+        .padding(.horizontal, DS.Spacing.md)
+        .padding(.vertical, DS.Spacing.sm)
+        .background(DS.Colors.cardBackground)
+    }
+
+    // MARK: - Setup Prompt Bar
+
+    private var setupPromptBar: some View {
+        Button {
+            showOnboarding = true
+        } label: {
             HStack(spacing: DS.Spacing.sm) {
                 // AI indicator
                 Image(systemName: "sparkles")
@@ -61,38 +128,31 @@ struct AIQuickAddBar: View {
                         )
                     )
 
-                // Text field
-                TextField("Add task with AI... \"Gym tomorrow 7am\"", text: $inputText)
-                    .textFieldStyle(.plain)
-                    .focused($isFocused)
-                    .submitLabel(.done)
-                    .onSubmit { Task { await processInput() } }
+                Text("Set up AI to add tasks naturally")
+                    .font(.subheadline)
+                    .foregroundStyle(DS.Colors.textSecondary)
 
-                // Submit button
-                if !inputText.isEmpty {
-                    Button {
-                        Task { await processInput() }
-                    } label: {
-                        Group {
-                            if isProcessing {
-                                ProgressView()
-                                    .scaleEffect(0.8)
-                            } else {
-                                Image(systemName: "arrow.up.circle.fill")
-                                    .font(.system(size: 28))
-                            }
-                        }
-                        .foregroundStyle(DS.Colors.primary)
-                    }
-                    .disabled(isProcessing)
-                }
+                Spacer()
+
+                Text("Set Up")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, DS.Spacing.md)
+                    .padding(.vertical, DS.Spacing.sm)
+                    .background(
+                        LinearGradient(
+                            colors: [.purple, .blue],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .clipShape(Capsule())
             }
             .padding(.horizontal, DS.Spacing.md)
             .padding(.vertical, DS.Spacing.sm)
             .background(DS.Colors.cardBackground)
         }
-        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xl))
-        .shadow(color: .black.opacity(0.1), radius: 8, y: 2)
+        .buttonStyle(.plain)
     }
 
     private func processInput() async {

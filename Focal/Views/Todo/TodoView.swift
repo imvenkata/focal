@@ -16,6 +16,7 @@ struct TodoView: View {
     @State private var showingSearch = false
     @State private var showFocusMode = false
     @State private var showBrainDump = false
+    @State private var showAIOnboarding = false
 
     // Calm Mode preference (persisted)
     @AppStorage("calmModeEnabled") private var calmModeEnabled = false
@@ -73,13 +74,11 @@ struct TodoView: View {
                     // Header with stats
                     headerSection
 
-                    // AI Quick Add Bar (when configured)
-                    if ai.isConfigured {
-                        AIQuickAddBar()
-                            .environment(ai)
-                            .environment(taskStore)
-                            .environment(todoStore)
-                    }
+                    // AI Quick Add Bar
+                    AIQuickAddBar()
+                        .environment(ai)
+                        .environment(taskStore)
+                        .environment(todoStore)
 
                     // Search bar (when active)
                     if showingSearch {
@@ -134,15 +133,20 @@ struct TodoView: View {
                             // View options menu (ellipsis)
                             Menu {
                                 // Brain Dump (AI feature)
-                                if ai.isConfigured {
-                                    Button {
+                                Button {
+                                    if ai.isConfigured {
                                         showBrainDump = true
-                                    } label: {
-                                        Label("Brain Dump", systemImage: "brain.head.profile")
+                                    } else {
+                                        showAIOnboarding = true
                                     }
-
-                                    Divider()
+                                } label: {
+                                    Label(
+                                        ai.isConfigured ? "Brain Dump" : "Brain Dump (Set up AI)",
+                                        systemImage: "brain.head.profile"
+                                    )
                                 }
+
+                                Divider()
 
                                 // Grouping toggle
                                 Button {
@@ -275,6 +279,10 @@ struct TodoView: View {
             BrainDumpView()
                 .environment(ai)
                 .environment(todoStore)
+        }
+        .sheet(isPresented: $showAIOnboarding) {
+            AIOnboardingView()
+                .environment(ai)
         }
         .fullScreenCover(isPresented: $showFocusMode) {
             FocusModeView()
