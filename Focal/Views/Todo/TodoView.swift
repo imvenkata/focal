@@ -5,6 +5,8 @@ import UIKit
 struct TodoView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(TodoStore.self) private var todoStore
+    @Environment(TaskStore.self) private var taskStore
+    @Environment(AICoordinator.self) private var ai
 
     @State private var showFloatingInput = false
     @State private var inputPriority: TodoPriority = .none
@@ -13,6 +15,7 @@ struct TodoView: View {
     @State private var selectedTodo: TodoItem?
     @State private var showingSearch = false
     @State private var showFocusMode = false
+    @State private var showBrainDump = false
 
     // Calm Mode preference (persisted)
     @AppStorage("calmModeEnabled") private var calmModeEnabled = false
@@ -70,6 +73,14 @@ struct TodoView: View {
                     // Header with stats
                     headerSection
 
+                    // AI Quick Add Bar (when configured)
+                    if ai.isConfigured {
+                        AIQuickAddBar()
+                            .environment(ai)
+                            .environment(taskStore)
+                            .environment(todoStore)
+                    }
+
                     // Search bar (when active)
                     if showingSearch {
                         searchBar
@@ -122,6 +133,17 @@ struct TodoView: View {
 
                             // View options menu (ellipsis)
                             Menu {
+                                // Brain Dump (AI feature)
+                                if ai.isConfigured {
+                                    Button {
+                                        showBrainDump = true
+                                    } label: {
+                                        Label("Brain Dump", systemImage: "brain.head.profile")
+                                    }
+
+                                    Divider()
+                                }
+
                                 // Grouping toggle
                                 Button {
                                     withAnimation(DS.Animation.spring) {
@@ -248,6 +270,11 @@ struct TodoView: View {
             TodoDetailView(todo: todo)
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
+        }
+        .sheet(isPresented: $showBrainDump) {
+            BrainDumpView()
+                .environment(ai)
+                .environment(todoStore)
         }
         .fullScreenCover(isPresented: $showFocusMode) {
             FocusModeView()

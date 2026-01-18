@@ -6,7 +6,10 @@ struct ContentView: View {
     @State private var taskStore = TaskStore()
     @State private var todoStore = TodoStore()
     @State private var dragState = TaskDragState()
+    @State private var aiCoordinator = AICoordinator()
     @State private var selectedTab: AppTab = .planner
+    @State private var showBrainDump = false
+    @State private var showAIOnboarding = false
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -17,11 +20,19 @@ struct ContentView: View {
                     PlannerView()
                         .environment(taskStore)
                         .environment(dragState)
+                        .environment(aiCoordinator)
                 case .todos:
                     TodoView()
                         .environment(todoStore)
+                        .environment(taskStore)
+                        .environment(aiCoordinator)
+                case .settings:
+                    AISettingsView(
+                        showOnboarding: $showAIOnboarding
+                    )
+                    .environment(aiCoordinator)
                 default:
-                    // Future tabs: inbox, insights, settings
+                    // Future tabs: inbox, insights
                     EmptyView()
                 }
             }
@@ -34,6 +45,15 @@ struct ContentView: View {
         .onAppear {
             taskStore.setModelContext(modelContext)
             todoStore.setModelContext(modelContext)
+        }
+        .sheet(isPresented: $showBrainDump) {
+            BrainDumpView()
+                .environment(aiCoordinator)
+                .environment(todoStore)
+        }
+        .sheet(isPresented: $showAIOnboarding) {
+            AIOnboardingView()
+                .environment(aiCoordinator)
         }
     }
 }

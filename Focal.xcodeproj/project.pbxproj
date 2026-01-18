@@ -13,15 +13,19 @@
 		03030B8431D7299DA47F4F22 /* TodoSubtaskRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C21B3B125B31641B121F22E /* TodoSubtaskRow.swift */; };
 		09BE507A10800C29E5EC8F50 /* RecurringTaskGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F16C8C170C8A7C896775B9 /* RecurringTaskGenerator.swift */; };
 		1655F2C73889FCBB695958B9 /* TodoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B64140C22C9E28B0BC63EBE /* TodoDetailView.swift */; };
+		18A27016EB97BFFBA833AD98 /* AIModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4840E4DE32F7A02339E9C6DC /* AIModels.swift */; };
 		19C0EFE154E61160B04E52C7 /* EnergySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DB5DFBB8550AE2B6C3A0FD8 /* EnergySelector.swift */; };
 		21C453377D308D2E03D6C582 /* LLMProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E53E28D90E75ECAC5F5338 /* LLMProvider.swift */; };
 		2737147839820EEB998B600C /* SimpleTaskRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA1DC87F1AE83F652E299C4 /* SimpleTaskRow.swift */; };
+		2BD5A60E9B13B983B33B2D90 /* AICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502AC4E246689D7DCBD8C94F /* AICoordinator.swift */; };
 		2F73A585EA454A63912D0319 /* TaskCompletionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB7C6FAAE7E141EFAEAB367 /* TaskCompletionRecord.swift */; };
 		32BB63888F9DEBDD075C2BEB /* TodoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF5F585D9A6A4F63D8A2A3A /* TodoStore.swift */; };
+		3BF19FA3BD778E1D7185D4D4 /* AIQuickAddBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116033CEBAF79FDF5C683C2B /* AIQuickAddBar.swift */; };
 		4FCBD833CB2DA148F69332ED /* TodoSubtask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C708910AF989C606B6222A /* TodoSubtask.swift */; };
 		5D76839EEC61FF7012B60F2E /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2531C6901CE315809209807 /* ColorPickerView.swift */; };
 		651E8F01009DCAD560E06C2A /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B452298DCF994E4BBD745B /* KeychainManager.swift */; };
 		6920DB89862A47C367A92FBA /* SimpleTodoCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5429E08E04BD30E53AD0815 /* SimpleTodoCard.swift */; };
+		6E84E43CB871FB455747C4F3 /* BrainDumpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811D8E38D383B460CCB7A457 /* BrainDumpView.swift */; };
 		7170CDD6A4960F090FC99FCC /* TodoNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7ADFDB2671609E24766606 /* TodoNotificationService.swift */; };
 		8F17231E9B27A7A509AF8B2E /* TodoPrioritySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E4473A9CBF971B857051263 /* TodoPrioritySection.swift */; };
 		8F319E69A447C83851CC129F /* VirtualTaskInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE7C8ABBC775162F49F4698 /* VirtualTaskInstance.swift */; };
@@ -66,12 +70,15 @@
 		BF7A0F3000AFA57DC12F7005 /* TodoE2ETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C21FF334FA26EBC35FA426 /* TodoE2ETests.swift */; };
 		C17E56E8BCCCAE6516B0DFC4 /* TodoQuickAddBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146B21794815476C9E265BFB /* TodoQuickAddBar.swift */; };
 		C4AEE34C3593BBA1327E4925 /* TodoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB89FFC207F3D80D51FB4919 /* TodoView.swift */; };
+		D01DF767EE8324DF8279756B /* AIOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14A1CCC2007F3ADF1D940D7 /* AIOnboardingView.swift */; };
+		D672C2844A58466DB7096353 /* AISettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6001D0698FB72015A7AA3383 /* AISettingsView.swift */; };
 		D993FB165B2DEDFD3076BD57 /* CalmTodoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463EAF7AD429B739BEA7B1AB /* CalmTodoView.swift */; };
 		DE0D021599AFE8FC0991C53F /* LLMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4CD4485B7372CC3C5CEC515 /* LLMService.swift */; };
 		E39F2863AE4E6DAEE4BE7A35 /* TaskNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A83373A8F7896F39B3E169 /* TaskNotificationService.swift */; };
 		F4897277A5D193D7549F1584 /* HeroTaskCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B71CDA142BE21B7A3368CFE /* HeroTaskCard.swift */; };
 		F9E8D7C6B5A432109876 /* WhenPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F678901234 /* WhenPickerSheet.swift */; };
 		FAE04556D68AB0186327675B /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D094A98D3D70EB376B8DBFF0 /* TodoItem.swift */; };
+		FECB185277A3C91E10383091 /* PromptTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF94E356ED79AB8E009B563 /* PromptTemplates.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,19 +94,25 @@
 /* Begin PBXFileReference section */
 		00CONF002000000000000001 /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		00FOCUS002000000000000001 /* FocusModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusModeView.swift; sourceTree = "<group>"; };
+		0DF94E356ED79AB8E009B563 /* PromptTemplates.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PromptTemplates.swift; path = Services/AI/PromptTemplates.swift; sourceTree = "<group>"; };
+		116033CEBAF79FDF5C683C2B /* AIQuickAddBar.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AIQuickAddBar.swift; sourceTree = "<group>"; };
 		146B21794815476C9E265BFB /* TodoQuickAddBar.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoQuickAddBar.swift; sourceTree = "<group>"; };
 		14C21FF334FA26EBC35FA426 /* TodoE2ETests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TodoE2ETests.swift; path = Focal/FocalUITests/TodoE2ETests.swift; sourceTree = "<group>"; };
 		1B71CDA142BE21B7A3368CFE /* HeroTaskCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HeroTaskCard.swift; sourceTree = "<group>"; };
 		27E53E28D90E75ECAC5F5338 /* LLMProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LLMProvider.swift; path = Services/AI/LLMProvider.swift; sourceTree = "<group>"; };
 		2CA1DC87F1AE83F652E299C4 /* SimpleTaskRow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SimpleTaskRow.swift; sourceTree = "<group>"; };
 		463EAF7AD429B739BEA7B1AB /* CalmTodoView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CalmTodoView.swift; sourceTree = "<group>"; };
+		4840E4DE32F7A02339E9C6DC /* AIModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AIModels.swift; sourceTree = "<group>"; };
 		4DB5DFBB8550AE2B6C3A0FD8 /* EnergySelector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EnergySelector.swift; sourceTree = "<group>"; };
+		502AC4E246689D7DCBD8C94F /* AICoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AICoordinator.swift; path = Services/AI/AICoordinator.swift; sourceTree = "<group>"; };
 		594D1A4023CD27521A246ADE /* TodoCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoCard.swift; sourceTree = "<group>"; };
 		5F7ADFDB2671609E24766606 /* TodoNotificationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Services/TodoNotificationService.swift; sourceTree = "<group>"; };
+		6001D0698FB72015A7AA3383 /* AISettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AISettingsView.swift; sourceTree = "<group>"; };
 		6B64140C22C9E28B0BC63EBE /* TodoDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoDetailView.swift; sourceTree = "<group>"; };
 		6C21B3B125B31641B121F22E /* TodoSubtaskRow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoSubtaskRow.swift; sourceTree = "<group>"; };
 		6DB7C6FAAE7E141EFAEAB367 /* TaskCompletionRecord.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TaskCompletionRecord.swift; path = TaskCompletionRecord.swift; sourceTree = "<group>"; };
 		80F16C8C170C8A7C896775B9 /* RecurringTaskGenerator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RecurringTaskGenerator.swift; path = Services/RecurringTaskGenerator.swift; sourceTree = "<group>"; };
+		811D8E38D383B460CCB7A457 /* BrainDumpView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BrainDumpView.swift; sourceTree = "<group>"; };
 		82B249E82F144B6500EE5FD8 /* FocalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocalUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DB426D575DB21C5A5CFC4A3 /* LLMError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LLMError.swift; path = Services/AI/LLMError.swift; sourceTree = "<group>"; };
 		95C708910AF989C606B6222A /* TodoSubtask.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoSubtask.swift; sourceTree = "<group>"; };
@@ -145,6 +158,7 @@
 		A4CD4485B7372CC3C5CEC515 /* LLMService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LLMService.swift; path = Services/AI/LLMService.swift; sourceTree = "<group>"; };
 		A9A83373A8F7896F39B3E169 /* TaskNotificationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TaskNotificationService.swift; path = Services/TaskNotificationService.swift; sourceTree = "<group>"; };
 		AEE7C8ABBC775162F49F4698 /* VirtualTaskInstance.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VirtualTaskInstance.swift; path = VirtualTaskInstance.swift; sourceTree = "<group>"; };
+		C14A1CCC2007F3ADF1D940D7 /* AIOnboardingView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AIOnboardingView.swift; sourceTree = "<group>"; };
 		C2531C6901CE315809209807 /* ColorPickerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
 		CDF5F585D9A6A4F63D8A2A3A /* TodoStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoStore.swift; sourceTree = "<group>"; };
 		D094A98D3D70EB376B8DBFF0 /* TodoItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
@@ -192,8 +206,19 @@
 				27E53E28D90E75ECAC5F5338 /* LLMProvider.swift */,
 				8DB426D575DB21C5A5CFC4A3 /* LLMError.swift */,
 				A4CD4485B7372CC3C5CEC515 /* LLMService.swift */,
+				0DF94E356ED79AB8E009B563 /* PromptTemplates.swift */,
+				502AC4E246689D7DCBD8C94F /* AICoordinator.swift */,
 			);
 			name = AI;
+			sourceTree = "<group>";
+		};
+		4BD96CB6D80888927161B05F /* AI */ = {
+			isa = PBXGroup;
+			children = (
+				4840E4DE32F7A02339E9C6DC /* AIModels.swift */,
+			);
+			name = AI;
+			path = AI;
 			sourceTree = "<group>";
 		};
 		5BC140AC96B02AD45FED7C00 /* Todo */ = {
@@ -261,6 +286,7 @@
 				95C708910AF989C606B6222A /* TodoSubtask.swift */,
 				AEE7C8ABBC775162F49F4698 /* VirtualTaskInstance.swift */,
 				6DB7C6FAAE7E141EFAEAB367 /* TaskCompletionRecord.swift */,
+				4BD96CB6D80888927161B05F /* AI */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -285,6 +311,7 @@
 				A40000001000000000000013 /* Components */,
 				A40000001000000000000014 /* Navigation */,
 				5BC140AC96B02AD45FED7C00 /* Todo */,
+				C4C0EF26B38962F06B4AF7C0 /* AI */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -375,6 +402,18 @@
 				A26DBE8B1DE2506AE8AD00664 /* FABButton.swift */,
 			);
 			path = Navigation;
+			sourceTree = "<group>";
+		};
+		C4C0EF26B38962F06B4AF7C0 /* AI */ = {
+			isa = PBXGroup;
+			children = (
+				C14A1CCC2007F3ADF1D940D7 /* AIOnboardingView.swift */,
+				116033CEBAF79FDF5C683C2B /* AIQuickAddBar.swift */,
+				811D8E38D383B460CCB7A457 /* BrainDumpView.swift */,
+				6001D0698FB72015A7AA3383 /* AISettingsView.swift */,
+			);
+			name = AI;
+			path = AI;
 			sourceTree = "<group>";
 		};
 		D058117F62EA886DECE63F83 /* Services */ = {
@@ -561,6 +600,13 @@
 				0002527D7394074D82E001EB /* LLMError.swift in Sources */,
 				DE0D021599AFE8FC0991C53F /* LLMService.swift in Sources */,
 				651E8F01009DCAD560E06C2A /* KeychainManager.swift in Sources */,
+				FECB185277A3C91E10383091 /* PromptTemplates.swift in Sources */,
+				2BD5A60E9B13B983B33B2D90 /* AICoordinator.swift in Sources */,
+				18A27016EB97BFFBA833AD98 /* AIModels.swift in Sources */,
+				D01DF767EE8324DF8279756B /* AIOnboardingView.swift in Sources */,
+				3BF19FA3BD778E1D7185D4D4 /* AIQuickAddBar.swift in Sources */,
+				6E84E43CB871FB455747C4F3 /* BrainDumpView.swift in Sources */,
+				D672C2844A58466DB7096353 /* AISettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
