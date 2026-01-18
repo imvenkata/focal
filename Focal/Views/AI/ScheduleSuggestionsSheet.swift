@@ -99,7 +99,7 @@ struct ScheduleSuggestionsSheet: View {
                 .padding()
                 .frame(maxWidth: .infinity)
                 .background(DS.Colors.primary.opacity(0.1))
-                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+                .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.lg))
 
                 // Time slots
                 VStack(spacing: DS.Spacing.md) {
@@ -191,7 +191,7 @@ struct TimeSlotCard: View {
             }
             .padding()
             .background(DS.Colors.cardBackground)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+            .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.lg))
         }
         .buttonStyle(.plain)
     }

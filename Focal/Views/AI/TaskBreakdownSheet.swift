@@ -104,7 +104,7 @@ struct TaskBreakdownSheet: View {
                         }
                         .padding(DS.Spacing.md)
                         .background(DS.Colors.primary.opacity(0.1))
-                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+                        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.md))
                     }
 
                     // Subtasks
@@ -132,7 +132,7 @@ struct TaskBreakdownSheet: View {
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(DS.Colors.surfaceSecondary)
-                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+                        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.md))
                         .padding(.horizontal)
                     }
                 }
@@ -150,7 +150,7 @@ struct TaskBreakdownSheet: View {
                         .frame(maxWidth: .infinity)
                         .frame(height: DS.Sizes.buttonHeight)
                         .background(DS.Colors.primary)
-                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+                        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.lg))
                 }
             }
             .padding()
@@ -202,7 +202,7 @@ struct BreakdownSubtaskRow: View {
                 .foregroundStyle(.white)
                 .frame(width: 24, height: 24)
                 .background(DS.Colors.primary)
-                .clipShape(Circle())
+                .glassEffect(in: Circle())
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(subtask.title)
@@ -222,12 +222,12 @@ struct BreakdownSubtaskRow: View {
                     .padding(.horizontal, DS.Spacing.sm)
                     .padding(.vertical, 2)
                     .background(DS.Colors.surfaceSecondary)
-                    .clipShape(Capsule())
+                    .glassEffect(in: Capsule())
             }
         }
         .padding(DS.Spacing.md)
         .background(DS.Colors.cardBackground)
-        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.md))
     }
 }
 

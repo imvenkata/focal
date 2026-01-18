@@ -256,7 +256,7 @@ struct ViewModeToggle: View {
         }
         .padding(3)
         .background(DS.Colors.surfaceSecondary)
-        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.md))
         .animation(DS.Animation.quick, value: viewMode)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("View mode")
@@ -322,8 +322,7 @@ private struct TaskPreviewSheet: View {
             .padding(.bottom, DS.Spacing.lg)
         }
         .background(DS.Colors.surfacePrimary)
-        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxl, style: .continuous))
-        .shadowLifted()
+        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.xxl))
         .scaleEffect(scaleEffect)
         .offset(y: currentOffset)
         .opacity(opacity)

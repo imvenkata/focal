@@ -56,8 +56,7 @@ struct AIQuickAddBar: View {
                 setupPromptBar
             }
         }
-        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xl))
-        .shadow(color: .black.opacity(0.1), radius: 8, y: 2)
+        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.xl))
         .sheet(isPresented: $showOnboarding) {
             AIOnboardingView()
                 .environment(ai)
@@ -146,7 +145,7 @@ struct AIQuickAddBar: View {
                             endPoint: .trailing
                         )
                     )
-                    .clipShape(Capsule())
+                    .glassEffect(in: Capsule())
             }
             .padding(.horizontal, DS.Spacing.md)
             .padding(.vertical, DS.Spacing.sm)
@@ -270,7 +269,7 @@ struct ParsedTaskPreview: View {
             }
             .padding()
             .background(DS.Colors.surfaceSecondary)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+            .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.md))
 
             // Action buttons
             HStack(spacing: DS.Spacing.sm) {

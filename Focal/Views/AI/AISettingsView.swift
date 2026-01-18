@@ -86,13 +86,12 @@ struct AISettingsView: View {
                     .frame(maxWidth: .infinity)
                     .frame(height: DS.Sizes.buttonHeight - 8)
                     .background(ai.isConfigured ? DS.Colors.primary.opacity(0.1) : DS.Colors.primary)
-                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+                    .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.md))
             }
         }
         .padding()
         .background(DS.Colors.cardBackground)
-        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
-        .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
+        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.lg))
     }
 
     private var featuresSection: some View {
@@ -164,7 +163,7 @@ struct FeatureRow: View {
                             .padding(.horizontal, 6)
                             .padding(.vertical, 2)
                             .background(DS.Colors.info)
-                            .clipShape(Capsule())
+                            .glassEffect(in: Capsule())
                     }
                 }
 
@@ -182,7 +181,7 @@ struct FeatureRow: View {
         }
         .padding()
         .background(DS.Colors.surfaceSecondary)
-        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.md))
         .opacity(comingSoon ? 0.7 : 1)
     }
 }

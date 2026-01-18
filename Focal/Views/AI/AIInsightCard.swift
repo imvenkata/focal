@@ -33,7 +33,7 @@ struct AIInsightCard: View {
                         .foregroundStyle(DS.Colors.textMuted)
                         .padding(6)
                         .background(DS.Colors.surfaceSecondary)
-                        .clipShape(Circle())
+                        .glassEffect(in: Circle())
                 }
             }
 
@@ -66,7 +66,7 @@ struct AIInsightCard: View {
                     .padding(DS.Spacing.sm)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(DS.Colors.surfaceSecondary)
-                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
+                    .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.sm))
                     .transition(.opacity.combined(with: .move(edge: .top)))
                 }
             }

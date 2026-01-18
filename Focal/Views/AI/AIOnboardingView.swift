@@ -66,7 +66,7 @@ struct AIOnboardingView: View {
                                 .textFieldStyle(.plain)
                                 .padding()
                                 .background(DS.Colors.surfaceSecondary)
-                                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+                                .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.md))
 
                             Text(selectedProvider.setupInstructions)
                                 .font(.caption)
@@ -114,7 +114,7 @@ struct AIOnboardingView: View {
                         .frame(maxWidth: .infinity)
                         .frame(height: DS.Sizes.buttonHeight)
                         .background(canSubmit ? DS.Colors.primary : DS.Colors.textMuted)
-                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+                        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.lg))
                     }
                     .disabled(!canSubmit || isValidating)
                 }
@@ -198,7 +198,7 @@ struct ProviderCard: View {
             }
             .padding()
             .background(isSelected ? DS.Colors.primary.opacity(0.1) : DS.Colors.surfaceSecondary)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+            .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.md))
             .overlay(
                 RoundedRectangle(cornerRadius: DS.Radius.md)
                     .stroke(isSelected ? DS.Colors.primary : .clear, lineWidth: 2)

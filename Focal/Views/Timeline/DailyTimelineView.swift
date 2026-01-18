@@ -230,8 +230,7 @@ struct DailyTimelineView: View {
             .padding(.bottom, DS.Sizes.bottomNavHeight + DS.Spacing.sm)
         }
         .background(DS.Colors.surfacePrimary)
-        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxxl, style: .continuous))
-        .shadow(color: DS.Colors.overlay.opacity(0.08), radius: 24, y: -4)
+        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.xxxl))
         .offset(y: max(0, dragOffset))
         .scaleEffect(dragScaleEffect, anchor: .bottom)
         .opacity(dragOpacity)

@@ -132,7 +132,7 @@ struct AdjustmentChip: View {
         .padding(.vertical, 4)
         .background(actionColor.opacity(0.15))
         .foregroundStyle(actionColor)
-        .clipShape(Capsule())
+        .glassEffect(in: Capsule())
     }
 
     private var actionIcon: String {

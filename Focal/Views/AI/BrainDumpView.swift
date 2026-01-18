@@ -75,7 +75,7 @@ struct BrainDumpView: View {
             }
             .frame(maxHeight: .infinity)
             .background(DS.Colors.surfaceSecondary)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+            .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.lg))
             .padding(.horizontal)
 
             // Error message
@@ -104,7 +104,7 @@ struct BrainDumpView: View {
                 .frame(maxWidth: .infinity)
                 .frame(height: DS.Sizes.buttonHeight)
                 .background(rawText.isEmpty || isProcessing ? DS.Colors.textMuted : DS.Colors.primary)
-                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+                .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.lg))
             }
             .disabled(rawText.isEmpty || isProcessing)
             .padding(.horizontal)
@@ -209,7 +209,7 @@ struct BrainDumpResultView: View {
                         .padding(DS.Spacing.sm)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(DS.Colors.warning.opacity(0.1))
-                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
+                        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.sm))
                     }
                 }
             }
@@ -247,7 +247,7 @@ struct BrainDumpResultView: View {
                         .frame(maxWidth: .infinity)
                         .frame(height: DS.Sizes.buttonHeight)
                         .background(selectedIds.isEmpty ? DS.Colors.textMuted : DS.Colors.primary)
-                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+                        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.lg))
                 }
                 .disabled(selectedIds.isEmpty)
 
@@ -356,7 +356,7 @@ struct BrainDumpTaskRow: View {
             }
             .padding(DS.Spacing.md)
             .background(isSelected ? DS.Colors.primary.opacity(0.05) : DS.Colors.surfaceSecondary)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+            .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.md))
         }
         .buttonStyle(.plain)
     }
