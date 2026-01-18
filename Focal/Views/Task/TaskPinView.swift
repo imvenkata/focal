@@ -65,6 +65,9 @@ struct MiniTaskPin: View {
     var hourHeight: CGFloat = 60
     var overrideTime: String? = nil
 
+    @State private var isPressed = false
+    @State private var pulseScale: CGFloat = 1.0
+
     var body: some View {
         VStack(spacing: 2) {
             LiquidGlassCapsuleView(
@@ -72,9 +75,13 @@ struct MiniTaskPin: View {
                 time: overrideTime ?? compactTime,
                 icon: task.icon,
                 accentColor: task.color.color,
-                sizeScale: capsuleScale
+                sizeScale: capsuleScale,
+                showTitlePreview: isPressed,
+                isCurrentTask: isCurrentTask,
+                isUpcoming: isUpcoming
             )
             .opacity(task.isCompleted ? 0.6 : 1)
+            .scaleEffect(pulseScale)
             .overlay {
                 if task.isCompleted {
                     Image(systemName: "checkmark")
@@ -88,7 +95,39 @@ struct MiniTaskPin: View {
                 GlassStemView(height: durationStemHeight, accentColor: task.color.color)
             }
         }
+        .onLongPressGesture(minimumDuration: 0.15, pressing: { pressing in
+            withAnimation(DS.Animation.quick) {
+                isPressed = pressing
+            }
+        }, perform: {})
+        .onAppear {
+            if isUpcoming {
+                startPulseAnimation()
+            }
+        }
         .accessibilityLabel("\(task.title), \(task.startTimeFormatted)")
+    }
+
+    /// Task is currently active (happening now)
+    private var isCurrentTask: Bool {
+        task.isActive
+    }
+
+    /// Task starts within the next 15 minutes
+    private var isUpcoming: Bool {
+        guard !task.isCompleted else { return false }
+        let now = Date()
+        let fifteenMinutesFromNow = now.addingTimeInterval(15 * 60)
+        return task.startTime > now && task.startTime <= fifteenMinutesFromNow
+    }
+
+    private func startPulseAnimation() {
+        withAnimation(
+            .easeInOut(duration: 1.2)
+            .repeatForever(autoreverses: true)
+        ) {
+            pulseScale = 1.05
+        }
     }
 
     private var capsuleScale: CGFloat {
@@ -136,11 +175,22 @@ struct LiquidGlassCapsuleView: View {
     let icon: String
     let accentColor: Color
     var sizeScale: CGFloat = 1
+    var showTitlePreview: Bool = false
+    var isCurrentTask: Bool = false
+    var isUpcoming: Bool = false
 
     var body: some View {
         VStack(spacing: 0) {
             // Icon circle at top
             ZStack {
+                // Glow effect for current task
+                if isCurrentTask {
+                    Circle()
+                        .fill(accentColor.opacity(0.3))
+                        .frame(width: iconSize + 8, height: iconSize + 8)
+                        .blur(radius: 4)
+                }
+
                 Circle()
                     .fill(accentColor)
 
@@ -160,15 +210,37 @@ struct LiquidGlassCapsuleView: View {
                     .font(.system(size: iconFontSize))
             }
             .frame(width: iconSize, height: iconSize)
-            .shadow(color: accentColor.opacity(0.4), radius: 4, y: 2)
+            .shadow(color: accentColor.opacity(isCurrentTask ? 0.6 : 0.4), radius: isCurrentTask ? 8 : 4, y: 2)
 
-            // Time label below
-            Text(time)
-                .font(.system(size: timeFontSize, weight: .semibold, design: .rounded))
-                .foregroundStyle(DS.Colors.textSecondary)
-                .padding(.top, 3)
+            // Time label or title preview
+            if showTitlePreview {
+                Text(titlePreview)
+                    .font(.system(size: timeFontSize, weight: .bold, design: .rounded))
+                    .foregroundStyle(accentColor)
+                    .padding(.top, 3)
+                    .transition(.opacity)
+            } else {
+                Text(time)
+                    .font(.system(size: timeFontSize, weight: .semibold, design: .rounded))
+                    .foregroundStyle(DS.Colors.textSecondary)
+                    .padding(.top, 3)
+            }
         }
         .frame(width: capsuleWidth, height: capsuleHeight)
+        .overlay(alignment: .top) {
+            // Upcoming indicator dot
+            if isUpcoming {
+                Circle()
+                    .fill(DS.Colors.warning)
+                    .frame(width: 6, height: 6)
+                    .offset(x: iconSize / 2 - 2, y: 2)
+            }
+        }
+    }
+
+    /// First 3 characters of the title
+    private var titlePreview: String {
+        String(title.prefix(3)).uppercased()
     }
 
     private var capsuleWidth: CGFloat {

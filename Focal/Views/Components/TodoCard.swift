@@ -93,8 +93,10 @@ struct TodoCard: View {
                         .foregroundStyle(.white)
                 }
             }
+            .frame(width: DS.Sizes.minTouchTarget, height: DS.Sizes.minTouchTarget)
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(todo.isCompleted ? "Mark incomplete" : "Mark complete")
     }
 
     private var subtaskProgressView: some View {

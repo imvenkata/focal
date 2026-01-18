@@ -116,20 +116,6 @@ struct TodoView: View {
                             .accessibilityLabel("Enter focus mode")
                             .accessibilityHint("Shows one task at a time for focused work")
 
-                            Button {
-                                openFloatingInput()
-                            } label: {
-                                Image(systemName: "plus")
-                                    .font(.system(size: 16, weight: .semibold))
-                                    .foregroundStyle(DS.Colors.textSecondary)
-                                    .frame(width: 36, height: 36)
-                                    .background(DS.Colors.surfaceSecondary)
-                                    .clipShape(Circle())
-                            }
-                            .buttonStyle(.plain)
-                            .accessibilityLabel("Open quick add")
-                            .accessibilityHint("Opens the floating input")
-
                             // View options menu (ellipsis)
                             Menu {
                                 // Brain Dump (AI feature)
@@ -210,8 +196,10 @@ struct TodoView: View {
                         }
                     }
 
-                    // Quick add launcher
-                    quickAddSection
+                    // Quick add launcher (only show when list is empty as secondary hint)
+                    if !todoStore.hasAnyTodos {
+                        quickAddSection
+                    }
                 }
                 .padding(.horizontal, DS.Spacing.lg)
                 .padding(.top, DS.Spacing.xl)
@@ -841,8 +829,10 @@ private struct CompletedTodoCard: View {
                             .font(.system(size: 12, weight: .bold))
                             .foregroundStyle(.white)
                     }
+                    .frame(width: DS.Sizes.minTouchTarget, height: DS.Sizes.minTouchTarget)
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel("Undo completion")
 
                 // Content
                 Button(action: onTap) {

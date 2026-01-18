@@ -308,6 +308,47 @@ final class TaskStore {
         moveTask(task, toDate: targetDate, hour: hour, minute: minute)
     }
 
+    /// Reschedule a task to a new time within the same day
+    func rescheduleTask(_ task: TaskItem, toHour hour: Int, minute: Int = 0) {
+        guard let index = tasks.firstIndex(where: { $0.id == task.id }) else { return }
+
+        let calendar = Calendar.current
+        var components = calendar.dateComponents([.year, .month, .day], from: task.startTime)
+        components.hour = hour
+        components.minute = minute
+        components.second = 0
+
+        if let newStartTime = calendar.date(from: components) {
+            tasks[index].startTime = newStartTime
+            try? modelContext?.save()
+            HapticManager.shared.selection()
+        }
+    }
+
+    /// Reschedule a task by adding a time offset
+    func rescheduleTask(_ task: TaskItem, byAddingHours hours: Int) {
+        guard let index = tasks.firstIndex(where: { $0.id == task.id }) else { return }
+
+        let calendar = Calendar.current
+        if let newStartTime = calendar.date(byAdding: .hour, value: hours, to: task.startTime) {
+            tasks[index].startTime = newStartTime
+            try? modelContext?.save()
+            HapticManager.shared.selection()
+        }
+    }
+
+    /// Reschedule a task to tomorrow at the same time
+    func rescheduleTaskToTomorrow(_ task: TaskItem) {
+        guard let index = tasks.firstIndex(where: { $0.id == task.id }) else { return }
+
+        let calendar = Calendar.current
+        if let tomorrow = calendar.date(byAdding: .day, value: 1, to: task.startTime) {
+            tasks[index].startTime = tomorrow
+            try? modelContext?.save()
+            HapticManager.shared.selection()
+        }
+    }
+
     func selectDate(_ date: Date) {
         selectedDate = date
         HapticManager.shared.selection()

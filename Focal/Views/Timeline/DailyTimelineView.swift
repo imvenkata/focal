@@ -4,14 +4,30 @@ struct DailyTimelineView: View {
     @Environment(TaskStore.self) private var taskStore
     @State private var selectedTask: TaskItem?
     @State private var showAddTask = false
+    @State private var presetHour: Int?
     @State private var dragOffset: CGFloat = 0
     @State private var isDragging = false
     var onClose: (() -> Void)?
 
+    // Pinch-to-zoom state
+    @State private var zoomScale: CGFloat = 1.0
+    @State private var lastZoomScale: CGFloat = 1.0
+    @State private var showZoomIndicator = false
+    @AppStorage("timelineZoomLevel") private var savedZoomLevel: Double = 1.0
+
     private let timelineStartHour = 6
     private let timelineEndHour = 23  // Aligned with weekly view (was 22)
     private let dismissThreshold: CGFloat = 120
-    private let minuteHeight: CGFloat = 0.5
+    private let baseMinuteHeight: CGFloat = 0.5
+
+    // Zoom constraints
+    private let minZoom: CGFloat = 0.5
+    private let maxZoom: CGFloat = 2.0
+
+    private var minuteHeight: CGFloat {
+        baseMinuteHeight * zoomScale
+    }
+
     private var timelineVerticalPadding: CGFloat { DS.Spacing.md }
     private var timelineBottomPadding: CGFloat { DS.Sizes.bottomNavHeight + DS.Spacing.md }
     private var timelineLineOffset: CGFloat {
@@ -52,7 +68,13 @@ struct DailyTimelineView: View {
                                     onTap: { selectedTask = task },
                                     onLongPress: { HapticManager.shared.dragActivated() },
                                     pillHeight: rowHeight,
-                                    onDelete: { taskStore.deleteTask(task) }
+                                    onDelete: { taskStore.deleteTask(task) },
+                                    onReschedule: { hours in
+                                        taskStore.rescheduleTask(task, byAddingHours: hours)
+                                    },
+                                    onRescheduleTomorrow: {
+                                        taskStore.rescheduleTaskToTomorrow(task)
+                                    }
                                 )
                             case .gap:
                                 EmptyIntervalView(
@@ -61,7 +83,11 @@ struct DailyTimelineView: View {
                                     endTime: segment.endTime,
                                     minHeight: rowHeight,
                                     showsAddButton: false,
-                                    onAddTask: { showAddTask = true }
+                                    onAddTask: { showAddTask = true },
+                                    onTapToCreate: { time in
+                                        presetHour = Calendar.current.component(.hour, from: time)
+                                        showAddTask = true
+                                    }
                                 )
                             }
                         }
@@ -91,6 +117,48 @@ struct DailyTimelineView: View {
                 await MainActor.run {
                     HapticManager.shared.selection()
                 }
+            }
+            .gesture(
+                MagnificationGesture()
+                    .onChanged { value in
+                        let newScale = lastZoomScale * value
+                        zoomScale = min(max(newScale, minZoom), maxZoom)
+                        showZoomIndicator = true
+                    }
+                    .onEnded { value in
+                        lastZoomScale = zoomScale
+                        savedZoomLevel = Double(zoomScale)
+                        HapticManager.shared.selection()
+                        // Hide indicator after delay
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            withAnimation {
+                                showZoomIndicator = false
+                            }
+                        }
+                    }
+            )
+            .onTapGesture(count: 2) {
+                // Double-tap to reset zoom
+                withAnimation(DS.Animation.spring) {
+                    zoomScale = 1.0
+                    lastZoomScale = 1.0
+                    savedZoomLevel = 1.0
+                }
+                HapticManager.shared.selection()
+            }
+            .overlay(alignment: .topTrailing) {
+                // Zoom level indicator
+                if showZoomIndicator {
+                    ZoomIndicator(scale: zoomScale)
+                        .padding(.trailing, DS.Spacing.xl)
+                        .padding(.top, DS.Spacing.lg)
+                        .transition(.opacity.combined(with: .scale))
+                }
+            }
+            .onAppear {
+                // Restore saved zoom level
+                zoomScale = CGFloat(savedZoomLevel)
+                lastZoomScale = zoomScale
             }
         }
         .overlay(alignment: .bottomTrailing) {
@@ -138,8 +206,14 @@ struct DailyTimelineView: View {
         )
         .transition(.move(edge: .bottom).combined(with: .opacity))
         .sheet(isPresented: $showAddTask) {
-            PlannerTaskCreationSheet()
+            PlannerTaskCreationSheet(presetHour: presetHour)
                 .environment(taskStore)
+        }
+        .onChange(of: showAddTask) { _, isShowing in
+            // Reset preset hour when sheet is dismissed
+            if !isShowing {
+                presetHour = nil
+            }
         }
         .sheet(item: $selectedTask) { task in
             TaskDetailView(task: task)
@@ -364,6 +438,43 @@ private struct TimelineGuideLine: Shape {
         path.move(to: CGPoint(x: rect.midX, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
         return path
+    }
+}
+
+// MARK: - Zoom Indicator
+private struct ZoomIndicator: View {
+    let scale: CGFloat
+
+    var body: some View {
+        HStack(spacing: DS.Spacing.sm) {
+            Image(systemName: zoomIcon)
+                .font(.system(size: 14, weight: .semibold))
+
+            Text(zoomText)
+                .scaledFont(size: 14, weight: .semibold, design: .monospaced, relativeTo: .callout)
+        }
+        .foregroundStyle(DS.Colors.textPrimary)
+        .padding(.horizontal, DS.Spacing.md)
+        .padding(.vertical, DS.Spacing.sm)
+        .background(DS.Colors.surfacePrimary)
+        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+        .shadowElevated()
+        .accessibilityLabel("Zoom level \(zoomText)")
+    }
+
+    private var zoomText: String {
+        let percentage = Int(scale * 100)
+        return "\(percentage)%"
+    }
+
+    private var zoomIcon: String {
+        if scale > 1.0 {
+            return "plus.magnifyingglass"
+        } else if scale < 1.0 {
+            return "minus.magnifyingglass"
+        } else {
+            return "magnifyingglass"
+        }
     }
 }
 

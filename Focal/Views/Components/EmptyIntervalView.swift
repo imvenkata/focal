@@ -6,8 +6,10 @@ struct EmptyIntervalView: View {
     let endTime: Date
     let minHeight: CGFloat
     let onAddTask: () -> Void
+    let onTapToCreate: ((Date) -> Void)?
     let showsAddButton: Bool
 
+    @State private var isPressed = false
     private let ctaMinimumGap: TimeInterval = 30 * 60
 
     init(
@@ -16,7 +18,8 @@ struct EmptyIntervalView: View {
         endTime: Date,
         minHeight: CGFloat,
         showsAddButton: Bool = true,
-        onAddTask: @escaping () -> Void = {}
+        onAddTask: @escaping () -> Void = {},
+        onTapToCreate: ((Date) -> Void)? = nil
     ) {
         self.gap = gap
         self.startTime = startTime
@@ -24,16 +27,36 @@ struct EmptyIntervalView: View {
         self.minHeight = minHeight
         self.showsAddButton = showsAddButton
         self.onAddTask = onAddTask
+        self.onTapToCreate = onTapToCreate
     }
-    
+
     var body: some View {
-        VStack(alignment: .leading, spacing: DS.Spacing.sm) {
-            if showsCTA && showsAddButton {
-                AddTaskCTA(action: onAddTask)
+        ZStack {
+            // Tap target area with visual feedback
+            RoundedRectangle(cornerRadius: DS.Radius.sm)
+                .fill(isPressed ? DS.Colors.primary.opacity(0.08) : Color.clear)
+                .animation(DS.Animation.quick, value: isPressed)
+
+            VStack(alignment: .leading, spacing: DS.Spacing.sm) {
+                if showsCTA && showsAddButton {
+                    AddTaskCTA(action: onAddTask)
+                }
             }
+            .padding(.leading, DS.Sizes.taskPillDefault + DS.Spacing.lg)
         }
-        .padding(.leading, DS.Sizes.taskPillDefault + DS.Spacing.lg)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            guard isTappable else { return }
+            HapticManager.shared.selection()
+            onTapToCreate?(startTime)
+        }
+        .onLongPressGesture(minimumDuration: 0.1, pressing: { pressing in
+            guard isTappable else { return }
+            isPressed = pressing
+        }, perform: {})
+        .accessibilityLabel("Empty time slot from \(startTime.formattedTime) to \(endTime.formattedTime)")
+        .accessibilityHint(isTappable ? "Tap to add a task at this time" : "")
     }
 
     private var now: Date {
@@ -42,6 +65,11 @@ struct EmptyIntervalView: View {
 
     private var showsCTA: Bool {
         gap >= ctaMinimumGap && endTime > now && minHeight >= DS.Sizes.minTouchTarget
+    }
+
+    /// Whether this empty interval can be tapped to create a task
+    private var isTappable: Bool {
+        onTapToCreate != nil && endTime > now && minHeight >= DS.Sizes.minTouchTarget
     }
 }
 

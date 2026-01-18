@@ -9,16 +9,20 @@ struct TodoDetailView: View {
 
     @State private var title: String
     @State private var notes: String
-    @State private var showDatePicker = false
-    @State private var showTimePicker = false
-    @State private var showReminderPicker = false
-    @State private var showRepeatPicker = false
     @State private var showIconPicker = false
     @State private var showColorPicker = false
     @State private var showPriorityPicker = false
     @State private var showDeleteConfirmation = false
     @State private var showEnergyPicker = false
+    @State private var showReminderPicker = false
     @State private var newSubtaskTitle = ""
+
+    // Inline expandable sections (reduces sheet cascade)
+    @State private var expandedSection: ScheduleSection?
+
+    enum ScheduleSection: Equatable {
+        case date, time, reminder, repeatOption
+    }
 
     @FocusState private var isSubtaskFieldFocused: Bool
     @FocusState private var isNotesFocused: Bool
@@ -88,33 +92,6 @@ struct TodoDetailView: View {
                 todoStore.save()
             }
         }
-        .sheet(isPresented: $showDatePicker) {
-            TodoDatePickerSheet(
-                selectedDate: Binding(
-                    get: { todo.dueDate ?? Date() },
-                    set: { todo.setDueDate($0) }
-                ),
-                hasDueDate: todo.dueDate != nil,
-                onClear: {
-                    todo.setDueDate(nil)
-                    todo.setDueTime(nil)
-                    showDatePicker = false
-                }
-            )
-        }
-        .sheet(isPresented: $showTimePicker) {
-            TodoTimePickerSheet(
-                selectedTime: Binding(
-                    get: { todo.dueTime ?? Date() },
-                    set: { todo.setDueTime($0) }
-                ),
-                hasTime: todo.hasDueTime,
-                onClear: {
-                    todo.setDueTime(nil)
-                    showTimePicker = false
-                }
-            )
-        }
         .sheet(isPresented: $showIconPicker) {
             IconPickerView(
                 selectedIcon: Binding(
@@ -145,22 +122,6 @@ struct TodoDetailView: View {
                     get: { todo.energyLevel },
                     set: { todo.setEnergyLevel($0) }
                 )
-            )
-        }
-        .sheet(isPresented: $showRepeatPicker) {
-            TodoRepeatPickerSheet(
-                recurrence: Binding(
-                    get: { TodoRecurrenceOption(rawValue: todo.recurrenceOption ?? "None") ?? .none },
-                    set: { todo.setRecurrence($0, days: todo.repeatDays) }
-                ),
-                selectedDays: Binding(
-                    get: { Set(todo.repeatDays) },
-                    set: { todo.setRecurrence(
-                        TodoRecurrenceOption(rawValue: todo.recurrenceOption ?? "None") ?? .none,
-                        days: Array($0)
-                    )}
-                ),
-                accentColor: todo.color.color
             )
         }
         .confirmationDialog("Reminder", isPresented: $showReminderPicker) {
@@ -207,41 +168,135 @@ struct TodoDetailView: View {
 
     private var scheduleSection: some View {
         VStack(spacing: 0) {
-            // Due Date
-            TodoDetailInfoRow(
-                systemName: "calendar",
-                title: todo.dueDateFormatted ?? "Add due date",
-                trailingText: todo.isDueToday ? "Today" : nil,
-                trailingTint: todo.isOverdue ? DS.Colors.danger : todo.color.color,
-                accentColor: todo.color.color,
-                isEmpty: todo.dueDate == nil,
-                accessibilityLabel: "Due date",
-                accessibilityHint: "Opens date picker"
-            ) {
-                showDatePicker = true
+            // Due Date - Inline expandable
+            VStack(spacing: 0) {
+                TodoDetailExpandableRow(
+                    systemName: "calendar",
+                    title: todo.dueDateFormatted ?? "Add due date",
+                    trailingText: todo.isDueToday ? "Today" : nil,
+                    trailingTint: todo.isOverdue ? DS.Colors.danger : todo.color.color,
+                    accentColor: todo.color.color,
+                    isEmpty: todo.dueDate == nil,
+                    isExpanded: expandedSection == .date,
+                    accessibilityLabel: "Due date"
+                ) {
+                    withAnimation(DS.Animation.spring) {
+                        expandedSection = expandedSection == .date ? nil : .date
+                    }
+                    HapticManager.shared.selection()
+                }
+
+                if expandedSection == .date {
+                    VStack(spacing: DS.Spacing.md) {
+                        // Quick date options
+                        HStack(spacing: DS.Spacing.sm) {
+                            InlineQuickDateButton(title: "Today", accentColor: todo.color.color) {
+                                todo.setDueDate(Date())
+                            }
+                            InlineQuickDateButton(title: "Tomorrow", accentColor: todo.color.color) {
+                                todo.setDueDate(Calendar.current.date(byAdding: .day, value: 1, to: Date()))
+                            }
+                            InlineQuickDateButton(title: "Next Week", accentColor: todo.color.color) {
+                                todo.setDueDate(Calendar.current.date(byAdding: .weekOfYear, value: 1, to: Date()))
+                            }
+                        }
+
+                        DatePicker(
+                            "Select Date",
+                            selection: Binding(
+                                get: { todo.dueDate ?? Date() },
+                                set: { todo.setDueDate($0) }
+                            ),
+                            displayedComponents: .date
+                        )
+                        .datePickerStyle(.graphical)
+                        .tint(todo.color.color)
+
+                        if todo.dueDate != nil {
+                            Button {
+                                todo.setDueDate(nil)
+                                todo.setDueTime(nil)
+                                HapticManager.shared.selection()
+                            } label: {
+                                Text("Remove Due Date")
+                                    .scaledFont(size: 14, weight: .medium, relativeTo: .callout)
+                                    .foregroundStyle(DS.Colors.danger)
+                            }
+                        }
+                    }
+                    .padding(DS.Spacing.lg)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+                }
             }
 
             RowDivider()
 
-            // Due Time (only show if has due date)
+            // Due Time - Inline expandable (only show if has due date)
             if todo.dueDate != nil {
-                TodoDetailInfoRow(
-                    systemName: "clock",
-                    title: todo.dueTimeFormatted ?? "Add time",
-                    trailingText: nil,
-                    trailingTint: todo.color.color,
-                    accentColor: todo.color.color,
-                    isEmpty: !todo.hasDueTime,
-                    accessibilityLabel: "Due time",
-                    accessibilityHint: "Opens time picker"
-                ) {
-                    showTimePicker = true
+                VStack(spacing: 0) {
+                    TodoDetailExpandableRow(
+                        systemName: "clock",
+                        title: todo.dueTimeFormatted ?? "Add time",
+                        trailingText: nil,
+                        trailingTint: todo.color.color,
+                        accentColor: todo.color.color,
+                        isEmpty: !todo.hasDueTime,
+                        isExpanded: expandedSection == .time,
+                        accessibilityLabel: "Due time"
+                    ) {
+                        withAnimation(DS.Animation.spring) {
+                            expandedSection = expandedSection == .time ? nil : .time
+                        }
+                        HapticManager.shared.selection()
+                    }
+
+                    if expandedSection == .time {
+                        VStack(spacing: DS.Spacing.md) {
+                            // Quick time options
+                            HStack(spacing: DS.Spacing.sm) {
+                                InlineQuickTimeButton(title: "9 AM", hour: 9, accentColor: todo.color.color) {
+                                    setTime(hour: 9, minute: 0)
+                                }
+                                InlineQuickTimeButton(title: "12 PM", hour: 12, accentColor: todo.color.color) {
+                                    setTime(hour: 12, minute: 0)
+                                }
+                                InlineQuickTimeButton(title: "5 PM", hour: 17, accentColor: todo.color.color) {
+                                    setTime(hour: 17, minute: 0)
+                                }
+                            }
+
+                            DatePicker(
+                                "Select Time",
+                                selection: Binding(
+                                    get: { todo.dueTime ?? Date() },
+                                    set: { todo.setDueTime($0) }
+                                ),
+                                displayedComponents: .hourAndMinute
+                            )
+                            .datePickerStyle(.wheel)
+                            .labelsHidden()
+                            .frame(maxHeight: 120)
+
+                            if todo.hasDueTime {
+                                Button {
+                                    todo.setDueTime(nil)
+                                    HapticManager.shared.selection()
+                                } label: {
+                                    Text("Remove Time")
+                                        .scaledFont(size: 14, weight: .medium, relativeTo: .callout)
+                                        .foregroundStyle(DS.Colors.danger)
+                                }
+                            }
+                        }
+                        .padding(DS.Spacing.lg)
+                        .transition(.opacity.combined(with: .move(edge: .top)))
+                    }
                 }
 
                 RowDivider()
             }
 
-            // Reminder
+            // Reminder (uses confirmation dialog - quick to interact with)
             TodoDetailInfoRow(
                 systemName: todo.reminderOption != nil ? "bell.badge.fill" : "bell",
                 title: "Reminder",
@@ -257,22 +312,72 @@ struct TodoDetailView: View {
 
             RowDivider()
 
-            // Repeat
-            TodoDetailInfoRow(
-                systemName: "arrow.clockwise",
-                title: "Repeat",
-                trailingText: todo.recurrenceFormatted.isEmpty ? "None" : todo.recurrenceFormatted,
-                trailingTint: DS.Colors.textSecondary,
-                accentColor: todo.color.color,
-                isEmpty: todo.recurrenceOption == nil,
-                accessibilityLabel: "Repeat",
-                accessibilityHint: "Opens repeat options"
-            ) {
-                showRepeatPicker = true
+            // Repeat - Inline expandable
+            VStack(spacing: 0) {
+                TodoDetailExpandableRow(
+                    systemName: "arrow.clockwise",
+                    title: "Repeat",
+                    trailingText: todo.recurrenceFormatted.isEmpty ? "None" : todo.recurrenceFormatted,
+                    trailingTint: DS.Colors.textSecondary,
+                    accentColor: todo.color.color,
+                    isEmpty: todo.recurrenceOption == nil,
+                    isExpanded: expandedSection == .repeatOption,
+                    accessibilityLabel: "Repeat"
+                ) {
+                    withAnimation(DS.Animation.spring) {
+                        expandedSection = expandedSection == .repeatOption ? nil : .repeatOption
+                    }
+                    HapticManager.shared.selection()
+                }
+
+                if expandedSection == .repeatOption {
+                    VStack(alignment: .leading, spacing: DS.Spacing.md) {
+                        // Recurrence options
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: DS.Spacing.sm) {
+                                ForEach(TodoRecurrenceOption.allCases) { option in
+                                    InlineRecurrenceButton(
+                                        title: option.rawValue,
+                                        isSelected: (TodoRecurrenceOption(rawValue: todo.recurrenceOption ?? "None") ?? .none) == option,
+                                        accentColor: todo.color.color
+                                    ) {
+                                        todo.setRecurrence(option, days: todo.repeatDays)
+                                        HapticManager.shared.selection()
+                                    }
+                                }
+                            }
+                        }
+
+                        // Custom days picker
+                        if (TodoRecurrenceOption(rawValue: todo.recurrenceOption ?? "None") ?? .none) == .custom {
+                            InlineRepeatDaysPicker(
+                                selectedDays: Binding(
+                                    get: { Set(todo.repeatDays) },
+                                    set: { todo.setRecurrence(.custom, days: Array($0)) }
+                                ),
+                                accentColor: todo.color.color
+                            )
+                        }
+                    }
+                    .padding(DS.Spacing.lg)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+                }
             }
         }
         .background(DS.Colors.surfaceSecondary)
         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxl, style: .continuous))
+    }
+
+    private func setTime(hour: Int, minute: Int) {
+        let calendar = Calendar.current
+        let baseDate = todo.dueTime ?? Date()
+        var components = calendar.dateComponents([.year, .month, .day], from: baseDate)
+        components.hour = hour
+        components.minute = minute
+        if let newTime = calendar.date(from: components) {
+            todo.setDueTime(newTime)
+            HapticManager.shared.selection()
+        }
     }
 
     // MARK: - Priority & Energy Row
@@ -833,7 +938,213 @@ private struct TodoDetailDeleteButton: View {
     }
 }
 
-// MARK: - Date Picker Sheet
+// MARK: - Inline Expandable Row
+
+private struct TodoDetailExpandableRow: View {
+    let systemName: String
+    let title: String
+    let trailingText: String?
+    let trailingTint: Color
+    let accentColor: Color
+    let isEmpty: Bool
+    let isExpanded: Bool
+    let accessibilityLabel: String
+    let action: () -> Void
+
+    private var iconSize: CGFloat {
+        DS.Sizes.iconButtonSize - DS.Spacing.xs
+    }
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: DS.Spacing.md) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: DS.Radius.md, style: .continuous)
+                        .fill(accentColor.opacity(0.15))
+                        .frame(width: iconSize, height: iconSize)
+
+                    Image(systemName: systemName)
+                        .scaledFont(size: 16, weight: .semibold, relativeTo: .callout)
+                        .foregroundStyle(accentColor)
+                }
+
+                Text(title)
+                    .scaledFont(size: 16, weight: .medium, relativeTo: .body)
+                    .foregroundStyle(isEmpty ? DS.Colors.textTertiary : DS.Colors.textPrimary)
+
+                Spacer()
+
+                if let trailingText, !trailingText.isEmpty {
+                    Text(trailingText)
+                        .scaledFont(size: 12, weight: .medium, relativeTo: .caption)
+                        .foregroundStyle(trailingTint)
+                }
+
+                Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                    .scaledFont(size: 12, weight: .semibold, relativeTo: .caption)
+                    .foregroundStyle(DS.Colors.textTertiary)
+            }
+            .padding(DS.Spacing.lg)
+            .background(isExpanded ? accentColor.opacity(0.05) : Color.clear)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(accessibilityLabel)
+        .accessibilityHint(isExpanded ? "Tap to collapse" : "Tap to expand")
+    }
+}
+
+// MARK: - Inline Quick Buttons
+
+private struct InlineQuickDateButton: View {
+    let title: String
+    let accentColor: Color
+    let action: () -> Void
+
+    var body: some View {
+        Button {
+            action()
+            HapticManager.shared.selection()
+        } label: {
+            Text(title)
+                .scaledFont(size: 13, weight: .medium, relativeTo: .callout)
+                .foregroundStyle(accentColor)
+                .padding(.horizontal, DS.Spacing.md)
+                .padding(.vertical, DS.Spacing.sm)
+                .background(accentColor.opacity(0.1))
+                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+private struct InlineQuickTimeButton: View {
+    let title: String
+    let hour: Int
+    let accentColor: Color
+    let action: () -> Void
+
+    var body: some View {
+        Button {
+            action()
+            HapticManager.shared.selection()
+        } label: {
+            Text(title)
+                .scaledFont(size: 13, weight: .medium, relativeTo: .callout)
+                .foregroundStyle(accentColor)
+                .padding(.horizontal, DS.Spacing.md)
+                .padding(.vertical, DS.Spacing.sm)
+                .background(accentColor.opacity(0.1))
+                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+private struct InlineRecurrenceButton: View {
+    let title: String
+    let isSelected: Bool
+    let accentColor: Color
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .scaledFont(size: 13, weight: isSelected ? .semibold : .medium, relativeTo: .callout)
+                .foregroundStyle(isSelected ? .white : DS.Colors.textSecondary)
+                .padding(.horizontal, DS.Spacing.md)
+                .padding(.vertical, DS.Spacing.sm)
+                .background(isSelected ? accentColor : DS.Colors.surfaceTertiary)
+                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+}
+
+private struct InlineRepeatDaysPicker: View {
+    @Binding var selectedDays: Set<Int>
+    let accentColor: Color
+
+    var body: some View {
+        VStack(spacing: DS.Spacing.md) {
+            HStack(spacing: DS.Spacing.sm) {
+                ForEach(Weekday.allCases) { day in
+                    InlineDayButton(
+                        label: day.shortName,
+                        isSelected: selectedDays.contains(day.rawValue),
+                        accentColor: accentColor
+                    ) {
+                        HapticManager.shared.selection()
+                        if selectedDays.contains(day.rawValue) {
+                            selectedDays.remove(day.rawValue)
+                        } else {
+                            selectedDays.insert(day.rawValue)
+                        }
+                    }
+                }
+            }
+
+            // Preset buttons
+            HStack(spacing: DS.Spacing.sm) {
+                InlinePresetButton(title: "Weekdays", isSelected: selectedDays.sorted() == [1, 2, 3, 4, 5], accentColor: accentColor) {
+                    selectedDays = Set([1, 2, 3, 4, 5])
+                    HapticManager.shared.selection()
+                }
+
+                InlinePresetButton(title: "Weekends", isSelected: selectedDays.sorted() == [0, 6], accentColor: accentColor) {
+                    selectedDays = Set([0, 6])
+                    HapticManager.shared.selection()
+                }
+
+                InlinePresetButton(title: "Every day", isSelected: selectedDays.count == 7, accentColor: accentColor) {
+                    selectedDays = Set(0...6)
+                    HapticManager.shared.selection()
+                }
+            }
+        }
+    }
+}
+
+private struct InlineDayButton: View {
+    let label: String
+    let isSelected: Bool
+    let accentColor: Color
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(label)
+                .scaledFont(size: 14, weight: .semibold, relativeTo: .callout)
+                .foregroundStyle(isSelected ? .white : DS.Colors.textSecondary)
+                .frame(width: 36, height: 36)
+                .background(isSelected ? accentColor : DS.Colors.surfaceTertiary)
+                .clipShape(Circle())
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+private struct InlinePresetButton: View {
+    let title: String
+    let isSelected: Bool
+    let accentColor: Color
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .scaledFont(size: 12, weight: isSelected ? .semibold : .medium, relativeTo: .caption)
+                .foregroundStyle(isSelected ? accentColor : DS.Colors.textSecondary)
+                .padding(.horizontal, DS.Spacing.md)
+                .padding(.vertical, DS.Spacing.sm)
+                .background(isSelected ? accentColor.opacity(0.1) : DS.Colors.surfaceTertiary)
+                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+// MARK: - Date Picker Sheet (Legacy - kept for backwards compatibility)
 
 struct TodoDatePickerSheet: View {
     @Environment(\.dismiss) private var dismiss

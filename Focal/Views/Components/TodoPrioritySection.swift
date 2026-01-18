@@ -69,13 +69,14 @@ struct TodoPrioritySection: View {
                     Image(systemName: "plus")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(DS.Colors.textTertiary)
-                        .frame(width: 28, height: 28)
+                        .frame(width: DS.Sizes.minTouchTarget, height: DS.Sizes.minTouchTarget)
                         .background(Color.clear)
                         .clipShape(Circle())
                         .contentShape(Circle())
                 }
                 .buttonStyle(.plain)
                 .opacity(isHovering || !todos.isEmpty ? 1 : 0.5)
+                .accessibilityLabel("Add new \(priority.displayName.lowercased()) task")
             }
             .padding(.horizontal, DS.Spacing.xs)
 
@@ -324,8 +325,10 @@ struct TiimoTodoCard: View {
                                     .foregroundStyle(.white)
                             }
                         }
+                        .frame(width: DS.Sizes.minTouchTarget, height: DS.Sizes.minTouchTarget)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(todo.isCompleted ? "Mark incomplete" : "Mark complete")
                 }
                 .padding(DS.Spacing.md)
             }

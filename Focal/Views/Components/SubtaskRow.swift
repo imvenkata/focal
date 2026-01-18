@@ -13,17 +13,18 @@ struct SubtaskRow: View {
                     Circle()
                         .strokeBorder(subtask.isCompleted ? DS.Colors.sage : DS.Colors.divider, lineWidth: 2)
                         .frame(width: 24, height: 24)
-                    
+
                     if subtask.isCompleted {
                         Circle()
                             .fill(DS.Colors.sage)
                             .frame(width: 24, height: 24)
-                        
+
                         Image(systemName: "checkmark")
                             .scaledFont(size: 12, weight: .bold, relativeTo: .caption)
                             .foregroundStyle(.white)
                     }
                 }
+                .frame(width: DS.Sizes.minTouchTarget, height: DS.Sizes.minTouchTarget)
             }
             .buttonStyle(.plain)
             .accessibilityLabel(subtask.isCompleted ? "Mark incomplete" : "Mark complete")

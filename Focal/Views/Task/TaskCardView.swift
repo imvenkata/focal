@@ -6,6 +6,8 @@ struct TaskCardView: View {
     let onTap: () -> Void
     let onLongPress: (() -> Void)?
     let onDelete: (() -> Void)?
+    let onReschedule: ((Int) -> Void)?
+    let onRescheduleTomorrow: (() -> Void)?
     let pillHeight: CGFloat?
 
     init(
@@ -14,13 +16,17 @@ struct TaskCardView: View {
         onTap: @escaping () -> Void,
         onLongPress: (() -> Void)? = nil,
         pillHeight: CGFloat? = nil,
-        onDelete: (() -> Void)? = nil
+        onDelete: (() -> Void)? = nil,
+        onReschedule: ((Int) -> Void)? = nil,
+        onRescheduleTomorrow: (() -> Void)? = nil
     ) {
         self.task = task
         self.onToggleComplete = onToggleComplete
         self.onTap = onTap
         self.onLongPress = onLongPress
         self.onDelete = onDelete
+        self.onReschedule = onReschedule
+        self.onRescheduleTomorrow = onRescheduleTomorrow
         self.pillHeight = pillHeight
     }
 
@@ -149,6 +155,48 @@ struct TaskCardView: View {
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             if let onDelete {
+                Button(role: .destructive) {
+                    onDelete()
+                } label: {
+                    Label("Delete", systemImage: "trash")
+                }
+            }
+        }
+        .contextMenu {
+            // Quick reschedule options
+            Menu {
+                Button {
+                    onReschedule?(1)
+                } label: {
+                    Label("In 1 hour", systemImage: "clock.arrow.circlepath")
+                }
+
+                Button {
+                    onReschedule?(2)
+                } label: {
+                    Label("In 2 hours", systemImage: "clock.arrow.circlepath")
+                }
+
+                Button {
+                    onRescheduleTomorrow?()
+                } label: {
+                    Label("Tomorrow", systemImage: "calendar.badge.clock")
+                }
+            } label: {
+                Label("Reschedule", systemImage: "calendar")
+            }
+
+            Divider()
+
+            Button {
+                onToggleComplete()
+            } label: {
+                Label(task.isCompleted ? "Mark incomplete" : "Mark complete", systemImage: task.isCompleted ? "arrow.uturn.backward" : "checkmark.circle")
+            }
+
+            if let onDelete {
+                Divider()
+
                 Button(role: .destructive) {
                     onDelete()
                 } label: {
