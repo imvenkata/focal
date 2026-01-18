@@ -67,12 +67,11 @@ struct FloatingTaskInputCard: View {
         .padding(.top, DS.Spacing.sm)
         .padding(.bottom, DS.Spacing.lg)
         .background(DS.Colors.surfacePrimary)
-        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.xxl, style: .continuous))
+        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.xxl))
         .overlay(
             RoundedRectangle(cornerRadius: DS.Radius.xxl, style: .continuous)
                 .stroke(DS.Colors.borderSubtle, lineWidth: DS.Sizes.hairline)
         )
-        .shadowLifted()
         .onAppear {
             updateSuggestions(for: title)
             DispatchQueue.main.async {

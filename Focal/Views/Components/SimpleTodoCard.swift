@@ -153,8 +153,7 @@ struct SimpleTodoCard: View {
                     }
             )
         }
-        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md, style: .continuous))
-        .shadowResting()
+        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.md))
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(todo.title), \(todo.isCompleted ? "completed" : "not completed")")
         .accessibilityHint("Swipe left to delete")

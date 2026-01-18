@@ -130,7 +130,7 @@ struct TaskCapsuleView: View {
         }
         .frame(minHeight: size.height)
         .background(backgroundView)
-        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.md))
         .overlay(borderOverlay)
     }
 

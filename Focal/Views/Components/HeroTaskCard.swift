@@ -109,11 +109,11 @@ struct HeroTaskCard: View {
                     )
                 )
         )
+        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.xxxl))
         .overlay(
             RoundedRectangle(cornerRadius: DS.Radius.xxxl, style: .continuous)
                 .stroke(taskColor.opacity(0.2), lineWidth: 1)
         )
-        .shadowResting()
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Focus task: \(task.title)")
     }

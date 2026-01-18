@@ -137,7 +137,7 @@ struct TaskCardView: View {
         }
         .padding(.horizontal, DS.Spacing.sm)
         .background(task.isActive ? task.color.lightColor.opacity(0.5) : Color.clear)
-        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.lg))
         .overlay {
             if task.isActive {
                 RoundedRectangle(cornerRadius: DS.Radius.lg)
@@ -322,7 +322,7 @@ struct CompactTaskCard: View {
             .padding(.horizontal, DS.Spacing.md)
             .padding(.vertical, DS.Spacing.sm)
             .background(DS.Colors.surfacePrimary)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+            .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.md))
         }
         .buttonStyle(.plain)
     }

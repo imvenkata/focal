@@ -23,7 +23,7 @@ struct TodoCard: View {
             }
         }
         .background(todo.color.lightColor.opacity(0.15))
-        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
+        .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.md))
         .overlay(
             RoundedRectangle(cornerRadius: DS.Radius.md)
                 .stroke(todo.color.color.opacity(0.2), lineWidth: 1)
