@@ -2,7 +2,10 @@ import SwiftUI
 
 struct PlannerView: View {
     @Environment(TaskStore.self) private var taskStore
+    @Environment(AICoordinator.self) private var ai
     @State private var previewTask: TaskItem?
+    @State private var rescheduleSuggestion: RescheduleSuggestion?
+    @State private var showRescheduleBanner: Bool = false
 
     var body: some View {
         @Bindable var store = taskStore
@@ -47,6 +50,13 @@ struct PlannerView: View {
 
                 Divider()
 
+                // AI Insights (shown in day view when AI is configured)
+                if store.viewMode == .day && ai.isConfigured {
+                    AIInsightsView()
+                        .padding(.horizontal, DS.Spacing.lg)
+                        .padding(.top, DS.Spacing.md)
+                }
+
                 // Timeline content
                 Group {
                     switch store.viewMode {
@@ -61,6 +71,27 @@ struct PlannerView: View {
                     }
                 }
                 .animation(DS.Animation.spring, value: store.viewMode)
+            }
+
+            // Reschedule Banner (overlay at top)
+            if showRescheduleBanner, let suggestion = rescheduleSuggestion {
+                VStack {
+                    RescheduleBanner(
+                        suggestion: suggestion,
+                        onAccept: {
+                            applyReschedule(suggestion)
+                        },
+                        onDismiss: {
+                            withAnimation(DS.Animation.spring) {
+                                showRescheduleBanner = false
+                                rescheduleSuggestion = nil
+                            }
+                        }
+                    )
+                    .transition(.move(edge: .top).combined(with: .opacity))
+                    Spacer()
+                }
+                .zIndex(2)
             }
 
             if store.viewMode == .week, let previewTask {
@@ -105,6 +136,34 @@ struct PlannerView: View {
 
     private func handleCloseDayView() {
         taskStore.setViewMode(.week)
+    }
+
+    private func applyReschedule(_ suggestion: RescheduleSuggestion) {
+        // Apply the adjustments from the suggestion
+        for adjustment in suggestion.adjustments {
+            if let task = taskStore.tasksForSelectedDate.first(where: { $0.title == adjustment.taskTitle }) {
+                // Apply new time if provided
+                if let newTimeStr = adjustment.newTime {
+                    let components = newTimeStr.split(separator: ":").compactMap { Int($0) }
+                    if components.count >= 2 {
+                        let calendar = Calendar.current
+                        if let newTime = calendar.date(bySettingHour: components[0], minute: components[1], second: 0, of: task.startTime) {
+                            task.startTime = newTime
+                        }
+                    }
+                }
+                // Apply new duration if provided
+                if let newDuration = adjustment.newDurationMinutes {
+                    task.duration = TimeInterval(newDuration * 60)
+                }
+                task.updatedAt = Date()
+            }
+        }
+        HapticManager.shared.notification(.success)
+        withAnimation(DS.Animation.spring) {
+            showRescheduleBanner = false
+            rescheduleSuggestion = nil
+        }
     }
 }
 

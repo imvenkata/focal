@@ -3,6 +3,7 @@ import SwiftUI
 struct PlannerTaskCreationSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(TaskStore.self) private var taskStore
+    @Environment(AICoordinator.self) private var ai
 
     var presetHour: Int?
 
@@ -24,6 +25,7 @@ struct PlannerTaskCreationSheet: View {
     @State private var showTimePicker = false
     @State private var showRepeatPicker = false
     @State private var showReminderPicker = false
+    @State private var showScheduleSuggestions = false
 
     @FocusState private var isTitleFocused: Bool
     @FocusState private var isSubtaskFocused: Bool
@@ -102,6 +104,21 @@ struct PlannerTaskCreationSheet: View {
                                 HapticManager.shared.selection()
                                 showReminderPicker = true
                             }
+
+                            // AI Schedule Suggestion
+                            if ai.isConfigured && isTitleValid {
+                                PlannerDivider()
+
+                                PlannerActionRow(
+                                    icon: "sparkles",
+                                    title: "AI Suggest Time",
+                                    value: "Find best slot",
+                                    accentColor: DS.Colors.primary
+                                ) {
+                                    HapticManager.shared.impact(.medium)
+                                    showScheduleSuggestions = true
+                                }
+                            }
                         }
                         .background(DS.Colors.surfacePrimary)
                         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg, style: .continuous))
@@ -168,6 +185,21 @@ struct PlannerTaskCreationSheet: View {
             }
         } message: {
             Text("Choose when to be notified.")
+        }
+        .sheet(isPresented: $showScheduleSuggestions) {
+            ScheduleSuggestionsSheet(
+                taskTitle: title,
+                duration: Int(selectedDuration / 60),
+                energyLevel: 3 // Default medium energy
+            ) { suggestedTime in
+                // Apply the suggested time
+                let calendar = Calendar.current
+                let components = calendar.dateComponents([.hour, .minute], from: suggestedTime)
+                if let hour = components.hour, let minute = components.minute {
+                    selectedTime = selectedDate.withTime(hour: hour, minute: minute)
+                }
+                HapticManager.shared.notification(.success)
+            }
         }
         .onAppear {
             syncInitialTime()
