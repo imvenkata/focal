@@ -15,6 +15,11 @@ final class AICoordinator {
     var currentProvider: LLMProvider { llm.currentProvider }
     var lastError: LLMError?
 
+    // MARK: - Debouncing
+
+    private static let debounceDelay: UInt64 = 500_000_000 // 500ms in nanoseconds
+    private var parseTaskTask: Task<ParsedTask, Error>?
+
     // MARK: - Init
 
     init(llmService: LLMService = LLMService()) {
@@ -25,6 +30,12 @@ final class AICoordinator {
 
     func configure(provider: LLMProvider, apiKey: String) {
         llm.configure(provider: provider, apiKey: apiKey)
+    }
+
+    /// Cancel any pending AI operations
+    func cancelPendingOperations() {
+        parseTaskTask?.cancel()
+        parseTaskTask = nil
     }
 
     // MARK: - Task Parsing
@@ -43,6 +54,22 @@ final class AICoordinator {
             lastError = error
             throw error
         }
+    }
+
+    /// Parse task with debouncing - cancels previous requests and waits before calling API
+    func parseTaskDebounced(_ input: String) async throws -> ParsedTask {
+        // Cancel any pending request
+        parseTaskTask?.cancel()
+
+        // Create new debounced task
+        let task = Task<ParsedTask, Error> {
+            try await Task.sleep(nanoseconds: Self.debounceDelay)
+            try Task.checkCancellation()
+            return try await parseTask(input)
+        }
+
+        parseTaskTask = task
+        return try await task.value
     }
 
     // MARK: - Brain Dump

@@ -30,6 +30,7 @@
 		7E4CD39D4370DB60534EF867 /* ScheduleSuggestionsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16AD4E6C59A6D7DCABB3CC4 /* ScheduleSuggestionsSheet.swift */; };
 		8F17231E9B27A7A509AF8B2E /* TodoPrioritySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E4473A9CBF971B857051263 /* TodoPrioritySection.swift */; };
 		8F319E69A447C83851CC129F /* VirtualTaskInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE7C8ABBC775162F49F4698 /* VirtualTaskInstance.swift */; };
+		90D6F49817E855EDF376FD7C /* AICache.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB30A5A878AFC18832B0512 /* AICache.swift */; };
 		A10000001000000000000001 /* FocalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000001 /* FocalApp.swift */; };
 		A10000001000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000002 /* ContentView.swift */; };
 		A10000001000000000000003 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001000000000000003 /* DesignSystem.swift */; };
@@ -162,6 +163,7 @@
 		A2B5219DBAD054D1545A12A03 /* ScaledFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaledFont.swift; sourceTree = "<group>"; };
 		A4CD4485B7372CC3C5CEC515 /* LLMService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LLMService.swift; path = Services/AI/LLMService.swift; sourceTree = "<group>"; };
 		A9A83373A8F7896F39B3E169 /* TaskNotificationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TaskNotificationService.swift; path = Services/TaskNotificationService.swift; sourceTree = "<group>"; };
+		ABB30A5A878AFC18832B0512 /* AICache.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Focal/Services/AI/AICache.swift; sourceTree = SOURCE_ROOT; };
 		AEE7C8ABBC775162F49F4698 /* VirtualTaskInstance.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VirtualTaskInstance.swift; path = VirtualTaskInstance.swift; sourceTree = "<group>"; };
 		C14A1CCC2007F3ADF1D940D7 /* AIOnboardingView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AIOnboardingView.swift; sourceTree = "<group>"; };
 		C2531C6901CE315809209807 /* ColorPickerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				A4CD4485B7372CC3C5CEC515 /* LLMService.swift */,
 				0DF94E356ED79AB8E009B563 /* PromptTemplates.swift */,
 				502AC4E246689D7DCBD8C94F /* AICoordinator.swift */,
+				ABB30A5A878AFC18832B0512 /* AICache.swift */,
 			);
 			name = AI;
 			sourceTree = "<group>";
@@ -623,6 +626,7 @@
 				7E4CD39D4370DB60534EF867 /* ScheduleSuggestionsSheet.swift in Sources */,
 				FB2358B8DEF634C015770324 /* RescheduleBanner.swift in Sources */,
 				CB20AB27F7B2821DE9DA42AA /* AIInsightCard.swift in Sources */,
+				90D6F49817E855EDF376FD7C /* AICache.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

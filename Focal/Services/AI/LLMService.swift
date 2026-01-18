@@ -1,7 +1,21 @@
 import Foundation
+import Network
 
 @Observable
 final class LLMService {
+
+    // MARK: - Configuration Constants
+
+    private static let maxRetries = 3
+    private static let baseRetryDelay: TimeInterval = 1.0
+    private static let maxPromptLength = 10000
+    private static let requestTimeout: TimeInterval = 30
+    private static let resourceTimeout: TimeInterval = 60
+
+    // MARK: - Network Monitor
+
+    private let networkMonitor = NWPathMonitor()
+    private var isNetworkAvailable = true
 
     // MARK: - State
 
@@ -16,11 +30,21 @@ final class LLMService {
 
     init() {
         let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = 30
-        configuration.timeoutIntervalForResource = 60
+        configuration.timeoutIntervalForRequest = Self.requestTimeout
+        configuration.timeoutIntervalForResource = Self.resourceTimeout
         self.session = URLSession(configuration: configuration)
 
+        // Start network monitoring
+        networkMonitor.pathUpdateHandler = { [weak self] path in
+            self?.isNetworkAvailable = path.status == .satisfied
+        }
+        networkMonitor.start(queue: DispatchQueue.global(qos: .utility))
+
         loadConfiguration()
+    }
+
+    deinit {
+        networkMonitor.cancel()
     }
 
     // MARK: - Configuration
@@ -53,25 +77,81 @@ final class LLMService {
         prompt: String,
         systemPrompt: String? = nil,
         temperature: Double = 0.3,
-        maxTokens: Int = 1000
+        maxTokens: Int = 1000,
+        useCache: Bool = true
     ) async throws -> String {
         guard let config, isConfigured else {
             throw LLMError.notConfigured
         }
 
+        // Check network availability first (fail fast)
+        guard isNetworkAvailable else {
+            throw LLMError.networkError(URLError(.notConnectedToInternet))
+        }
+
+        // Input validation
+        let trimmedPrompt = prompt.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedPrompt.isEmpty else {
+            throw LLMError.parsingFailed("Prompt cannot be empty")
+        }
+
+        guard trimmedPrompt.count <= Self.maxPromptLength else {
+            throw LLMError.contextTooLong
+        }
+
+        // Check cache first
+        if useCache, let cached = AICache.shared.get(prompt: trimmedPrompt, systemPrompt: systemPrompt) {
+            return cached
+        }
+
         isLoading = true
         defer { isLoading = false }
 
-        switch config.provider {
-        case .gemini:
-            return try await callGemini(prompt: prompt, system: systemPrompt, config: config)
-        case .openAI:
-            return try await callOpenAI(prompt: prompt, system: systemPrompt, config: config)
-        case .anthropic:
-            return try await callAnthropic(prompt: prompt, system: systemPrompt, config: config)
-        case .apple:
-            return try await callAppleIntelligence(prompt: prompt, system: systemPrompt)
+        let response = try await withRetry {
+            switch config.provider {
+            case .gemini:
+                return try await self.callGemini(prompt: trimmedPrompt, system: systemPrompt, config: config)
+            case .openAI:
+                return try await self.callOpenAI(prompt: trimmedPrompt, system: systemPrompt, config: config)
+            case .anthropic:
+                return try await self.callAnthropic(prompt: trimmedPrompt, system: systemPrompt, config: config)
+            case .apple:
+                return try await self.callAppleIntelligence(prompt: trimmedPrompt, system: systemPrompt)
+            }
         }
+
+        // Cache successful response
+        if useCache {
+            AICache.shared.set(response: response, prompt: trimmedPrompt, systemPrompt: systemPrompt)
+        }
+
+        return response
+    }
+
+    /// Retry wrapper with exponential backoff for transient errors
+    private func withRetry<T>(
+        operation: @escaping () async throws -> T
+    ) async throws -> T {
+        var lastError: Error?
+
+        for attempt in 0..<Self.maxRetries {
+            do {
+                return try await operation()
+            } catch let error as LLMError where error.isRetryable {
+                lastError = error
+
+                // Don't delay on last attempt
+                if attempt < Self.maxRetries - 1 {
+                    let delay = Self.baseRetryDelay * pow(2.0, Double(attempt))
+                    try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
+                }
+            } catch {
+                // Non-retryable error, throw immediately
+                throw error
+            }
+        }
+
+        throw lastError ?? LLMError.providerUnavailable
     }
 
     /// Send prompt and parse JSON response
@@ -82,8 +162,17 @@ final class LLMService {
     ) async throws -> T {
         let response = try await complete(prompt: prompt, systemPrompt: systemPrompt)
 
+        // Handle empty or null responses
+        guard !response.isEmpty else {
+            throw LLMError.invalidResponse
+        }
+
         // Extract JSON from response (may be wrapped in markdown code blocks)
         let jsonString = extractJSON(from: response)
+
+        guard !jsonString.isEmpty else {
+            throw LLMError.parsingFailed("Empty JSON response")
+        }
 
         guard let data = jsonString.data(using: .utf8) else {
             throw LLMError.parsingFailed("Invalid UTF-8")
@@ -91,6 +180,22 @@ final class LLMService {
 
         do {
             return try JSONDecoder().decode(T.self, from: data)
+        } catch let error as DecodingError {
+            // Provide more context for decoding errors
+            let detail: String
+            switch error {
+            case .keyNotFound(let key, _):
+                detail = "Missing required field: \(key.stringValue)"
+            case .typeMismatch(let type, let context):
+                detail = "Type mismatch for \(context.codingPath.map(\.stringValue).joined(separator: ".")): expected \(type)"
+            case .valueNotFound(_, let context):
+                detail = "Null value at: \(context.codingPath.map(\.stringValue).joined(separator: "."))"
+            case .dataCorrupted(let context):
+                detail = "Data corrupted: \(context.debugDescription)"
+            @unknown default:
+                detail = error.localizedDescription
+            }
+            throw LLMError.parsingFailed(detail)
         } catch {
             throw LLMError.parsingFailed(error.localizedDescription)
         }
