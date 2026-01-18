@@ -196,6 +196,7 @@ final class TaskStore {
         task.toggleCompletion()
         try? modelContext?.save()
         HapticManager.shared.taskCompleted()
+        syncWithWidget()
     }
 
     /// Toggle completion for a virtual task instance
@@ -229,6 +230,7 @@ final class TaskStore {
 
         try? modelContext?.save()
         HapticManager.shared.taskCompleted()
+        syncWithWidget()
     }
 
     /// Check if a virtual instance is completed
@@ -256,12 +258,21 @@ final class TaskStore {
         modelContext?.delete(task)
         try? modelContext?.save()
         tasks.removeAll { $0.id == task.id }
+        syncWithWidget()
     }
 
     func addTask(_ task: TaskItem) {
         modelContext?.insert(task)
         try? modelContext?.save()
         tasks.append(task)
+        syncWithWidget()
+    }
+
+    // MARK: - Widget Sync
+
+    /// Sync current tasks with widget via App Groups
+    private func syncWithWidget() {
+        WidgetDataService.shared.updateWidget(with: tasks)
     }
 
     func moveTask(_ task: TaskItem, toDate newDate: Date) {
