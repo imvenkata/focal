@@ -88,6 +88,29 @@ struct TodoView: View {
                         Spacer()
 
                         HStack(spacing: DS.Spacing.sm) {
+                            // Group/List toggle (visible, like Day/Week in Planner)
+                            Button {
+                                withAnimation(DS.Animation.spring) {
+                                    groupByPriority.toggle()
+                                }
+                                HapticManager.shared.selection()
+                            } label: {
+                                HStack(spacing: DS.Spacing.xs) {
+                                    Image(systemName: groupByPriority ? "rectangle.3.group" : "list.bullet")
+                                        .font(.system(size: 14, weight: .semibold))
+                                    Text(groupByPriority ? "Grouped" : "List")
+                                        .scaledFont(size: 13, weight: .semibold, relativeTo: .caption)
+                                }
+                                .foregroundStyle(DS.Colors.textSecondary)
+                                .padding(.horizontal, DS.Spacing.md)
+                                .padding(.vertical, DS.Spacing.sm)
+                                .background(DS.Colors.surfaceSecondary)
+                                .glassEffect(in: RoundedRectangle(cornerRadius: DS.Radius.md))
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel(groupByPriority ? "Grouped view" : "List view")
+                            .accessibilityHint("Double tap to toggle between grouped and list view")
+
                             // Focus mode button
                             Button {
                                 showFocusMode = true
@@ -107,31 +130,6 @@ struct TodoView: View {
                             .buttonStyle(.plain)
                             .accessibilityLabel("Enter focus mode")
                             .accessibilityHint("Shows one task at a time for focused work")
-
-                            // View options menu (ellipsis)
-                            Menu {
-                                // Grouping toggle
-                                Button {
-                                    withAnimation(DS.Animation.spring) {
-                                        groupByPriority.toggle()
-                                    }
-                                    HapticManager.shared.selection()
-                                } label: {
-                                    Label(
-                                        groupByPriority ? "Ungroup tasks" : "Group by priority",
-                                        systemImage: groupByPriority ? "rectangle.stack" : "list.bullet"
-                                    )
-                                }
-                            } label: {
-                                Image(systemName: "ellipsis")
-                                    .font(.system(size: 16, weight: .semibold))
-                                    .foregroundStyle(DS.Colors.textSecondary)
-                                    .frame(width: 36, height: 36)
-                                    .background(DS.Colors.surfaceSecondary)
-                                    .clipShape(Circle())
-                            }
-                            .accessibilityLabel("View options")
-                            .accessibilityHint("Opens menu to customize task display")
 
                             // Search button
                             Button {
